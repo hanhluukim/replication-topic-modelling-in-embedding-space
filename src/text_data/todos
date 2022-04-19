@@ -1,0 +1,13 @@
+1. Datensatz: 20NewGroups und New York Times
+    + woher: 20NewGroups bereits aus dem sklearn
+    + New York Times: https://github.com/moorissa/nmf_nyt/blob/master/nyt_data.txt
+    + Stopwords Datensatz: download from Author-Ordner
+2. Pre-Processing:
+    + Stopwords filtern (für die Behauptung 1)
+    + Tokenisieren
+    + BOW-Repräsentation für Vokabular
+3. Funktionen:
+    + data_loader(url)
+    + data_preprocess()
+    + create_bow()
+

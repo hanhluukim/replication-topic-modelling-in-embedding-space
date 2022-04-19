@@ -1,0 +1,2 @@
+1. If pretrained-embedding==True: Nutzung von pretrained-Word2Vec/BOW???
+2. Else: embedding-Trainieren
