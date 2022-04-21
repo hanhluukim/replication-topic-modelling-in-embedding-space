@@ -237,36 +237,52 @@ class TextDataLoader:
             return np.array([[np.array(doc) for doc in documents]],
                             dtype=object).squeeze()
 
-        bow_train_tokens, bow_train_counts = split_bow(bow_tr, n_docs_tr)
-        bow_test_tokens, bow_test_counts = split_bow(bow_ts, n_docs_ts)
-        bow_test_h1_tokens, bow_test_h1_counts = split_bow(bow_ts_h1, n_docs_ts_h1)
-        bow_test_h2_tokens, bow_test_h2_counts = split_bow(bow_ts_h2, n_docs_ts_h2)
-        bow_val_tokens, bow_val_counts = split_bow(bow_va, n_docs_va)
         
-        train_dataset = {
-            'tokens': to_numpy_array(bow_train_tokens),
-            'counts': to_numpy_array(bow_train_counts),
-        }
+        if self.for_lda_model == "LDA":
+            print("compact representation for LDA")
+            def create_lda_corpus(bow_set):
+                df = pd.DataFrame(bow_set.toarray())
+                lda_corpus = []
+                for i in range(0,df.shape[0]):
+                    doc_corpus = [ (j,e) for j, e in enumerate(df.iloc[i])]
+                    lda_corpus.append(doc_corpus)
+                return lda_corpus
+            train_dataset = create_lda_corpus(bow_tr)
+            test_dataset = create_lda_corpus(bow_ts)
+            val_dataset = create_lda_corpus(bow_va)
         
-        val_dataset = {
-            'tokens': to_numpy_array(bow_val_tokens),
-            'counts': to_numpy_array(bow_val_counts),
-        }
-
-        test_dataset = {
-            'test': {
-                'tokens': to_numpy_array(bow_test_tokens),
-                'counts': to_numpy_array(bow_test_counts),
-            },
-            'test1': {
-                'tokens': to_numpy_array(bow_test_h1_tokens),
-                'counts': to_numpy_array(bow_test_h1_counts),
-            },
-            'test2': {
-                'tokens': to_numpy_array(bow_test_h2_tokens),
-                'counts': to_numpy_array(bow_test_h2_counts),
+        else: #other models 
+            bow_train_tokens, bow_train_counts = split_bow(bow_tr, n_docs_tr)
+            bow_test_tokens, bow_test_counts = split_bow(bow_ts, n_docs_ts)
+            bow_test_h1_tokens, bow_test_h1_counts = split_bow(bow_ts_h1, n_docs_ts_h1)
+            bow_test_h2_tokens, bow_test_h2_counts = split_bow(bow_ts_h2, n_docs_ts_h2)
+            bow_val_tokens, bow_val_counts = split_bow(bow_va, n_docs_va)
+        
+            train_dataset = {
+                'tokens': to_numpy_array(bow_train_tokens),
+                'counts': to_numpy_array(bow_train_counts),
             }
-        }
+            
+            val_dataset = {
+                'tokens': to_numpy_array(bow_val_tokens),
+                'counts': to_numpy_array(bow_val_counts),
+            }
+
+            test_dataset = {
+                'test': {
+                    'tokens': to_numpy_array(bow_test_tokens),
+                    'counts': to_numpy_array(bow_test_counts),
+                },
+                'test1': {
+                    'tokens': to_numpy_array(bow_test_h1_tokens),
+                    'counts': to_numpy_array(bow_test_h1_counts),
+                },
+                'test2': {
+                    'tokens': to_numpy_array(bow_test_h2_tokens),
+                    'counts': to_numpy_array(bow_test_h2_counts),
+                }
+            }
+        
         return train_dataset, val_dataset, test_dataset
 
     def create_train_test_val_data_for_topic_model(self, 
@@ -280,14 +296,5 @@ class TextDataLoader:
         self.preprocess_texts(length_one_word_remove, punctuation_lower, stopwords_filter)
         self.split_and_create_voca_from_trainset(max_df, min_df, stopwords_remove_from_voca)
         train_dataset, val_dataset, test_dataset = self.create_bow_and_savebow_for_each_set()
-        
-        
-        if self.for_lda_model == "LDA":
-            print("compact representation for LDA")
-            
-        else:
-            # for other models
-            return self.vocabulary, train_dataset, val_dataset, test_dataset
-    
-    
+        return self.vocabulary, train_dataset, val_dataset, test_dataset
         
