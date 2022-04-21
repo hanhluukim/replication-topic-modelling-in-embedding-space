@@ -11,3 +11,12 @@
     + data_preprocess()
     + create_bow()
 
+    
+4. New York Times benutzen wir direkt die Datensatz in dem Github verlinkt, damit die Daten gleich sind
+
+
+#
+1. data prepraring for LDA and word-embedding
+2. topic modelling with LDA (using multicore for efficient runtime)
+3. script for evaluation
+2. etm 
