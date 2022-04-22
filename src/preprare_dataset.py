@@ -15,24 +15,27 @@ import string
 import random
 
 random.seed(42)
-
-with open('./stops.txt', 'r') as f:
+print(pathlib.Path.cwd())
+with open('src/stops.txt', 'r') as f:
     stops = f.read().split('\n')
     
 class TextDataLoader:
     def __init__(self, source="20newsgroups", for_lda_model = False, train_size=None, test_size=None):
+        self.source = source
         self.train_size = None
         self.test_size = None
         # if 20newsgroups, get train-size, test-size directly from fetch_20newsgroups(subset="train/test")
-        self.complete_docs = self.load_tokenize_texts(source)
+        self.complete_docs = []
         self.for_lda_model = for_lda_model
         if train_size!=None:
             self.train_size = int(train_size * len(self.complete_docs))
             self.test_size = int(test_size * len(self.complete_docs)) 
         # train_size will be later split to 100-val und the rest for train
+        print(f'{self.train_size} train-documents')
         self.idx_permute = []
         
     def load_tokenize_texts(self, source):
+        print("loading texts: ...")
         if source == "20newsgroups":
             # download data from package sklearn
             train_data = fetch_20newsgroups(subset='train')
@@ -57,6 +60,7 @@ class TextDataLoader:
                 self.complete_docs = f.readlines()
                 
     def show_example_raw_texts(self, n_docs=2):
+        print("check samples")
         try:
             for i in range(0,n_docs):
                 print(self.complete_docs[i])
@@ -82,9 +86,9 @@ class TextDataLoader:
             self.complete_docs = [[w for w in self.complete_docs[doc] if w not in stops] for doc in range(len(self.complete_docs))]
         
         self.complete_docs = [" ".join(self.complete_docs[doc]) for doc in range(len(self.complete_docs))]   
-        return True
+        #return True
     
-    def split_and_create_voca_from_trainset(self,max_df, min_df, stopwords_remove_from_voca):
+    def split_and_create_voca_from_trainset(self,max_df=0.85, min_df=0.01, stopwords_remove_from_voca=True):
         # filter by max-df and min-df with CountVectorizer
         # CountVectorizer create Vocabulary (Word-Ids). For each doc: Word-Frequency of each word of this document
         vectorizer = CountVectorizer(min_df=min_df, max_df=max_df, stop_words=None) # stopwords will be used later
@@ -128,18 +132,24 @@ class TextDataLoader:
         
         # only words from train dataset will be maintained in the global vocabulary
         # update word2id and id2word again
+        print(f'check the total documents befor creating vocabulary {len(self.complete_docs)}')
+        print(word2id)
+        print(id2word)
+        print("start creating vocabulary ...")
         vocabulary = []
         for idx_d in range(train_dataset_size):
             for w in self.complete_docs[self.idx_permute[idx_d]]:
-                if w in word2id: #it means that still not-stopwords will be saved, because word2id is before updated by not-stopwords-vocabulary
+                if w in list(word2id.keys()): #it means that still not-stopwords will be saved, because word2id is before updated by not-stopwords-vocabulary
+                    print("in word2id")
                     vocabulary.append(w)
         self.vocabulary = list(set(vocabulary))
+        print(f'length of init-voca {len(self.vocabulary)}')
         self.word2id = {}
         self.id2word = {} 
         for j, w in enumerate(vocabulary): 
             self.word2id[w] = j
             self.id2word[j] = w
-        del vocabulary #delete the old voca
+        #del vocabulary #delete the old voca
             
     def create_bow_and_savebow_for_each_set(self):
         """
@@ -208,7 +218,9 @@ class TextDataLoader:
 
         def create_bow(doc_indices, words, n_docs, vocab_size):
             return sparse.coo_matrix(([1]*len(doc_indices),(doc_indices, words)), shape=(n_docs, vocab_size)).tocsr()
-
+        
+        print(f'{len(doc_indices_tr)} documents')
+        print(f'{len(self.vocabulary)} vocabulary')
         bow_tr = create_bow(doc_indices_tr, words_tr, n_docs_tr, len(self.vocabulary))
         bow_ts = create_bow(doc_indices_ts, words_ts, n_docs_ts, len(self.vocabulary))
         bow_ts_h1 = create_bow(doc_indices_ts_h1, words_ts_h1, n_docs_ts_h1, len(self.vocabulary))
@@ -283,7 +295,7 @@ class TextDataLoader:
                 }
             }
         
-        return train_dataset, val_dataset, test_dataset
+        return train_dataset, test_dataset, val_dataset
 
     def create_train_test_val_data_for_topic_model(self, 
                                     length_one_word_remove =True, 
@@ -292,9 +304,9 @@ class TextDataLoader:
                                     max_df = 0.85, 
                                     min_df = 0.01, 
                                     stopwords_remove_from_voca = True):
-        
+        self.load_tokenize_texts(self.source)
         self.preprocess_texts(length_one_word_remove, punctuation_lower, stopwords_filter)
         self.split_and_create_voca_from_trainset(max_df, min_df, stopwords_remove_from_voca)
-        train_dataset, val_dataset, test_dataset = self.create_bow_and_savebow_for_each_set()
-        return self.vocabulary, train_dataset, val_dataset, test_dataset
+        train_dataset, test_dataset, val_dataset = self.create_bow_and_savebow_for_each_set()
+        return self.vocabulary, train_dataset, test_dataset, val_dataset
         
