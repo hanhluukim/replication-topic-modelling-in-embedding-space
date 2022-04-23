@@ -267,6 +267,9 @@ class TextDataLoader:
             print(f'max word-id: {max(t)}')
             print(f'min word-id: {min(t)}')
 
+            print(f'max doc-id: {max(doc_indices)}')
+            print(f'min doc-id: {min(doc_indices)}')
+
             print(f'all docs: {len(doc_indices)}')
             print(f'all words: {len(words)}')
 
@@ -282,7 +285,7 @@ class TextDataLoader:
               (
                 [1]*len(doc_indices),(doc_indices, words)
                 ), 
-                shape=(len(set(doc_indices)), len(set(words)))
+                shape=(n_docs, vocab_size)
                 ).tocsr()
             print("finised creating bow input!\n")
             return bow
@@ -306,8 +309,8 @@ class TextDataLoader:
         del doc_indices_ts_h1
         del doc_indices_ts_h2
         del doc_indices_va
-        print("bow-train examples")
-        print(pd.DataFrame(bow_tr.toarray()))
+        #print("bow-train examples")
+        #print(pd.DataFrame(bow_tr.toarray()))
         
         def split_bow(bow_in, num_docs):
             indices = [[w for w in bow_in[doc, :].indices] for doc in range(num_docs)]
