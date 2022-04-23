@@ -20,30 +20,30 @@ with open('src/stops.txt', 'r') as f:
     stops = f.read().split('\n')
     
 class TextDataLoader:
-    def __init__(self, source="20newsgroups", for_lda_model = False, train_size=None, test_size=None):
+    def __init__(self, source="20newsgroups", train_size=None, test_size=None):
         self.source = source
         self.train_size = None
         self.test_size = None
         # if 20newsgroups, get train-size, test-size directly from fetch_20newsgroups(subset="train/test")
         self.complete_docs = []
-        self.for_lda_model = for_lda_model
+        #self.for_lda_model = for_lda_model
         if train_size!=None:
             self.train_size = int(train_size * len(self.complete_docs))
             self.test_size = int(test_size * len(self.complete_docs)) 
         # train_size will be later split to 100-val und the rest for train
-        print(f'{self.train_size} train-documents')
+        # print(f'{self.train_size} train-documents')
         self.idx_permute = []
         
     def load_tokenize_texts(self, source):
         print("loading texts: ...")
         if source == "20newsgroups":
             # download data from package sklearn
-            train_data = fetch_20newsgroups(subset='train')
-            test_data = fetch_20newsgroups(subset='test')
+            train_data = fetch_20newsgroups(subset='train')#[:100]
+            test_data = fetch_20newsgroups(subset='test')#[:50]
             # filter special character from texts
             filter_patter = r'''[\w']+|[.,!?;-~{}`´_<=>:/@*()&'$%#"]'''
-            init_docs_tr = [re.findall(filter_patter, train_data.data[doc]) for doc in range(len(train_data.data))]
-            init_docs_ts = [re.findall(filter_patter, test_data.data[doc]) for doc in range(len(test_data.data))]
+            init_docs_tr = [re.findall(filter_patter, train_data.data[doc]) for doc in range(len(train_data.data[:200]))]
+            init_docs_ts = [re.findall(filter_patter, test_data.data[doc]) for doc in range(len(test_data.data[:50]))]
             
             self.complete_docs = init_docs_tr + init_docs_ts
             self.train_size = len(init_docs_tr)
@@ -138,9 +138,9 @@ class TextDataLoader:
         print("start creating vocabulary ...")
         vocabulary = []
         for idx_d in range(train_dataset_size):
-            for w in self.complete_docs[self.idx_permute[idx_d]]:
-                if w in list(word2id.keys()): #it means that still not-stopwords will be saved, because word2id is before updated by not-stopwords-vocabulary
-                    print("in word2id")
+            for w in self.complete_docs[self.idx_permute[idx_d]].split():
+                if w in word2id: #it means that still not-stopwords will be saved, because word2id is before updated by not-stopwords-vocabulary
+                    #print("in word2id")
                     vocabulary.append(w)
         self.vocabulary = list(set(vocabulary))
         print(f'length of init-voca {len(self.vocabulary)}')
@@ -151,7 +151,7 @@ class TextDataLoader:
             self.id2word[j] = w
         #del vocabulary #delete the old voca
             
-    def create_bow_and_savebow_for_each_set(self):
+    def create_bow_and_savebow_for_each_set(self, for_lda_model = True):
         """
         docs will be saved unter the list of word-ids
         1. from the word2id and vocabulary, documents-set will be recreated
@@ -217,6 +217,12 @@ class TextDataLoader:
         del docs_va
 
         def create_bow(doc_indices, words, n_docs, vocab_size):
+            print("check create_bow")
+            print(f'unique doc-index: {len(list(set(doc_indices)}')))
+            print(f'unique words: {len(list(set(words)))}')
+            print(f'check n-docs: {n_docs}')
+            print(f'voca-size: {vocab_size}')
+            print("end check")
             return sparse.coo_matrix(([1]*len(doc_indices),(doc_indices, words)), shape=(n_docs, vocab_size)).tocsr()
         
         print(f'{len(doc_indices_tr)} documents')
@@ -250,7 +256,7 @@ class TextDataLoader:
                             dtype=object).squeeze()
 
         
-        if self.for_lda_model == "LDA":
+        if for_lda_model == "LDA":
             print("compact representation for LDA")
             def create_lda_corpus(bow_set):
                 df = pd.DataFrame(bow_set.toarray())
@@ -297,8 +303,9 @@ class TextDataLoader:
         
         return train_dataset, test_dataset, val_dataset
 
-    def create_train_test_val_data_for_topic_model(self, 
-                                    length_one_word_remove =True, 
+    def create_train_test_val_data_for_topic_model(self,
+                                    for_lda_model = True,  
+                                    length_one_word_remove = True, 
                                     punctuation_lower = True, 
                                     stopwords_filter  = True,
                                     max_df = 0.85, 
