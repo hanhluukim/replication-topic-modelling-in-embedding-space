@@ -8,14 +8,18 @@ from sklearn.datasets import fetch_20newsgroups
 import pathlib
 from sklearn.feature_extraction.text import CountVectorizer
 import numpy as np
+#from scipy import sparse
+import numpy as np
 from scipy import sparse
+import scipy.sparse
+
 import pandas as pd
 import re
 import string
 import random
 
 random.seed(42)
-print(pathlib.Path.cwd())
+#print(pathlib.Path.cwd())
 with open('src/stops.txt', 'r') as f:
     stops = f.read().split('\n')
     
@@ -42,8 +46,8 @@ class TextDataLoader:
             test_data = fetch_20newsgroups(subset='test')#[:50]
             # filter special character from texts
             filter_patter = r'''[\w']+|[.,!?;-~{}`´_<=>:/@*()&'$%#"]'''
-            init_docs_tr = [re.findall(filter_patter, train_data.data[doc]) for doc in range(len(train_data.data[:200]))]
-            init_docs_ts = [re.findall(filter_patter, test_data.data[doc]) for doc in range(len(test_data.data[:50]))]
+            init_docs_tr = [re.findall(filter_patter, train_data.data[doc]) for doc in range(len(train_data.data[:150]))]
+            init_docs_ts = [re.findall(filter_patter, test_data.data[doc]) for doc in range(len(test_data.data[:20]))]
             
             self.complete_docs = init_docs_tr + init_docs_ts
             self.train_size = len(init_docs_tr)
@@ -58,9 +62,10 @@ class TextDataLoader:
             print("load data from ..." + str(source))
             with open(pathlib.Path(source)) as f:
                 self.complete_docs = f.readlines()
+        print("finished load!")
                 
     def show_example_raw_texts(self, n_docs=2):
-        print("check samples")
+        print("check some sample texts of the dataset")
         try:
             for i in range(0,n_docs):
                 print(self.complete_docs[i])
@@ -77,6 +82,7 @@ class TextDataLoader:
             return any(char in string.punctuation for char in w)
         def contains_numeric(w):
             return any(char.isdigit() for char in w)
+        print("start: preprocessing: ...")
         if punctuation_lower:
             self.complete_docs = [[w.lower() for w in self.complete_docs[doc] if not contains_punctuation(w)] for doc in range(len(self.complete_docs))]
             self.complete_docs = [[w for w in self.complete_docs[doc] if not contains_numeric(w)] for doc in range(len(self.complete_docs))]
@@ -87,8 +93,9 @@ class TextDataLoader:
         
         self.complete_docs = [" ".join(self.complete_docs[doc]) for doc in range(len(self.complete_docs))]   
         #return True
-    
-    def split_and_create_voca_from_trainset(self,max_df=0.85, min_df=0.01, stopwords_remove_from_voca=True):
+        print("finised: preprocessing!")
+
+    def split_and_create_voca_from_trainset(self,max_df=0.85, min_df=0.01, stopwords_remove_from_voca = True):
         # filter by max-df and min-df with CountVectorizer
         # CountVectorizer create Vocabulary (Word-Ids). For each doc: Word-Frequency of each word of this document
         vectorizer = CountVectorizer(min_df=min_df, max_df=max_df, stop_words=None) # stopwords will be used later
@@ -100,11 +107,11 @@ class TextDataLoader:
         Sort the list of words in the vocabulary by the (word-df)
         """
         # init word2id and id2word with vectorizer
-        word2id = {}
-        id2word = {}
+        self.word2id = {}
+        self.id2word = {}
         for w in vectorizer.vocabulary_:
-            word2id[w] = vectorizer.vocabulary_.get(w)
-            id2word[vectorizer.vocabulary_.get(w)] = w
+            self.word2id[w] = vectorizer.vocabulary_.get(w)
+            self.id2word[vectorizer.vocabulary_.get(w)] = w
         # sort the init-voca-dictionary by documents-frequency
         # saving the frequency of each word in Vocabulary over all documents/ look "sum in the column"
         # number of documents, which containt the word in vectorizer.vocabulary
@@ -115,41 +122,70 @@ class TextDataLoader:
             sum_counts_np[v] = sum_docs_counts[0, v]
         idx_sort = np.argsort(sum_counts_np)
         # create init-vocabulary from words, that sorted-vocabular ordered by doc-frequencies
-        vocabulary = [id2word[idx_sort[cc]] for cc in range(voca_size)]
+        vocabulary = [self.id2word[idx_sort[cc]] for cc in range(voca_size)]
+        #print("=============check Voca==================")
+        #print(f'sample ten words of the vocabulary: {sorted(vocabulary)}')
         # filter the stopwords from vocabulary and update the dictionary: word2id and id2word
+        
         if stopwords_remove_from_voca:
             vocabulary = [w for w in vocabulary if w not in stops]
-        word2id = {}
-        id2word = {} 
+        #self.documents_without_stop_words = [[word for word in document.split() if word not in stops] for document in self.complete_docs]
+        
+
+        self.word2id = {}
+        self.id2word = {} 
         for j, w in enumerate(vocabulary): 
-            word2id[w] = j
-            id2word[j] = w 
+            self.word2id[w] = j
+            self.id2word[j] = w 
         
         # vocabulary from train-dataset, update word2id and id2word again
         val_dataset_size = 100
         train_dataset_size = self.train_size - val_dataset_size
         self.idx_permute = np.random.permutation(self.train_size).astype(int)
+        #print("========BEFORE: check idx-permute ========")
+        print(f'permuted indices for the train set: {self.idx_permute[:15]}')
         
         # only words from train dataset will be maintained in the global vocabulary
         # update word2id and id2word again
-        print(f'check the total documents befor creating vocabulary {len(self.complete_docs)}')
-        print(word2id)
-        print(id2word)
+        #print(f'check the total documents befor creating vocabulary {len(self.complete_docs)}')
+        #print(self.word2id)
+        #print(self.id2word)
         print("start creating vocabulary ...")
+        
         vocabulary = []
         for idx_d in range(train_dataset_size):
             for w in self.complete_docs[self.idx_permute[idx_d]].split():
-                if w in word2id: #it means that still not-stopwords will be saved, because word2id is before updated by not-stopwords-vocabulary
+                if w in self.word2id: #it means that still not-stopwords will be saved, because word2id is before updated by not-stopwords-vocabulary
                     #print("in word2id")
                     vocabulary.append(w)
+        """
+        vocabulary = []
+        if stopwords_remove_from_voca == True:
+          for idx_d in range(train_dataset_size):
+            for w in self.documents_without_stop_words[self.idx_permute[idx_d]]:
+              if w in word2id:
+                vocabulary.append(w)
+        else:
+          for idx_d in range(train_dataset_size):
+            for w in self.complete_docs[self.idx_permute[idx_d]]:
+              if w in word2id:
+                vocabulary.append(w)
+        """
         self.vocabulary = list(set(vocabulary))
-        print(f'length of init-voca {len(self.vocabulary)}')
+        #self.vocabulary = list(set(vocabulary))
+        print(f'length of the vocabulary: {len(self.vocabulary)}')
+        print(f'sample ten words of the vocabulary: {self.vocabulary}')
+
         self.word2id = {}
         self.id2word = {} 
-        for j, w in enumerate(vocabulary): 
+        for j, w in enumerate(self.vocabulary): 
+            #print(j,w)
             self.word2id[w] = j
             self.id2word[j] = w
         #del vocabulary #delete the old voca
+        print(f'word2id list: {self.word2id}')
+        print(f'id2word list: {self.id2word}')
+        print("finished: creating vocabulary")
             
     def create_bow_and_savebow_for_each_set(self, for_lda_model = True):
         """
@@ -163,8 +199,13 @@ class TextDataLoader:
         test_dataset_size = self.test_size
         print(f'train size: {train_dataset_size} documents')
         print(f'test size: {test_dataset_size} documents')
-        
-        # create documents again from word-ids not in words             
+
+        #print("====AFTER: Check idx_permute======")
+        #print(self.idx_permute[:15])
+        #print(self.word2id)
+        #print(self.id2word)
+
+        # create documents again from word-ids not in words      
         docs_tr = [[self.word2id[w] for w in self.complete_docs[self.idx_permute[idx_d]].split() if w in self.word2id] for idx_d in range(train_dataset_size)]
         docs_va = [[self.word2id[w] for w in self.complete_docs[self.idx_permute[idx_d+train_dataset_size]].split() if w in self.word2id] for idx_d in range(val_dataset_size)]
         docs_ts = [[self.word2id[w] for w in self.complete_docs[idx_d+self.train_size].split() if w in self.word2id] for idx_d in range(test_dataset_size)]
@@ -217,16 +258,38 @@ class TextDataLoader:
         del docs_va
 
         def create_bow(doc_indices, words, n_docs, vocab_size):
-            print("check create_bow")
-            print(f'unique doc-index: {len(list(set(doc_indices)}')))
-            print(f'unique words: {len(list(set(words)))}')
-            print(f'check n-docs: {n_docs}')
-            print(f'voca-size: {vocab_size}')
-            print("end check")
-            return sparse.coo_matrix(([1]*len(doc_indices),(doc_indices, words)), shape=(n_docs, vocab_size)).tocsr()
+            print("start: creating bow representation...")
+
+            t = sorted(list(set(words)))
+            print(f'word-id of the doc: {t}')
+            #print(doc_indices[:40])
+            #print(words[:40])
+            print(f'max word-id: {max(t)}')
+            print(f'min word-id: {min(t)}')
+
+            print(f'all docs: {len(doc_indices)}')
+            print(f'all words: {len(words)}')
+
+            print(f'docidx unique {len(set(doc_indices))}')
+            print(f'words unique: {len(set(words))}')
+
+            print(f'ndocs: {n_docs}')
+            print(f'vocab-size: {vocab_size}')
+            #print(len([1]*len(doc_indices)))
+            
+
+            bow = sparse.coo_matrix(
+              (
+                [1]*len(doc_indices),(doc_indices, words)
+                ), 
+                shape=(len(set(doc_indices)), len(set(words)))
+                ).tocsr()
+            print("finised creating bow input!\n")
+            return bow
         
-        print(f'{len(doc_indices_tr)} documents')
-        print(f'{len(self.vocabulary)} vocabulary')
+        print(f'length train-documents : {len(doc_indices_tr)}')
+        print(f'length of the vocabulary: {len(self.vocabulary)}')
+        print("\n")
         bow_tr = create_bow(doc_indices_tr, words_tr, n_docs_tr, len(self.vocabulary))
         bow_ts = create_bow(doc_indices_ts, words_ts, n_docs_ts, len(self.vocabulary))
         bow_ts_h1 = create_bow(doc_indices_ts_h1, words_ts_h1, n_docs_ts_h1, len(self.vocabulary))
