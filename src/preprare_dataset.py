@@ -38,7 +38,7 @@ class TextDataLoader:
         # print(f'{self.train_size} train-documents')
         self.idx_permute = []
         
-    def load_tokenize_texts(self, source):
+    def load_tokenize_texts(self, source="20newsgroups"):
         print("loading texts: ...")
         if source == "20newsgroups":
             # download data from package sklearn
