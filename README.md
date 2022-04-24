@@ -5,8 +5,12 @@
 2. Neues Experiment: Kombination von pre-fitted BERT-Wordembedding mit ETM
 
 **Datensatz**
-1. 20NewsGroups
-2. New York Times
+1. 20NewsGroups, New York Times
+2. Traindatensatz, Testdatensatz (Testdatensatz-h1, Testdatensatz-h2) und Validationssatz von 100 Dokumenten
+
+**ETM-Modell**
+1. Das Vocabular besteht aus den einzigartigen Wörtern aus dem Traindatensatz
+2. Eingabedaten: BOW-Repräsentation für jedes Dokumentes des Datensatzes (doc={(word-id, word-frequency)})
 
 
 **Dokumentation für Teamarbeit**
