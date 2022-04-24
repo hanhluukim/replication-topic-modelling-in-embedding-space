@@ -322,7 +322,7 @@ class TextDataLoader:
                             dtype=object).squeeze()
 
         
-        if for_lda_model == "LDA":
+        if for_lda_model == True:
             print("compact representation for LDA")
             def create_lda_corpus(bow_set):
                 df = pd.DataFrame(bow_set.toarray())
@@ -367,7 +367,7 @@ class TextDataLoader:
                 }
             }
         
-        return train_dataset, test_dataset, val_dataset
+        return self.word2id, self.id2word, train_dataset, test_dataset, val_dataset
 
     def create_train_test_val_data_for_topic_model(self,
                                     for_lda_model = True,  
@@ -380,6 +380,6 @@ class TextDataLoader:
         self.load_tokenize_texts(self.source)
         self.preprocess_texts(length_one_word_remove, punctuation_lower, stopwords_filter)
         self.split_and_create_voca_from_trainset(max_df, min_df, stopwords_remove_from_voca)
-        train_dataset, test_dataset, val_dataset = self.create_bow_and_savebow_for_each_set()
-        return self.vocabulary, train_dataset, test_dataset, val_dataset
+        _,_,train_dataset, test_dataset, val_dataset = self.create_bow_and_savebow_for_each_set()
+        return self.vocabulary, self.word2id, self.id2word, train_dataset, test_dataset, val_dataset
         
