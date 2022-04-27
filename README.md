@@ -18,11 +18,11 @@
 
 **Experimenten**
 
-[ ] Vergleich Top-5-Wörter von den top 7 meisten genutzen Topics (Datensatz: 1.8M Documents von NYT, Corpus V=212237, K=300) zwischen LDA und ETM
-[ ] Vergleich zwischen LDA und ETM auf dem Datensatz: 20NewsGroups (Maß: Topic Quality = Topic Coherence * Topic Diversity, Predictive Performance)
-[ ] Ergebnisse von ETM auf NYT-Stopwords und NYT-ohne-Stopwords
-[ ] Vergleich der Embedding zwischen CBOW und BERT-Wortembedding
-[ ] Vergleich zwischen prefitted-CBOW/SKIPGramm-ETM und prefitted-BERT-ETM
+- [ ] Vergleich Top-5-Wörter von den top 7 meisten genutzen Topics (Datensatz: 1.8M Documents von NYT, Corpus V=212237, K=300) zwischen LDA und ETM
+- [ ] Vergleich zwischen LDA und ETM auf dem Datensatz: 20NewsGroups (Maß: Topic Quality = Topic Coherence * Topic Diversity, Predictive Performance)
+- [ ] Ergebnisse von ETM auf NYT-Stopwords und NYT-ohne-Stopwords
+- [ ] Vergleich der Embedding zwischen CBOW und BERT-Wortembedding
+- [ ] Vergleich zwischen prefitted-CBOW/SKIPGramm-ETM und prefitted-BERT-ETM
 
 **Dokumentation für Teamarbeit**
 - Einpaar Befehlen für die Nutzung von Google Colab für Teamarbeit:
