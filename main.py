@@ -21,7 +21,7 @@ print("total documents {}".format(len(textsloader.complete_docs)))
 # 
 textsloader.preprocess_texts(length_one_remove=True, punctuation_lower = True, stopwords_filter = True)
 print("\n")
-textsloader.split_and_create_voca_from_trainset(max_df=0.85, min_df=0.01, stopwords_remove_from_voca=True)
+textsloader.split_and_create_voca_from_trainset(max_df=0.7, min_df=10, stopwords_remove_from_voca=True)
 print("\n")
 
 for_lda_model = True
@@ -57,8 +57,12 @@ print(len(lda_token_ids))
 print(len(train['tokens'][0]))
 
 
+print(test.keys())
 
-
+print(f'Size of the vocabulary after prprocessing ist: {len(textsloader.vocabulary)}')
+print(f'Size of train set: {len(train["tokens"])}')
+print(f'Size of val set: {len(val["tokens"])}')
+print(f'Size of test set: {len(test["test"]["tokens"])}')
 # LDA model
 
 

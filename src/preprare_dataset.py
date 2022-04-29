@@ -11,7 +11,7 @@ import numpy as np
 #from scipy import sparse
 import numpy as np
 from scipy import sparse
-import scipy.sparse
+import gensim
 
 import pandas as pd
 import re
@@ -46,8 +46,8 @@ class TextDataLoader:
             test_data = fetch_20newsgroups(subset='test')#[:50]
             # filter special character from texts
             filter_patter = r'''[\w']+|[.,!?;-~{}`´_<=>:/@*()&'$%#"]'''
-            init_docs_tr = [re.findall(filter_patter, train_data.data[doc]) for doc in range(len(train_data.data[:150]))]
-            init_docs_ts = [re.findall(filter_patter, test_data.data[doc]) for doc in range(len(test_data.data[:20]))]
+            init_docs_tr = [re.findall(filter_patter, train_data.data[doc]) for doc in range(len(train_data.data))]
+            init_docs_ts = [re.findall(filter_patter, test_data.data[doc]) for doc in range(len(test_data.data))]
             
             self.complete_docs = init_docs_tr + init_docs_ts
             self.train_size = len(init_docs_tr)
@@ -95,7 +95,7 @@ class TextDataLoader:
         #return True
         print("finised: preprocessing!")
 
-    def split_and_create_voca_from_trainset(self,max_df=0.85, min_df=0.01, stopwords_remove_from_voca = True):
+    def split_and_create_voca_from_trainset(self,max_df=0.7, min_df=10, stopwords_remove_from_voca = True):
         # filter by max-df and min-df with CountVectorizer
         # CountVectorizer create Vocabulary (Word-Ids). For each doc: Word-Frequency of each word of this document
         vectorizer = CountVectorizer(min_df=min_df, max_df=max_df, stop_words=None) # stopwords will be used later
@@ -174,7 +174,7 @@ class TextDataLoader:
         self.vocabulary = list(set(vocabulary))
         #self.vocabulary = list(set(vocabulary))
         print(f'length of the vocabulary: {len(self.vocabulary)}')
-        print(f'sample ten words of the vocabulary: {self.vocabulary}')
+        print(f'sample ten words of the vocabulary: {self.vocabulary[:10]}')
 
         self.word2id = {}
         self.id2word = {} 
@@ -183,10 +183,21 @@ class TextDataLoader:
             self.word2id[w] = j
             self.id2word[j] = w
         #del vocabulary #delete the old voca
-        print(f'word2id list: {self.word2id}')
-        print(f'id2word list: {self.id2word}')
+        print(f'length word2id list: {len(self.word2id.keys())}')
+        print(f'length id2word list: {len(self.id2word.keys())}')
         print("finished: creating vocabulary")
-            
+    
+    def get_text_docs_for_each_set(self):
+        val_dataset_size = 100
+        train_dataset_size = self.train_size - val_dataset_size
+        test_dataset_size = self.test_size
+
+        docs_tr = [[self.word2id[w] for w in self.complete_docs[self.idx_permute[idx_d]].split() if w in self.word2id] for idx_d in range(train_dataset_size)]
+        docs_va = [[self.word2id[w] for w in self.complete_docs[self.idx_permute[idx_d+train_dataset_size]].split() if w in self.word2id] for idx_d in range(val_dataset_size)]
+        docs_ts = [[self.word2id[w] for w in self.complete_docs[idx_d+self.train_size].split() if w in self.word2id] for idx_d in range(test_dataset_size)]
+        
+        return docs_tr, docs_va, docs_ts
+
     def create_bow_and_savebow_for_each_set(self, for_lda_model = True):
         """
         docs will be saved unter the list of word-ids
@@ -261,7 +272,7 @@ class TextDataLoader:
             print("start: creating bow representation...")
 
             t = sorted(list(set(words)))
-            print(f'word-id of the doc: {t}')
+            print(f'top 10 - word-id of the doc: {t[:10]}')
             #print(doc_indices[:40])
             #print(words[:40])
             print(f'max word-id: {max(t)}')
@@ -290,7 +301,7 @@ class TextDataLoader:
             print("finised creating bow input!\n")
             return bow
         
-        print(f'length train-documents : {len(doc_indices_tr)}')
+        print(f'length train-documents-indices : {len(doc_indices_tr)}')
         print(f'length of the vocabulary: {len(self.vocabulary)}')
         print("\n")
         bow_tr = create_bow(doc_indices_tr, words_tr, n_docs_tr, len(self.vocabulary))
@@ -331,9 +342,9 @@ class TextDataLoader:
                     doc_corpus = [ (j,e) for j, e in enumerate(df.iloc[i])]
                     lda_corpus.append(doc_corpus)
                 return lda_corpus
-            train_dataset = create_lda_corpus(bow_tr)
-            test_dataset = create_lda_corpus(bow_ts)
-            val_dataset = create_lda_corpus(bow_va)
+            train_dataset = gensim.matutils.Sparse2Corpus(bow_tr) #create_lda_corpus(bow_tr)
+            test_dataset = gensim.matutils.Sparse2Corpus(bow_ts) #create_lda_corpus(bow_ts)
+            val_dataset = gensim.matutils.Sparse2Corpus(bow_va) #create_lda_corpus(bow_va)
         
         else: #other models 
             bow_train_tokens, bow_train_counts = split_bow(bow_tr, n_docs_tr)
@@ -366,6 +377,16 @@ class TextDataLoader:
                     'counts': to_numpy_array(bow_test_h2_counts),
                 }
             }
+            del bow_train_tokens
+            del bow_train_counts
+            del bow_test_tokens
+            del bow_test_counts
+            del bow_val_tokens
+            del bow_val_counts
+            del bow_test_h1_tokens
+            del bow_test_h1_counts
+            del bow_test_h2_tokens
+            del bow_test_h2_counts
         
         return self.word2id, self.id2word, train_dataset, test_dataset, val_dataset
 
