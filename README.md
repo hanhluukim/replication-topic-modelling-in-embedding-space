@@ -1,4 +1,8 @@
 # replication-topic-modelling-in-embedding-space
+**Installieren aller benötigten Packages**
+
+`pip install requirements.txt`
+
 **Reposititory**
 1. Implementierung von Vorverarbeitungen und Modellen im Ordner [src](https://github.com/hanhluukim/replication-topic-modelling-in-embedding-space/tree/main/src)
 2. Ausgaben jedes Schritts von den durchgeführten Experimenten in der Datei [notebook_replication.ipynb](https://github.com/hanhluukim/replication-topic-modelling-in-embedding-space/blob/main/notebook_replication.ipynb) 
