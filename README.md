@@ -1,7 +1,7 @@
 # replication-topic-modelling-in-embedding-space
 **Installieren aller benötigten Packages**
 
-`pip install requirements.txt`
+`pip install -r requirements.txt`
 
 **Reposititory**
 1. Implementierung von Vorverarbeitungen und Modellen im Ordner [src](https://github.com/hanhluukim/replication-topic-modelling-in-embedding-space/tree/main/src)
