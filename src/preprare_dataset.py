@@ -46,8 +46,8 @@ class TextDataLoader:
             test_data = fetch_20newsgroups(subset='test')#[:50]
             # filter special character from texts
             filter_patter = r'''[\w']+|[.,!?;-~{}`´_<=>:/@*()&'$%#"]'''
-            init_docs_tr = [re.findall(filter_patter, train_data.data[doc]) for doc in range(len(train_data.data))]
-            init_docs_ts = [re.findall(filter_patter, test_data.data[doc]) for doc in range(len(test_data.data))]
+            init_docs_tr = [re.findall(filter_patter, train_data.data[doc]) for doc in range(len(train_data.data[:250]))]
+            init_docs_ts = [re.findall(filter_patter, test_data.data[doc]) for doc in range(len(test_data.data[:50]))]
             
             self.complete_docs = init_docs_tr + init_docs_ts
             self.train_size = len(init_docs_tr)
@@ -187,7 +187,7 @@ class TextDataLoader:
         print(f'length id2word list: {len(self.id2word.keys())}')
         print("finished: creating vocabulary")
     
-    def get_text_docs_for_each_set(self):
+    def get_docs_in_word_ids_for_each_set(self):
         val_dataset_size = 100
         train_dataset_size = self.train_size - val_dataset_size
         test_dataset_size = self.test_size
@@ -197,6 +197,15 @@ class TextDataLoader:
         docs_ts = [[self.word2id[w] for w in self.complete_docs[idx_d+self.train_size].split() if w in self.word2id] for idx_d in range(test_dataset_size)]
         
         return docs_tr, docs_va, docs_ts
+    def get_docs_in_words_for_each_set(self):
+        docs_tr, docs_va, docs_ts = self.get_docs_in_word_ids_for_each_set()
+        def doc_in_words(doc):
+          doc = [self.id2word[wid] for wid in doc]
+          return doc
+        docs_tr = [doc_in_words(doc) for doc in docs_tr]
+        docs_va = [doc_in_words(doc) for doc in docs_va]
+        docs_ts = [doc_in_words(doc) for doc in docs_ts]
+        return docs_tr, docs_va, docs_ts
 
     def create_bow_and_savebow_for_each_set(self, for_lda_model = True):
         """
@@ -205,22 +214,19 @@ class TextDataLoader:
         2. remove the empty documents and documents with only one words
         3. the test-dataset will be splited two halves for some reason in the papers, read again
         """
+        """
         val_dataset_size = 100
         train_dataset_size = self.train_size - val_dataset_size
         test_dataset_size = self.test_size
         print(f'train size: {train_dataset_size} documents')
         print(f'test size: {test_dataset_size} documents')
-
-        #print("====AFTER: Check idx_permute======")
-        #print(self.idx_permute[:15])
-        #print(self.word2id)
-        #print(self.id2word)
-
         # create documents again from word-ids not in words      
         docs_tr = [[self.word2id[w] for w in self.complete_docs[self.idx_permute[idx_d]].split() if w in self.word2id] for idx_d in range(train_dataset_size)]
         docs_va = [[self.word2id[w] for w in self.complete_docs[self.idx_permute[idx_d+train_dataset_size]].split() if w in self.word2id] for idx_d in range(val_dataset_size)]
         docs_ts = [[self.word2id[w] for w in self.complete_docs[idx_d+self.train_size].split() if w in self.word2id] for idx_d in range(test_dataset_size)]
-        
+        """
+        docs_tr, docs_va, docs_ts = self.get_docs_in_word_ids_for_each_set()
+
         def remove_empty(in_docs):
             return [doc for doc in in_docs if doc!=[]]
         

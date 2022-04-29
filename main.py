@@ -56,14 +56,20 @@ print(train['counts'][0])
 print(len(lda_token_ids))
 print(len(train['tokens'][0]))
 
-
-print(test.keys())
-
+print(100*"=")
 print(f'Size of the vocabulary after prprocessing ist: {len(textsloader.vocabulary)}')
 print(f'Size of train set: {len(train["tokens"])}')
 print(f'Size of val set: {len(val["tokens"])}')
 print(f'Size of test set: {len(test["test"]["tokens"])}')
+
+# doc in words for embedding training
+print(100*"=")
+tr, t, v = textsloader.get_docs_in_words_for_each_set()
+print(tr[0])
+
+
 # LDA model
+
 
 
 # ETM model
