@@ -197,6 +197,7 @@ class TextDataLoader:
         docs_ts = [[self.word2id[w] for w in self.complete_docs[idx_d+self.train_size].split() if w in self.word2id] for idx_d in range(test_dataset_size)]
         
         return docs_tr, docs_va, docs_ts
+    
     def get_docs_in_words_for_each_set(self):
         docs_tr, docs_va, docs_ts = self.get_docs_in_word_ids_for_each_set()
         def doc_in_words(doc):
@@ -205,6 +206,8 @@ class TextDataLoader:
         docs_tr = [doc_in_words(doc) for doc in docs_tr]
         docs_va = [doc_in_words(doc) for doc in docs_va]
         docs_ts = [doc_in_words(doc) for doc in docs_ts]
+        # todo: saving the train-documents in words in a file
+        
         return docs_tr, docs_va, docs_ts
 
     def create_bow_and_savebow_for_each_set(self, for_lda_model = True):
