@@ -16,6 +16,11 @@
 2. Vorverarbeitungsschritten: 
 3. Traindatensatz, Testdatensatz (Testdatensatz-h1, Testdatensatz-h2) und Validationssatz von 100 Dokumenten
 
+**Word-Embedding**
+- [ ] CBOW
+- [ ] Skipgram
+- [ ] BERT-Wordembedding
+
 **ETM-Modell**
 1. Das Vocabular besteht aus den einzigartigen Wörtern aus dem Traindatensatz
 2. Eingabedaten: BOW-Repräsentation für jedes Dokumentes des Datensatzes (doc={(word-id, word-frequency)})
