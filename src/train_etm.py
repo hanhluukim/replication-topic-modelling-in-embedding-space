@@ -25,6 +25,7 @@ class DocSet(Dataset):
                 # replace the cell of 0 with the tf-value
                 item[word_id] = self.data['counts'][idx][j]
             item = torch.from_numpy(item).float()
+            # normalize the item?
             return item
 
 def loss_function(pred_bows, bows, kl_theta):
