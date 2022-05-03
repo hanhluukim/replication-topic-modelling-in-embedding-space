@@ -108,6 +108,8 @@ class OptimizerArguments:
             
 train_args = TrainArguments(epochs=100, batch_size=100, log_interval=None)
 optimizer_args = OptimizerArguments(optimizer_name="Adam", lr=0.005, wdecay=0.1)
+print(f'using epochs: {train_args.epochs}')
+print(f'using optimizer: {optimizer_args.optimizer}')
 
 # DocSet test
 vocab_size = len(list(word2id.keys()))
@@ -115,4 +117,25 @@ tr_set = DocSet("train", vocab_size, train_set)
 print(len(tr_set))
 print(tr_set.__getitem__(0))
 
+# training parameter setting
+# reading embedding data from file
 
+with open(save_path) as f:
+  lines = f.readlines()
+embedding_data = []
+for t in lines:
+  v = [float(e) for e in t.split("\t")[1].split(" ")]
+  embedding_data.append(v)
+  
+num_topics = 5
+t_hidden_size = 100
+rho_size = len(embedding_data)
+emb_size = len(embedding_data[0])
+theta_act = "relu"
+
+train_class = Train().train(
+    num_topics, vocab_size, t_hidden_size, rho_size, emb_size, theta_act, 
+    train_args, optimizer_args, 
+    train_set, 
+    embedding_data, 
+    0.5)

@@ -16,7 +16,7 @@ class DocSet(Dataset):
         self.data = data
         self.vocab_size = vocab_size
     def __len__(self):
-        return len(self.data)
+        return len(self.data['tokens'])
     def __getitem__(self, idx):
         with torch.no_grad():
             # create saving-place for input-vector
