@@ -26,28 +26,28 @@ class WordEmbeddingCreator:
             self.documents = documents
             self.model = None
             
-      def train(self, min_count, embedding_size):
+      def train(self, min_count = 10, embedding_size = 300):
             if self.model_name=="cbow":
-                  print("train begin: word-embedding with cbow")
+                  print("word-embedding train begins")
                   self.model = gensim.models.Word2Vec(self.documents, 
                                                       min_count=min_count, 
                                                       sg=0, 
                                                       window=5,
-                                                      vector_size=embedding_size)
+                                                      size=embedding_size)
             elif self.model_name=="skipgram":
                   print("train begin:word-embedding with skipgram")
                   self.model = gensim.models.Word2Vec(self.documents, 
                                                       min_count=min_count, 
                                                       sg=1, 
                                                       window=5,
-                                                      vector_size=embedding_size)
+                                                      size=embedding_size)
             else:
                   print("word-embedding with BERT")
-            print("train finished")
+            print("word-embedding train finished")
             # todo: save the trained-model
-            return self.model
+            #return self.model
           
-      def create_and_save_vocab_embedding(self, train_vocab, embedding_path):
+      def create_and_save_vocab_embedding(self, train_vocab = None, embedding_path = None):
             """_summary_
 
             Args:
@@ -62,7 +62,8 @@ class WordEmbeddingCreator:
                   model_vocab = []
             else:
                   model_vocab = list(self.model.wv.vocab)
-            print(len(model_vocab))
+            print(f'length of vocabulary from word-embedding model {len(model_vocab)}')
+            print(f'length of the vocabulary of prepraring-dataset-vocabulary: {len(train_vocab)}')
             del self.documents
             f = open(embedding_path, 'w')
             for v in tqdm(model_vocab):
