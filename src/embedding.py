@@ -8,6 +8,14 @@ import pickle
 import os
 import numpy as np
 from tqdm import tqdm
+import matplotlib.pyplot as plt
+import umap.umap_ as umap
+import time
+import plotly.express as px
+from sklearn import cluster
+from sklearn import metrics
+import pandas as pd
+from pathlib import Path
 
 class WordEmbeddingCreator:
       def __init__(self, model_name="cbow", documents = None, save_path = ""):
@@ -74,6 +82,43 @@ class WordEmbeddingCreator:
                     vec_str = " ".join(vec_str)
                     f.write(vec_str + '\n')
             f.close()
+            return True
+      def cluster_words(self, embedding_save_path = None, fig_path = None):
+            # read embedding from file
+            with open(embedding_save_path) as f:
+              lines = f.readlines()
+            embedding_data = []
+            words_data = []
+            for t in lines:
+              w = t.split("\t")[0]
+              v = [float(e) for e in t.split("\t")[1].split(" ")]
+              words_data.append(w)
+              embedding_data.append(v)
+            # using kmean to get clusters of words
+            kmeans = cluster.KMeans(n_clusters=10)
+            kmeans.fit(embedding_data)
+            labels = kmeans.labels_
+            centroids = kmeans.cluster_centers_
+            print("Cluster id labels for inputted data")
+            print(labels)
+            print("Centroids data")
+            print(centroids)
+            # dimension reduction with umap
+            reducer = umap.UMAP(random_state=42,n_components=3)
+            embedding = reducer.fit_transform(embedding_data)
+            # show samples after dim-reduction in dataframe
+            wb = pd.DataFrame(embedding, columns=['x', 'y', 'z'])
+            wb['word'] = words_data
+            wb['cluster'] = ['cluster ' + str(c) for c in labels]
+            # visualization with plotply
+            fig = px.scatter_3d(wb, 
+                                text = wb['word'],
+                                x='x', y='y', z='z',
+                                color = wb['cluster'],
+                                title ="word-embedding-samples")
+            fig.write_image(Path.joinpath(fig_path, "embedding_space.png"))
+            fig.write_html(Path.joinpath(fig_path, "embedding_space.html"))
+            fig.show()
             return True
 
   

@@ -90,7 +90,9 @@ wb_creator = WordEmbeddingCreator(model_name="cbow", documents = docs_tr, save_p
 wb_creator.train(min_count=2, embedding_size= 10)
 vocab = list(word2id.keys())
 wb_creator.create_and_save_vocab_embedding(vocab, save_path)
-
+embedding_path = save_path
+fig_path = Path.cwd()
+wb_creator.cluster_words(embedding_path, fig_path)
 
 
 
