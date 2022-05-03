@@ -1,6 +1,10 @@
 from src.preprare_dataset import TextDataLoader
 import argparse
 from collections import Counter
+import pandas as pd
+from src.embedding import WordEmbeddingCreator
+from pathlib import Path
+
 
 parser = argparse.ArgumentParser(description='main.py')
 parser.add_argument('--model', type=str, default="LDA", help='which topic model should be used')
@@ -62,10 +66,32 @@ print(f'Size of train set: {len(train["tokens"])}')
 print(f'Size of val set: {len(val["tokens"])}')
 print(f'Size of test set: {len(test["test"]["tokens"])}')
 
+
+# example word2id
+
+# show for samples: 100 word2id and id2 word
+word2id_df_100 = pd.DataFrame()
+word2id_df_100['word'] = list(word2id.keys())[:100]
+word2id_df_100['id'] = list(word2id.values())[:100]
+print(word2id_df_100)
+
+
 # doc in words for embedding training
-print(100*"=")
-tr, t, v = textsloader.get_docs_in_words_for_each_set()
-print(tr[0])
+# re-erstellen von Dokumenten nach der Vorverarbeitungen. Die Dokumenten sind in Wörtern und werden für Word-Embedding Training benutzt
+docs_tr, docs_t, docs_v = textsloader.get_docs_in_words_for_each_set()
+train_docs_df = pd.DataFrame()
+train_docs_df['text-after-preprocessing'] = [' '.join(doc) for doc in docs_tr[:100]]
+print(train_docs_df)
+
+# embedding training
+
+save_path = Path.joinpath(Path.cwd(), "vocab_embedding.txt")
+wb_creator = WordEmbeddingCreator(model_name="cbow", documents = docs_tr, save_path= save_path)
+wb_creator.train(min_count=2, embedding_size= 10)
+vocab = list(word2id.keys())
+wb_creator.create_and_save_vocab_embedding(vocab, save_path)
+
+
 
 
 # LDA model
