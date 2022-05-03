@@ -23,7 +23,7 @@ class ETM(nn.Module):
         if theta_act == 'tanh':
             self.theta_act = nn.Tanh()
         else: #relu
-            self.theta_act = nn.ReLu()
+            self.theta_act = nn.ReLU()
         
         # Read the prefitted-embedding. Weights of self.alphas are itself the representation of topic-embeddings
         _, emsize = embeddings.size()
