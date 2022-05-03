@@ -26,8 +26,8 @@ class ETM(nn.Module):
             self.theta_act = nn.ReLU()
         
         # Read the prefitted-embedding. Weights of self.alphas are itself the representation of topic-embeddings
-        _, emsize = embeddings.size()
-        self.vocab_embeddings_rho = embeddings.clone().float().to(device)
+        #_, emsize = embeddings.size()
+        self.vocab_embeddings_rho = embeddings.clone().float()#.to(device)
         self.topic_embeddings_alphas = nn.Linear(rho_size, num_topics, bias=False)
         
         # define the encoder-network
