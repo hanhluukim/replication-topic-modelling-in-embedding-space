@@ -5,21 +5,26 @@ from torch.utils.data import Dataset
 import torchvision.transforms.functional as TF
 from torch.utils.data import DataLoader
 import numpy as np
+
 seed = 42
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu") 
 
 class DocSet(Dataset):
-    def __init__(self, set_name, data):
+    def __init__(self, set_name, vocab_size, data):
         self.set_name = set_name
         self.data = data
+        self.vocab_size = vocab_size
     def __len__(self):
         return len(self.data)
-    def __getitem__(self, index):
+    def __getitem__(self, idx):
         with torch.no_grad():
-            item = self.data[index]
-            # convert item to tensor
-            item = TF.to_tensor(item)
+            # create saving-place for input-vector
+            item = np.zeros((self.vocab_size))
+            for j, word_id in enumerate(self.data['tokens'][idx]):
+                # replace the cell of 0 with the tf-value
+                item[word_id] = self.data['counts'][idx][j]
+            item = torch.from_numpy(item).float()
             return item
 
 def loss_function(pred_bows, bows, kl_theta):
@@ -70,13 +75,13 @@ class Train():
             print('Epoch {}/{}:'.format(epoch, epochs))
             # mode-train
             etm_model.train()
-            for j, doc_as_bow in enumerate(train_loader, 1):
-                normalized_bows = doc_as_bow
+            for j, batch_doc_as_bows in enumerate(train_loader, 1):
+                batch_normalized_bows = batch_doc_as_bows
                 opt.zero_grad()
                 # get the output from net
-                pred_bows, kl_theta = etm_model.forward(normalized_bows).to(device)
+                pred_bows, kl_theta = etm_model.forward(batch_normalized_bows).to(device)
                 # compute the individual losses
-                reconstruction_loss, kld_loss = loss_function(pred_bows, normalized_bows, kl_theta)
+                reconstruction_loss, kld_loss = loss_function(pred_bows, batch_normalized_bows, kl_theta)
                 total_loss = reconstruction_loss + kld_loss
                 # backward and update weights
                 total_loss.backward()
