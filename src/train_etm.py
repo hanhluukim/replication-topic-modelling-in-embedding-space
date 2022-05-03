@@ -66,7 +66,7 @@ class Train():
         
         #data loading with DataLoader, data must be transform to Dataset Object
         train_loader = DataLoader(
-            DocSet("train_set", training_set), 
+            DocSet("train_set", vocab_size, training_set), 
             batch_size, 
             shuffle=True, drop_last = True, 
             num_workers = 0, worker_init_fn = np.random.seed(seed))
