@@ -142,7 +142,6 @@ etm_model = ETM(
 # train
 train_class = ETMTrain().train(
     etm_model,
-    num_topics, 
     vocab_size, 
     train_args, optimizer_args, train_set,
-    t_hidden_size, rho_size, emb_size, theta_act,  embedding_data, 0.5)
+    num_topics, t_hidden_size, rho_size, emb_size, theta_act,  embedding_data, 0.5)
