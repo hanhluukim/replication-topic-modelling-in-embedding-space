@@ -52,7 +52,7 @@ if for_lda_model == True:
   print(lda_counts)
 
 for_lda_model = False
-word2id, id2word, train_set, test_set, val_set = textsloader.create_bow_and_savebow_for_each_set(for_lda_model=for_lda_model)
+word2id, id2word, train_set, test_set, val_set = textsloader.create_bow_and_savebow_for_each_set(for_lda_model=for_lda_model, normalize = True)
 print("train-bow-representation for ETM: \n")
 print(f'id2word for ETM: {id2word}')
 
@@ -140,6 +140,7 @@ etm_model = ETM(
 def get_normalized_bows(dataset):
     # todo update the bows
     return dataset
+    
 train_set = get_normalized_bows(train_set)
 #
 train_class = ETMTrain().train(

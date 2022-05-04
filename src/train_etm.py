@@ -14,6 +14,7 @@ class DocSet(Dataset):
     def __init__(self, set_name, vocab_size, data):
         self.set_name = set_name
         self.data = data
+        # must be normalized???
         self.vocab_size = vocab_size
     def __len__(self):
         return len(self.data['tokens'])
@@ -30,8 +31,13 @@ class DocSet(Dataset):
 
 def loss_function(pred_bows, normalized_bows, kl_theta):
     # reconstruction-loss between pred-normalized-bows and normalized-bows??
-    recon_loss = -(pred_bows * normalized_bows).sum(1).mean() #which paper for it?
-    return recon_loss, kl_theta
+    #print(pred_bows.shape)
+    #print(normalized_bows.shape)
+    #sum over the vocabulary
+    #print((pred_bows * normalized_bows).sum(1).shape) #over vocabulary of each document in batch
+    #print(kl_theta.shape)
+    mean_recon_loss = -(pred_bows * normalized_bows).sum(1).mean() #which paper for it?
+    return mean_recon_loss, kl_theta
 
 def get_optimizer(model, opt_args):
     if opt_args.optimizer == 'adam':
@@ -57,6 +63,10 @@ class ETMTrain():
         plt.savefig("figures/losses_during_training.png")
         plt.show()
         plt.close()
+    def get_topic_embedding_from_etm(self):
+        topic_embeddings = []
+        topic_words = []
+        return topic_embeddings, topic_words
     def train(self, 
               etm_model,
               vocab_size, 
@@ -80,6 +90,7 @@ class ETMTrain():
             batch_size, 
             shuffle=True, drop_last = True, 
             num_workers = 0, worker_init_fn = np.random.seed(seed))
+        print(f'number of batches: {len(train_loader)}')
         epoch_losses = []
         for epoch in range(0, epochs):
             #print('Epoch {}/{}:'.format(epoch, epochs))
@@ -94,13 +105,14 @@ class ETMTrain():
                 pred_bows = pred_bows.to(device)
                 # compute the individual losses
                 reconstruction_loss, kld_loss = loss_function(pred_bows, batch_normalized_bows, kl_theta)
-                total_loss = reconstruction_loss + kld_loss
+                #print(reconstruction_loss)
+                avg_batch_loss = reconstruction_loss + kld_loss
                 # backward and update weights
-                total_loss.backward()
+                avg_batch_loss.backward()
                 opt.step()
                 # sum(total_loss_batch)/size(batch)
-                epoch_loss += torch.sum(reconstruction_loss).item()/batch_doc_as_bows.shape[0]
-            epoch_loss = epoch_loss/len(train_loader)
+                epoch_loss += avg_batch_loss
+            epoch_loss = (epoch_loss/len(train_loader)).item()
             print(f'Epoch: {epoch}/{epochs}  -  Loss: {epoch_loss}')
             epoch_losses.append(epoch_loss)
         self.visualize_losses(epoch_losses)
