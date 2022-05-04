@@ -9,13 +9,17 @@ import os
 import numpy as np
 from tqdm import tqdm
 import matplotlib.pyplot as plt
-import umap.umap_ as umap
-import time
-import plotly.express as px
-from sklearn import cluster
-from sklearn import metrics
 import pandas as pd
 from pathlib import Path
+
+def read_prefitted_embedding(save_path):
+    with open(save_path) as f:
+        lines = f.readlines()
+    embedding_data_as_list = []
+    for t in lines:
+        v = [float(e) for e in t.split("\t")[1].split(" ")]
+        embedding_data_as_list.append(v)
+    return embedding_data_as_list
 
 class WordEmbeddingCreator:
       def __init__(self, model_name="cbow", documents = None, save_path = ""):
@@ -84,6 +88,12 @@ class WordEmbeddingCreator:
             f.close()
             return True
       def cluster_words(self, embedding_save_path = None, fig_path = None):
+            import umap.umap_ as umap
+            import time
+            import plotly.express as px
+            from sklearn import cluster
+            from sklearn import metrics
+
             # read embedding from file
             with open(embedding_save_path) as f:
               lines = f.readlines()

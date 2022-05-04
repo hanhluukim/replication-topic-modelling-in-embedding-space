@@ -4,6 +4,8 @@ from torch import nn
 import torchvision.transforms.functional as TF
 import numpy as np
 
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu") 
+
 class ETM(nn.Module):
     def __init__(self, 
                  num_topics, vocab_size, t_hidden_size, rho_size, emsize, 
@@ -29,7 +31,7 @@ class ETM(nn.Module):
         
         # Read the prefitted-embedding. Weights of self.alphas are itself the representation of topic-embeddings
         #_, emsize = embeddings.size()
-        self.vocab_embeddings_rho = torch.from_numpy(np.array(embeddings)).float() #.to(device)
+        self.vocab_embeddings_rho = torch.from_numpy(np.array(embeddings)).float().to(device)
         self.topic_embeddings_alphas = nn.Linear(rho_size, num_topics, bias=False)
         
         # define the encoder-network

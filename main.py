@@ -2,16 +2,21 @@ from src.preprare_dataset import TextDataLoader
 import argparse
 from collections import Counter
 import pandas as pd
-from src.embedding import WordEmbeddingCreator
+from src.embedding import WordEmbeddingCreator, read_prefitted_embedding
 from pathlib import Path
 from src.train_etm import DocSet, ETMTrain
 from src.etm import ETM
+import torch
+
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu") 
 
 parser = argparse.ArgumentParser(description='main.py')
 parser.add_argument('--model', type=str, default="LDA", help='which topic model should be used')
-#parser.add_argument('--n-sub-test', type=int, default=50, help='n-samples of test-set')
+parser.add_argument('--epochs', type=int, default=1000, help='train epochs')
 args = parser.parse_args()
+
 model_name = args.model
+epochs = args.epochs
 
 # loading
 textsloader = TextDataLoader(source="20newsgroups", train_size=None, test_size=None)
@@ -107,7 +112,7 @@ class OptimizerArguments:
             self.lr = lr
             self.wdecay = wdecay
             
-train_args = TrainArguments(epochs=100, batch_size=100, log_interval=None)
+train_args = TrainArguments(epochs=epochs, batch_size=6, log_interval=None)
 optimizer_args = OptimizerArguments(optimizer_name="Adam", lr=0.005, wdecay=0.1)
 print(f'using epochs: {train_args.epochs}')
 print(f'using optimizer: {optimizer_args.optimizer}')
@@ -118,16 +123,8 @@ tr_set = DocSet("train", vocab_size, train_set)
 print(len(tr_set))
 print(tr_set.__getitem__(0))
 
-# training parameter setting
 # reading embedding data from file
-
-with open(save_path) as f:
-  lines = f.readlines()
-embedding_data = []
-for t in lines:
-  v = [float(e) for e in t.split("\t")[1].split(" ")]
-  embedding_data.append(v)
-  
+embedding_data = read_prefitted_embedding(save_path)
 # etm-model setting parameters
 num_topics = 5
 t_hidden_size = 100
@@ -137,9 +134,14 @@ theta_act = "relu"
 
 etm_model = ETM(
   num_topics, vocab_size, t_hidden_size, rho_size, emb_size, theta_act, 
-  embedding_data, enc_drop=0.5)
+  embedding_data, enc_drop=0.5).to(device)
 
-# train
+# train_set must be normalized??
+def get_normalized_bows(dataset):
+    # todo update the bows
+    return dataset
+train_set = get_normalized_bows(train_set)
+#
 train_class = ETMTrain().train(
     etm_model,
     vocab_size, 

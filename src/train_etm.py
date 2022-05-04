@@ -28,9 +28,9 @@ class DocSet(Dataset):
             # normalize the item?
             return item
 
-def loss_function(pred_bows, bows, kl_theta):
+def loss_function(pred_bows, normalized_bows, kl_theta):
     # reconstruction-loss between pred-normalized-bows and normalized-bows??
-    recon_loss = -(pred_bows * bows).sum(1) #which paper for it?
+    recon_loss = -(pred_bows * normalized_bows).sum(1).mean() #which paper for it?
     return recon_loss, kl_theta
 
 def get_optimizer(model, opt_args):
@@ -46,7 +46,17 @@ class ETMTrain():
     def save_checkpoint(self, state, path):
         torch.save(state, path)
         print("Checkpoint saved at {}".format(path))
-        
+    def visualize_losses(self, train_losses):
+        import matplotlib.pyplot as plt
+        plt.figure()
+        plt.plot(train_losses, label = 'loss-train')
+        #plt.plot(val_losses, label = 'loss-val')
+        #plt.plot(val_scores_modus_test, label = 'f1-val')
+        plt.title(f'losses for {len(train_losses)} epochs')
+        plt.legend()
+        plt.savefig("figures/losses_during_training.png")
+        plt.show()
+        plt.close()
     def train(self, 
               etm_model,
               vocab_size, 
@@ -70,11 +80,12 @@ class ETMTrain():
             batch_size, 
             shuffle=True, drop_last = True, 
             num_workers = 0, worker_init_fn = np.random.seed(seed))
-
+        epoch_losses = []
         for epoch in range(0, epochs):
-            print('Epoch {}/{}:'.format(epoch, epochs))
+            #print('Epoch {}/{}:'.format(epoch, epochs))
             # mode-train
             etm_model.train()
+            epoch_loss = 0
             for j, batch_doc_as_bows in enumerate(train_loader, 1):
                 batch_normalized_bows = batch_doc_as_bows
                 opt.zero_grad()
@@ -83,14 +94,17 @@ class ETMTrain():
                 pred_bows = pred_bows.to(device)
                 # compute the individual losses
                 reconstruction_loss, kld_loss = loss_function(pred_bows, batch_normalized_bows, kl_theta)
-                print(reconstruction_loss.size())
-                print(kld_loss.size())
-                total_loss = (reconstruction_loss + kld_loss).sum()
-                print(f'total loss: {total_loss}')
+                total_loss = reconstruction_loss + kld_loss
                 # backward and update weights
                 total_loss.backward()
                 opt.step()
-
+                # sum(total_loss_batch)/size(batch)
+                epoch_loss += torch.sum(reconstruction_loss).item()/batch_doc_as_bows.shape[0]
+            epoch_loss = epoch_loss/len(train_loader)
+            print(f'Epoch: {epoch}/{epochs}  -  Loss: {epoch_loss}')
+            epoch_losses.append(epoch_loss)
+        self.visualize_losses(epoch_losses)
+      
 
         
             
