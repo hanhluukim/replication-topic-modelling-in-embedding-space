@@ -7,6 +7,7 @@
 from sklearn.datasets import fetch_20newsgroups
 import pathlib
 from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.model_selection import train_test_split
 import numpy as np
 #from scipy import sparse
 import numpy as np
@@ -94,7 +95,7 @@ class TextDataLoader:
         self.complete_docs = [" ".join(self.complete_docs[doc]) for doc in range(len(self.complete_docs))]   
         #return True
         print("finised: preprocessing!")
-
+        
     def split_and_create_voca_from_trainset(self,max_df=0.7, min_df=10, stopwords_remove_from_voca = True):
         # filter by max-df and min-df with CountVectorizer
         # CountVectorizer create Vocabulary (Word-Ids). For each doc: Word-Frequency of each word of this document
@@ -139,10 +140,10 @@ class TextDataLoader:
             self.id2word[j] = w 
         
         # vocabulary from train-dataset, update word2id and id2word again
+        # TODO: make the train_set, test_set, val_set detemetistic
         val_dataset_size = 100
         train_dataset_size = self.train_size - val_dataset_size
         self.idx_permute = np.random.permutation(self.train_size).astype(int)
-        #print("========BEFORE: check idx-permute ========")
         print(f'permuted indices for the train set: {self.idx_permute[:15]}')
         
         # only words from train dataset will be maintained in the global vocabulary
@@ -188,6 +189,7 @@ class TextDataLoader:
         print("finished: creating vocabulary")
     
     def get_docs_in_word_ids_for_each_set(self):
+        # make detemenistic splitting
         val_dataset_size = 100
         train_dataset_size = self.train_size - val_dataset_size
         test_dataset_size = self.test_size
@@ -196,9 +198,16 @@ class TextDataLoader:
         docs_va = [[self.word2id[w] for w in self.complete_docs[self.idx_permute[idx_d+train_dataset_size]].split() if w in self.word2id] for idx_d in range(val_dataset_size)]
         docs_ts = [[self.word2id[w] for w in self.complete_docs[idx_d+self.train_size].split() if w in self.word2id] for idx_d in range(test_dataset_size)]
         
+        """
+        X_train, X_test = train_test_split(dataset, test_size=0.2, random_state=1)
+        X_test_1, X_test_2 = train_test_split(X_test, test_size=0.5, random_state=1)
+        X_train, X_val = train_test_split(X_train, test_size=0.25, random_state=1) # 0.25 x 0.8 = 0.2
+        """
         return docs_tr, docs_va, docs_ts
     
     def get_docs_in_words_for_each_set(self):
+        # recreate documents from documents in word-ids
+        # for embedding processing
         docs_tr, docs_va, docs_ts = self.get_docs_in_word_ids_for_each_set()
         def doc_in_words(doc):
           doc = [self.id2word[wid] for wid in doc]
