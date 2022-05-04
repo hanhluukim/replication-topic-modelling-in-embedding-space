@@ -1,6 +1,8 @@
 import torch
 import torch.nn.functional as F 
 from torch import nn
+import torchvision.transforms.functional as TF
+import numpy as np
 
 class ETM(nn.Module):
     def __init__(self, 
@@ -27,7 +29,7 @@ class ETM(nn.Module):
         
         # Read the prefitted-embedding. Weights of self.alphas are itself the representation of topic-embeddings
         #_, emsize = embeddings.size()
-        self.vocab_embeddings_rho = embeddings.clone().float()#.to(device)
+        self.vocab_embeddings_rho = torch.from_numpy(np.array(embeddings)).float() #.to(device)
         self.topic_embeddings_alphas = nn.Linear(rho_size, num_topics, bias=False)
         
         # define the encoder-network
@@ -65,9 +67,9 @@ class ETM(nn.Module):
     
     def get_beta_topic_distribution_over_vocab(self):
         try:
-            logit = self.topic_embeddings_alphas(self.rho.weight) # torch.mm(self.rho, self.alphas)
+            logit = self.topic_embeddings_alphas(self.vocab_embeddings_rho.weight) # torch.mm(self.rho, self.alphas)
         except:
-            logit = self.topic_embedding_alphas(self.rho)
+            logit = self.topic_embeddings_alphas(self.vocab_embeddings_rho)
         beta = F.softmax(logit, dim=0).transpose(1, 0) ## softmax over vocab dimension
         return beta
     

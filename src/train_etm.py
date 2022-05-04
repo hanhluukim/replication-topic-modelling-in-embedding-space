@@ -80,10 +80,14 @@ class Train():
                 batch_normalized_bows = batch_doc_as_bows
                 opt.zero_grad()
                 # get the output from net
-                pred_bows, kl_theta = etm_model.forward(batch_normalized_bows).to(device)
+                pred_bows, kl_theta = etm_model.forward(batch_normalized_bows)
+                pred_bows = pred_bows.to(device)
                 # compute the individual losses
                 reconstruction_loss, kld_loss = loss_function(pred_bows, batch_normalized_bows, kl_theta)
-                total_loss = reconstruction_loss + kld_loss
+                print(reconstruction_loss.size())
+                print(kld_loss.size())
+                total_loss = (reconstruction_loss + kld_loss).sum()
+                print(f'total loss: {total_loss}')
                 # backward and update weights
                 total_loss.backward()
                 opt.step()

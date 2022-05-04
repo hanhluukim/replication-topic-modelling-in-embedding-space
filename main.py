@@ -85,14 +85,14 @@ print(train_docs_df)
 # embedding training
 save_path = Path.joinpath(Path.cwd(), "vocab_embedding.txt")
 wb_creator = WordEmbeddingCreator(model_name="cbow", documents = docs_tr, save_path= save_path)
-wb_creator.train(min_count=2, embedding_size= 10)
+wb_creator.train(min_count=0, embedding_size= 10)
 vocab = list(word2id.keys())
 wb_creator.create_and_save_vocab_embedding(vocab, save_path)
 
 # embedding word-vectors visualize
-embedding_path = save_path
-fig_path = Path.joinpath(Path.cwd(), "figures")
-wb_creator.cluster_words(embedding_path, fig_path)
+#embedding_path = save_path
+#fig_path = Path.joinpath(Path.cwd(), "figures")
+#wb_creator.cluster_words(embedding_path, fig_path)
 
 # setting parameters for training ETM
 class TrainArguments:
@@ -129,7 +129,7 @@ for t in lines:
   
 num_topics = 5
 t_hidden_size = 100
-rho_size = len(embedding_data)
+rho_size = len(embedding_data[0])
 emb_size = len(embedding_data[0])
 theta_act = "relu"
 
