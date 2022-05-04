@@ -25,6 +25,7 @@
 **Architektur des ETM-Modells**
 1. Das Vocabular besteht aus den einzigartigen Wörtern aus dem Traindatensatz
 2. Eingabedaten: BOW-Repräsentation für jedes Dokumentes des Datensatzes (doc={(word-id, word-frequency)})
+3. Das Modell ETM wird in `src/etm.py` implementiert.
 
 **Durchgeführte Experimenten**
 

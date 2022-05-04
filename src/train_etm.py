@@ -42,15 +42,16 @@ def get_optimizer(model, opt_args):
     return optimizer
 
 
-class Train():
+class ETMTrain():
     def save_checkpoint(self, state, path):
         torch.save(state, path)
         print("Checkpoint saved at {}".format(path))
         
     def train(self, 
-              num_topics, vocab_size, t_hidden_size, rho_size, emb_size, theta_act, 
-              train_args, optimizer_args,
-              training_set,
+              etm_model,
+              vocab_size, 
+              train_args, optimizer_args, training_set,
+              num_topics, t_hidden_size, rho_size, emb_size, theta_act,
               embeddings=None, enc_drop=0.5):
         
         # training setting
@@ -58,9 +59,7 @@ class Train():
         batch_size = train_args.batch_size
                 
         # define etm model
-        etm_model = ETM(num_topics, 
-                        vocab_size, t_hidden_size, rho_size, emb_size, 
-                        theta_act, embeddings, enc_drop).to(device)
+        etm_model = etm_model.to(device)
                 
         #optimizer is class of follow attributs: optimizer.name, optimizer.lr, optimizer.wdecay
         opt = get_optimizer(etm_model, optimizer_args)

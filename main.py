@@ -4,7 +4,8 @@ from collections import Counter
 import pandas as pd
 from src.embedding import WordEmbeddingCreator
 from pathlib import Path
-from src.train_etm import DocSet, Train
+from src.train_etm import DocSet, ETMTrain
+from src.etm import ETM
 
 parser = argparse.ArgumentParser(description='main.py')
 parser.add_argument('--model', type=str, default="LDA", help='which topic model should be used')
@@ -127,15 +128,21 @@ for t in lines:
   v = [float(e) for e in t.split("\t")[1].split(" ")]
   embedding_data.append(v)
   
+# etm-model setting parameters
 num_topics = 5
 t_hidden_size = 100
 rho_size = len(embedding_data[0])
 emb_size = len(embedding_data[0])
 theta_act = "relu"
 
-train_class = Train().train(
-    num_topics, vocab_size, t_hidden_size, rho_size, emb_size, theta_act, 
-    train_args, optimizer_args, 
-    train_set, 
-    embedding_data, 
-    0.5)
+etm_model = ETM(
+  num_topics, vocab_size, t_hidden_size, rho_size, emb_size, theta_act, 
+  embedding_data, enc_drop=0.5)
+
+# train
+train_class = ETMTrain().train(
+    etm_model,
+    num_topics, 
+    vocab_size, 
+    train_args, optimizer_args, train_set,
+    t_hidden_size, rho_size, emb_size, theta_act,  embedding_data, 0.5)
