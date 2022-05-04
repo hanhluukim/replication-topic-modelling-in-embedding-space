@@ -1,5 +1,5 @@
-import gensim
+from gensim.models import LdaModel
 
-def lda(corpus,anzTopics):
-lda=LdaModel(corpus,numTopics=anzTopics)
+def lda(corpus,anzTopics,id2word):
+lda=LdaModel(corpus,id2word=id2word,numTopics=anzTopics)
 return lda
