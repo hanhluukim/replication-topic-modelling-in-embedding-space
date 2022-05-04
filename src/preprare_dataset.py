@@ -113,7 +113,7 @@ class TextDataLoader:
         vectorizer = CountVectorizer(min_df=min_df, max_df=max_df, stop_words=None) # stopwords will be used later
         vectorized_documents = vectorizer.fit_transform(self.complete_docs)
         signed_documents = vectorized_documents.sign()
-
+        
         # init word2id and id2word with vectorizer
         # sort the init-voca-dictionary by documents-frequency
         # saving the frequency of each word in Vocabulary over all documents/ look "sum in the column"
@@ -125,7 +125,11 @@ class TextDataLoader:
             self.id2word[vectorizer.vocabulary_.get(w)] = w
         
         sum_docs_counts = signed_documents.sum(axis=0) 
+        print("test-document-frequency: ")
+        print(sum_docs_counts)
         voca_size = sum_docs_counts.shape[1]
+        print(f'vocab-size in df: {voca_size}')
+
         sum_counts_np = np.zeros(voca_size, dtype=int)
         for v in range(voca_size):
             sum_counts_np[v] = sum_docs_counts[0, v]
@@ -234,7 +238,7 @@ class TextDataLoader:
         
         return docs_tr, docs_va, docs_ts
 
-    def create_bow_and_savebow_for_each_set(self, for_lda_model = True):
+    def create_bow_and_savebow_for_each_set(self, for_lda_model = True, normalize = True):
         """
         docs will be saved unter the list of word-ids
         1. from the word2id and vocabulary, documents-set will be recreated
@@ -243,7 +247,16 @@ class TextDataLoader:
         """
         
         docs_tr, docs_va, docs_ts = self.get_docs_in_word_ids_for_each_set()
-
+        train_sum_docs_counts = None #using as df to compute the normalized bow
+        if normalize:
+            """
+            docs_tr_in_words = 
+            train_vectorizer = CountVectorizer(min_df=None, max_df=None, stop_words=None) # stopwords will be used later
+            train_vectorized_documents = train_vectorizer.fit_transform(docs_tr_in_words)
+            train_signed_documents = train_vectorized_documents.sign()
+            train_sum_docs_counts = train_signed_documents.sum(axis=0)[0]
+            """
+        
         def remove_empty(in_docs):
             return [doc for doc in in_docs if doc!=[]]
         
@@ -290,7 +303,7 @@ class TextDataLoader:
         del docs_ts_h2
         del docs_va
 
-        def create_bow(doc_indices, words, n_docs, vocab_size):
+        def create_bow(normalize, doc_indices, words, n_docs, vocab_size):
             print("start: creating bow representation...")
 
             t = sorted(list(set(words)))
@@ -321,16 +334,20 @@ class TextDataLoader:
                 shape=(n_docs, vocab_size)
                 ).tocsr()
             print("finised creating bow input!\n")
+            # return normalized bows / tfdif?
+            if normalize:
+              print("need normalized bows")
+              bow = bow
             return bow
         
         print(f'length train-documents-indices : {len(doc_indices_tr)}')
         print(f'length of the vocabulary: {len(self.vocabulary)}')
         print("\n")
-        bow_tr = create_bow(doc_indices_tr, words_tr, n_docs_tr, len(self.vocabulary))
-        bow_ts = create_bow(doc_indices_ts, words_ts, n_docs_ts, len(self.vocabulary))
-        bow_ts_h1 = create_bow(doc_indices_ts_h1, words_ts_h1, n_docs_ts_h1, len(self.vocabulary))
-        bow_ts_h2 = create_bow(doc_indices_ts_h2, words_ts_h2, n_docs_ts_h2, len(self.vocabulary))
-        bow_va = create_bow(doc_indices_va, words_va, n_docs_va, len(self.vocabulary))
+        bow_tr = create_bow(normalize, doc_indices_tr, words_tr, n_docs_tr, len(self.vocabulary))
+        bow_ts = create_bow(normalize, doc_indices_ts, words_ts, n_docs_ts, len(self.vocabulary))
+        bow_ts_h1 = create_bow(normalize, doc_indices_ts_h1, words_ts_h1, n_docs_ts_h1, len(self.vocabulary))
+        bow_ts_h2 = create_bow(normalize, doc_indices_ts_h2, words_ts_h2, n_docs_ts_h2, len(self.vocabulary))
+        bow_va = create_bow(normalize, doc_indices_va, words_va, n_docs_va, len(self.vocabulary))
         
         del words_tr
         del words_ts
