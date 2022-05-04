@@ -33,10 +33,15 @@ class TextDataLoader:
         self.complete_docs = []
         #self.for_lda_model = for_lda_model
         if train_size!=None:
-            self.train_size = int(train_size * len(self.complete_docs))
-            self.test_size = int(test_size * len(self.complete_docs)) 
-        # train_size will be later split to 100-val und the rest for train
-        # print(f'{self.train_size} train-documents')
+            #self.train_size = int(train_size * len(self.complete_docs))
+            #self.test_size = int(test_size * len(self.complete_docs)) 
+            self.train_size = train_size
+            self.test_size = test_size
+        # these values indices will be updated in the split function
+        self.train_indices = None
+        self.test_indices = None
+        self.val_indices = None
+        # to delete
         self.idx_permute = []
         
     def load_tokenize_texts(self, source="20newsgroups"):
@@ -97,25 +102,28 @@ class TextDataLoader:
         print("finised: preprocessing!")
         
     def split_and_create_voca_from_trainset(self,max_df=0.7, min_df=10, stopwords_remove_from_voca = True):
-        # filter by max-df and min-df with CountVectorizer
-        # CountVectorizer create Vocabulary (Word-Ids). For each doc: Word-Frequency of each word of this document
-        vectorizer = CountVectorizer(min_df=min_df, max_df=max_df, stop_words=None) # stopwords will be used later
-        vectorized_documents = vectorizer.fit_transform(self.complete_docs)
-        signed_documents = vectorized_documents.sign()
         """
         This block is used for creating the init-word2id and init-id2word and the vocabulary.
         The Vocabulary and Dictionaries will be later updated by only train-dataset and stopwords.
         Sort the list of words in the vocabulary by the (word-df)
         """
+
+        # filter by max-df and min-df with CountVectorizer
+        # CountVectorizer create Vocabulary (Word-Ids). For each doc: Word-Frequency of each word of this document
+        vectorizer = CountVectorizer(min_df=min_df, max_df=max_df, stop_words=None) # stopwords will be used later
+        vectorized_documents = vectorizer.fit_transform(self.complete_docs)
+        signed_documents = vectorized_documents.sign()
+
         # init word2id and id2word with vectorizer
+        # sort the init-voca-dictionary by documents-frequency
+        # saving the frequency of each word in Vocabulary over all documents/ look "sum in the column"
+        # number of documents, which containt the word in vectorizer.vocabulary
         self.word2id = {}
         self.id2word = {}
         for w in vectorizer.vocabulary_:
             self.word2id[w] = vectorizer.vocabulary_.get(w)
             self.id2word[vectorizer.vocabulary_.get(w)] = w
-        # sort the init-voca-dictionary by documents-frequency
-        # saving the frequency of each word in Vocabulary over all documents/ look "sum in the column"
-        # number of documents, which containt the word in vectorizer.vocabulary
+        
         sum_docs_counts = signed_documents.sum(axis=0) 
         voca_size = sum_docs_counts.shape[1]
         sum_counts_np = np.zeros(voca_size, dtype=int)
@@ -124,15 +132,11 @@ class TextDataLoader:
         idx_sort = np.argsort(sum_counts_np)
         # create init-vocabulary from words, that sorted-vocabular ordered by doc-frequencies
         vocabulary = [self.id2word[idx_sort[cc]] for cc in range(voca_size)]
-        #print("=============check Voca==================")
-        #print(f'sample ten words of the vocabulary: {sorted(vocabulary)}')
-        # filter the stopwords from vocabulary and update the dictionary: word2id and id2word
-        
+       
+        # filter the stopwords from vocabulary and update the dictionary: word2id and id2word 
         if stopwords_remove_from_voca:
             vocabulary = [w for w in vocabulary if w not in stops]
         #self.documents_without_stop_words = [[word for word in document.split() if word not in stops] for document in self.complete_docs]
-        
-
         self.word2id = {}
         self.id2word = {} 
         for j, w in enumerate(vocabulary): 
@@ -141,25 +145,44 @@ class TextDataLoader:
         
         # vocabulary from train-dataset, update word2id and id2word again
         # TODO: make the train_set, test_set, val_set detemetistic
+        #train_dataset_size = self.train_size - val_dataset_size
+        # get dataset-docs-indices for each set
         val_dataset_size = 100
-        train_dataset_size = self.train_size - val_dataset_size
-        self.idx_permute = np.random.permutation(self.train_size).astype(int)
-        print(f'permuted indices for the train set: {self.idx_permute[:15]}')
-        
+        docs_tr, docs_ts, docs_tr_indices, docs_ts_indices = train_test_split(self.complete_docs, range(0,len(self.complete_docs)), test_size=self.test_size, random_state=42)
+        docs_tr, docs_va, docs_tr_indices, docs_va_indices = train_test_split(docs_tr, docs_tr_indices, test_size=round(val_dataset_size/len(docs_tr),2), random_state=42)
+        self.train_indices = docs_tr_indices
+        self.test_indices = docs_ts_indices
+        self.val_indices = docs_va_indices
+
+        del docs_tr
+        del docs_ts
+        del docs_va
+        del docs_tr_indices
+        del docs_va_indices
+        del docs_ts_indices
+
+        #self.idx_permute = np.random.permutation(self.train_size).astype(int)
+        #print(f'permuted indices for the train set: {self.idx_permute[:15]}')
+
         # only words from train dataset will be maintained in the global vocabulary
         # update word2id and id2word again
-        #print(f'check the total documents befor creating vocabulary {len(self.complete_docs)}')
-        #print(self.word2id)
-        #print(self.id2word)
         print("start creating vocabulary ...")
-        
         vocabulary = []
+        for train_idx in self.train_indices:
+            for w in self.complete_docs[train_idx].split():
+                if w in self.word2id: #it means that still not-stopwords will be saved, because word2id is before updated by not-stopwords-vocabulary
+                    vocabulary.append(w)
+
+
+        """[latest old]
         for idx_d in range(train_dataset_size):
             for w in self.complete_docs[self.idx_permute[idx_d]].split():
                 if w in self.word2id: #it means that still not-stopwords will be saved, because word2id is before updated by not-stopwords-vocabulary
                     #print("in word2id")
                     vocabulary.append(w)
         """
+
+        """[other old]
         vocabulary = []
         if stopwords_remove_from_voca == True:
           for idx_d in range(train_dataset_size):
@@ -189,20 +212,12 @@ class TextDataLoader:
         print("finished: creating vocabulary")
     
     def get_docs_in_word_ids_for_each_set(self):
-        # make detemenistic splitting
-        val_dataset_size = 100
-        train_dataset_size = self.train_size - val_dataset_size
-        test_dataset_size = self.test_size
+        #using the self.train_indices, self.test_indices, self.val_indices to get the documents
 
-        docs_tr = [[self.word2id[w] for w in self.complete_docs[self.idx_permute[idx_d]].split() if w in self.word2id] for idx_d in range(train_dataset_size)]
-        docs_va = [[self.word2id[w] for w in self.complete_docs[self.idx_permute[idx_d+train_dataset_size]].split() if w in self.word2id] for idx_d in range(val_dataset_size)]
-        docs_ts = [[self.word2id[w] for w in self.complete_docs[idx_d+self.train_size].split() if w in self.word2id] for idx_d in range(test_dataset_size)]
+        docs_tr = [[self.word2id[w] for w in self.complete_docs[train_doc_idx].split() if w in self.word2id] for train_doc_idx in self.train_indices]
+        docs_va = [[self.word2id[w] for w in self.complete_docs[val_doc_idx].split() if w in self.word2id] for val_doc_idx in self.val_indices]
+        docs_ts = [[self.word2id[w] for w in self.complete_docs[test_doc_idx].split() if w in self.word2id] for test_doc_idx in self.test_indices]
         
-        """
-        X_train, X_test = train_test_split(dataset, test_size=0.2, random_state=1)
-        X_test_1, X_test_2 = train_test_split(X_test, test_size=0.5, random_state=1)
-        X_train, X_val = train_test_split(X_train, test_size=0.25, random_state=1) # 0.25 x 0.8 = 0.2
-        """
         return docs_tr, docs_va, docs_ts
     
     def get_docs_in_words_for_each_set(self):
@@ -226,17 +241,7 @@ class TextDataLoader:
         2. remove the empty documents and documents with only one words
         3. the test-dataset will be splited two halves for some reason in the papers, read again
         """
-        """
-        val_dataset_size = 100
-        train_dataset_size = self.train_size - val_dataset_size
-        test_dataset_size = self.test_size
-        print(f'train size: {train_dataset_size} documents')
-        print(f'test size: {test_dataset_size} documents')
-        # create documents again from word-ids not in words      
-        docs_tr = [[self.word2id[w] for w in self.complete_docs[self.idx_permute[idx_d]].split() if w in self.word2id] for idx_d in range(train_dataset_size)]
-        docs_va = [[self.word2id[w] for w in self.complete_docs[self.idx_permute[idx_d+train_dataset_size]].split() if w in self.word2id] for idx_d in range(val_dataset_size)]
-        docs_ts = [[self.word2id[w] for w in self.complete_docs[idx_d+self.train_size].split() if w in self.word2id] for idx_d in range(test_dataset_size)]
-        """
+        
         docs_tr, docs_va, docs_ts = self.get_docs_in_word_ids_for_each_set()
 
         def remove_empty(in_docs):
@@ -244,14 +249,13 @@ class TextDataLoader:
         
         docs_tr = remove_empty(docs_tr)
         docs_ts = remove_empty(docs_ts)
-        docs_va = remove_empty(docs_va)
         docs_ts = [doc for doc in docs_ts if len(doc)>1]
+        docs_va = remove_empty(docs_va)
+        
         
         # split test-set to two halves
-        docs_ts_h1 = [[w for i,w in enumerate(doc) if i<=len(doc)/2.0-1] for doc in docs_ts]
-        docs_ts_h2 = [[w for i,w in enumerate(doc) if i>len(doc)/2.0-1] for doc in docs_ts]
-        
-        
+        docs_ts_h1, docs_ts_h2,_,_ = train_test_split(docs_ts, self.test_indices, test_size=0.5, random_state=42)
+
         def create_list_words(in_docs):
             # just saving all word-ids in a one list
             return [x for y in in_docs for x in y]
