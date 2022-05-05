@@ -418,9 +418,9 @@ class TextDataLoader:
                 }
             }
             # saving to the prepared_data folder:
-            savemat("src/prepared_data" + 'bow_train.mat', {'train': train_dataset}, do_compression=True)
-            savemat("src/prepared_data" + 'bow_test.mat', {'test': test_dataset}, do_compression=True)
-            savemat("src/prepared_data" + 'bow_val.mat', {'validation': test_dataset}, do_compression=True)
+            savemat("prepared_data/" + 'bow_train.mat', {'train': train_dataset}, do_compression=True)
+            savemat("prepared_data/" + 'bow_test.mat', {'test': test_dataset}, do_compression=True)
+            savemat("prepared_data/" + 'bow_val.mat', {'validation': test_dataset}, do_compression=True)
             
             del bow_train_tokens
             del bow_train_counts

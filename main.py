@@ -1,4 +1,4 @@
-from src.preprare_dataset import TextDataLoader
+from src.prepare_dataset import TextDataLoader
 import argparse
 from collections import Counter
 import pandas as pd
@@ -137,14 +137,17 @@ etm_model = ETM(
   embedding_data, enc_drop=0.5).to(device)
 
 # train_set must be normalized??
+"""
 def get_normalized_bows(dataset):
-    # todo update the bows
+    
     return dataset
     
 train_set = get_normalized_bows(train_set)
 #
+"""
 train_class = TrainETM().train(
     etm_model,
     vocab_size, 
     train_args, optimizer_args, train_set,
-    num_topics, t_hidden_size, rho_size, emb_size, theta_act,  embedding_data, 0.5)
+    normalize_data = True)
+    #num_topics, t_hidden_size, rho_size, emb_size, theta_act,  embedding_data, 0.5)

@@ -10,10 +10,11 @@ seed = 42
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu") 
 
 class DocSet(Dataset):
-    def __init__(self, set_name, vocab_size, data):
+    def __init__(self, set_name, vocab_size, data, normalize_data = True):
         self.set_name = set_name
         self.data = data
         # must be normalized???
+        self.normalize_data = normalize_data
         self.vocab_size = vocab_size
     def __len__(self):
         return len(self.data['tokens'])
@@ -24,6 +25,8 @@ class DocSet(Dataset):
             for j, word_id in enumerate(self.data['tokens'][idx]):
                 # replace the cell of 0 with the tf-value
                 item[word_id] = self.data['counts'][idx][j]
+            if self.normalize_data == True:
+                item = item/sum(item)
             item = torch.from_numpy(item).float()
             # normalize the item?
             return item
@@ -53,7 +56,10 @@ class TrainETM():
         print("Checkpoint saved at {}".format(path))
     def get_normalized_batch(self, batch):
         # if normalize with only in the batch
-        
+        # normalize
+        #print(f'batch-shape: {batch.shape}')
+        #print(batch[0])
+        #print(batch[0].shape)
         return batch
     def visualize_losses(self, train_losses):
         import matplotlib.pyplot as plt
@@ -71,7 +77,8 @@ class TrainETM():
     def train(self, 
               etm_model,
               vocab_size, 
-              train_args, optimizer_args, training_set
+              train_args, optimizer_args, training_set,
+              normalize_data = True
               ):
               #num_topics, t_hidden_size, rho_size, emb_size, theta_act,
               #embeddings=None, enc_drop=0.5
@@ -89,7 +96,7 @@ class TrainETM():
         
         #data loading with DataLoader, data must be transform to Dataset Object
         train_loader = DataLoader(
-            DocSet("train_set", vocab_size, training_set), 
+            DocSet("train_set", vocab_size, training_set, normalize_data), 
             batch_size, 
             shuffle=True, drop_last = True, 
             num_workers = 0, worker_init_fn = np.random.seed(seed))
@@ -108,13 +115,14 @@ class TrainETM():
             etm_model.train()
             epoch_loss = 0
             for j, batch_doc_as_bows in enumerate(train_loader, 1):
-                batch_normalized_bows = self.get_normalized_batch(batch_doc_as_bows)
+                #if normalize_data == True:
+                #batch_normalized_bows = batch_doc_as_bows #self.get_normalized_batch(batch_doc_as_bows)
                 opt.zero_grad()
                 # get the output from net
-                pred_bows, kl_theta = etm_model.forward(batch_normalized_bows)
+                pred_bows, kl_theta = etm_model.forward(batch_doc_as_bows)
                 pred_bows = pred_bows.to(device)
                 # compute the individual losses
-                reconstruction_loss, kld_loss = loss_function(pred_bows, batch_normalized_bows, kl_theta)
+                reconstruction_loss, kld_loss = loss_function(pred_bows, batch_doc_as_bows, kl_theta)
                 #print(reconstruction_loss)
                 avg_batch_loss = reconstruction_loss + kld_loss
                 # backward and update weights
