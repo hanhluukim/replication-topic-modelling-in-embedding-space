@@ -9,19 +9,17 @@ import pathlib
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.model_selection import train_test_split
 import numpy as np
-#from scipy import sparse
-import numpy as np
 from scipy import sparse
 import gensim
-
 import pandas as pd
 import re
 import string
 import random
 
 random.seed(42)
-#print(pathlib.Path.cwd())
+
 with open('src/stops.txt', 'r') as f:
+    # list stopwords from the original paper
     stops = f.read().split('\n')
     
 class TextDataLoader:
@@ -51,13 +49,15 @@ class TextDataLoader:
             train_data = fetch_20newsgroups(subset='train')#[:100]
             test_data = fetch_20newsgroups(subset='test')#[:50]
             # filter special character from texts
-            filter_patter = r'''[\w']+|[.,!?;-~{}`´_<=>:/@*()&'$%#"]'''
-            init_docs_tr = [re.findall(filter_patter, train_data.data[doc]) for doc in range(len(train_data.data[:250]))]
-            init_docs_ts = [re.findall(filter_patter, test_data.data[doc]) for doc in range(len(test_data.data[:50]))]
-            
+            def filter_special_character(docs):
+                filter_patter = r'''[\w']+|[.,!?;-~{}`´_<=>:/@*()&'$%#"]'''
+                return [re.findall(filter_patter, docs[doc_idx]) for doc_idx in range(len(docs))]
+            init_docs_tr = filter_special_character(train_data.data[:250])
+            init_docs_ts = filter_special_character(test_data.data[:100])
+            #[re.findall(filter_patter, test_data.data[doc]) for doc in range(len(test_data.data[:50]))]
             self.complete_docs = init_docs_tr + init_docs_ts
-            self.train_size = len(init_docs_tr)
-            self.test_size = len(init_docs_ts)
+            self.train_size = round(len(init_docs_tr)/len(self.complete_docs),1)
+            self.test_size = round(len(init_docs_ts)/len(self.complete_docs),1)
             
             del train_data
             del test_data
@@ -112,7 +112,11 @@ class TextDataLoader:
         # CountVectorizer create Vocabulary (Word-Ids). For each doc: Word-Frequency of each word of this document
         vectorizer = CountVectorizer(min_df=min_df, max_df=max_df, stop_words=None) # stopwords will be used later
         vectorized_documents = vectorizer.fit_transform(self.complete_docs)
-        signed_documents = vectorized_documents.sign()
+        #signed_documents = vectorized_documents.sign()
+        # document-frequency for each word in vocabulary
+        sum_docs_counts = vectorized_documents.sign().sum(axis=0) 
+        print("test-document-frequency: ")
+        print(sum_docs_counts)
         
         # init word2id and id2word with vectorizer
         # sort the init-voca-dictionary by documents-frequency
@@ -124,17 +128,13 @@ class TextDataLoader:
             self.word2id[w] = vectorizer.vocabulary_.get(w)
             self.id2word[vectorizer.vocabulary_.get(w)] = w
         
-        sum_docs_counts = signed_documents.sum(axis=0) 
-        print("test-document-frequency: ")
-        print(sum_docs_counts)
+        # create init-vocabulary from words, that sorted-vocabular ordered by doc-frequencies
         voca_size = sum_docs_counts.shape[1]
         print(f'vocab-size in df: {voca_size}')
-
         sum_counts_np = np.zeros(voca_size, dtype=int)
         for v in range(voca_size):
             sum_counts_np[v] = sum_docs_counts[0, v]
         idx_sort = np.argsort(sum_counts_np)
-        # create init-vocabulary from words, that sorted-vocabular ordered by doc-frequencies
         vocabulary = [self.id2word[idx_sort[cc]] for cc in range(voca_size)]
        
         # filter the stopwords from vocabulary and update the dictionary: word2id and id2word 

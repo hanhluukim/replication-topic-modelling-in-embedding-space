@@ -87,7 +87,7 @@ class WordEmbeddingCreator:
                     f.write(vec_str + '\n')
             f.close()
             return True
-      def cluster_words(self, embedding_save_path = None, fig_path = None):
+      def cluster_words(self, embedding_save_path = None, fig_path = None, n_components=3):
             import umap.umap_ as umap
             import time
             import plotly.express as px
@@ -114,7 +114,7 @@ class WordEmbeddingCreator:
             print("Centroids data")
             print(centroids)
             # dimension reduction with umap
-            reducer = umap.UMAP(random_state=42,n_components=3)
+            reducer = umap.UMAP(random_state=42,n_components=n_components)
             embedding = reducer.fit_transform(embedding_data)
             # show samples after dim-reduction in dataframe
             wb = pd.DataFrame(embedding, columns=['x', 'y', 'z'])
@@ -126,8 +126,8 @@ class WordEmbeddingCreator:
                                 x='x', y='y', z='z',
                                 color = wb['cluster'],
                                 title ="word-embedding-samples")
-            fig.write_image(Path.joinpath(fig_path, "embedding_space.png"))
-            fig.write_html(Path.joinpath(fig_path, "embedding_space.html"))
+            fig.write_image(Path.joinpath(fig_path, f'embedding_space_dim_{n_components}.png'))
+            fig.write_html(Path.joinpath(fig_path, f'embedding_space_dim_{n_components}.html'))
             fig.show()
             return True
 

@@ -7,7 +7,6 @@ from torch.utils.data import DataLoader
 import numpy as np
 
 seed = 42
-
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu") 
 
 class DocSet(Dataset):
@@ -36,7 +35,7 @@ def loss_function(pred_bows, normalized_bows, kl_theta):
     #sum over the vocabulary
     #print((pred_bows * normalized_bows).sum(1).shape) #over vocabulary of each document in batch
     #print(kl_theta.shape)
-    mean_recon_loss = -(pred_bows * normalized_bows).sum(1).mean() #which paper for it?
+    mean_recon_loss = -(pred_bows * normalized_bows).sum(1).mean()
     return mean_recon_loss, kl_theta
 
 def get_optimizer(model, opt_args):
@@ -48,7 +47,7 @@ def get_optimizer(model, opt_args):
     return optimizer
 
 
-class ETMTrain():
+class TrainETM():
     def save_checkpoint(self, state, path):
         torch.save(state, path)
         print("Checkpoint saved at {}".format(path))
@@ -56,11 +55,9 @@ class ETMTrain():
         import matplotlib.pyplot as plt
         plt.figure()
         plt.plot(train_losses, label = 'loss-train')
-        #plt.plot(val_losses, label = 'loss-val')
-        #plt.plot(val_scores_modus_test, label = 'f1-val')
         plt.title(f'losses for {len(train_losses)} epochs')
         plt.legend()
-        plt.savefig("figures/losses_during_training.png")
+        plt.savefig(f'figures/losses_epoch_{len(train_losses)}.png')
         plt.show()
         plt.close()
     def get_topic_embedding_from_etm(self):
@@ -70,9 +67,11 @@ class ETMTrain():
     def train(self, 
               etm_model,
               vocab_size, 
-              train_args, optimizer_args, training_set,
-              num_topics, t_hidden_size, rho_size, emb_size, theta_act,
-              embeddings=None, enc_drop=0.5):
+              train_args, optimizer_args, training_set
+              ):
+              #num_topics, t_hidden_size, rho_size, emb_size, theta_act,
+              #embeddings=None, enc_drop=0.5
+              #):
         
         # training setting
         epochs = train_args.epochs
