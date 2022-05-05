@@ -70,7 +70,7 @@ class TrainETM():
         plt.figure()
         plt.plot(train_losses, label = 'loss-train')
         plt.plot(neg_rec_losses, label = 'rec-loss')
-        plt.plot(neg_kld_losses, label = 'kld')
+        #plt.plot(neg_kld_losses, label = 'kld')
 
         plt.title(f'losses for {len(train_losses)} epochs')
         plt.legend()
@@ -128,10 +128,10 @@ class TrainETM():
             for j, batch_doc_as_bows in enumerate(train_loader, 1):
                 opt.zero_grad()
                 # get the output from net
-                pred_bows, kl_theta = etm_model.forward(batch_doc_as_bows)
+                pred_bows, kl_theta = etm_model.forward(batch_doc_as_bows.to(device))
                 pred_bows = pred_bows.to(device)
                 # compute the individual losses
-                reconstruction_loss, kld_loss = loss_function(pred_bows, batch_doc_as_bows, kl_theta)
+                reconstruction_loss, kld_loss = loss_function(pred_bows, batch_doc_as_bows.to(device), kl_theta)
                 #print(f'reconstruction loss: {reconstruction_loss}')
                 #print(f'KL-divergence loss: {kld_loss}')
                 avg_batch_loss = reconstruction_loss + kld_loss

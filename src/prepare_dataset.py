@@ -53,8 +53,8 @@ class TextDataLoader:
             def filter_special_character(docs):
                 filter_patter = r'''[\w']+|[.,!?;-~{}`´_<=>:/@*()&'$%#"]'''
                 return [re.findall(filter_patter, docs[doc_idx]) for doc_idx in range(len(docs))]
-            init_docs_tr = filter_special_character(train_data.data[:1000])
-            init_docs_ts = filter_special_character(test_data.data[:100])
+            init_docs_tr = filter_special_character(train_data.data)
+            init_docs_ts = filter_special_character(test_data.data)
             #[re.findall(filter_patter, test_data.data[doc]) for doc in range(len(test_data.data[:50]))]
             self.complete_docs = init_docs_tr + init_docs_ts
             self.train_size = round(len(init_docs_tr)/len(self.complete_docs),1)
@@ -306,7 +306,7 @@ class TextDataLoader:
 
         def create_bow(normalize, doc_indices, words, n_docs, vocab_size):
             print("start: creating bow representation...")
-
+            """
             t = sorted(list(set(words)))
             print(f'top 10 - word-id of the doc: {t[:10]}')
             #print(doc_indices[:40])
@@ -326,7 +326,7 @@ class TextDataLoader:
             print(f'ndocs: {n_docs}')
             print(f'vocab-size: {vocab_size}')
             #print(len([1]*len(doc_indices)))
-            
+            """
 
             bow = sparse.coo_matrix(
               (

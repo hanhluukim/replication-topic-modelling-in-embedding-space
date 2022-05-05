@@ -7,6 +7,7 @@ from pathlib import Path
 from src.train_etm import DocSet, TrainETM
 from src.etm import ETM
 import torch
+from datetime import datetime
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu") 
 
@@ -30,7 +31,7 @@ print("total documents {}".format(len(textsloader.complete_docs)))
 # 
 textsloader.preprocess_texts(length_one_remove=True, punctuation_lower = True, stopwords_filter = True)
 print("\n")
-textsloader.split_and_create_voca_from_trainset(max_df=0.7, min_df=10, stopwords_remove_from_voca=True)
+textsloader.split_and_create_voca_from_trainset(max_df=0.7, min_df=100, stopwords_remove_from_voca=True)
 print("\n")
 
 """
@@ -114,7 +115,7 @@ class OptimizerArguments:
             self.lr = lr
             self.wdecay = wdecay
             
-train_args = TrainArguments(epochs=epochs, batch_size=6, log_interval=None)
+train_args = TrainArguments(epochs=epochs, batch_size=100, log_interval=None)
 optimizer_args = OptimizerArguments(optimizer_name="adam", lr=0.005, wdecay=0.1)
 print(f'using epochs: {train_args.epochs}')
 print(f'using optimizer: {optimizer_args.optimizer}')
@@ -147,12 +148,17 @@ def get_normalized_bows(dataset):
     
     return dataset
     
-train_set = get_normalized_bows(train_set)
+train_set = get_normalized_bows(train_sprint("end train time: {}".format(datetime.now()-start_time))et)
 #
 """
+start = datetime.now()
 train_class = TrainETM().train(
     etm_model,
     vocab_size, 
     train_args, optimizer_args, train_set,
     normalize_data = True)
     #num_topics, t_hidden_size, rho_size, emb_size, theta_act,  embedding_data, 0.5)
+
+f = open("python_runtime.txt", "a")
+f.write(f'run time: {datetime.now()-start}')
+f.close()
