@@ -77,7 +77,7 @@ class WordEmbeddingCreator:
             print(f'length of vocabulary from word-embedding model {len(model_vocab)}')
             print(f'length of the vocabulary of prepraring-dataset-vocabulary: {len(train_vocab)}')
             del self.documents
-            f = open(embedding_path, 'w')
+            f = open(embedding_path, 'w') #add to prepared_data
             for v in tqdm(model_vocab):
                 if v in train_vocab:
                     vec = list(self.model.wv.__getitem__(v))

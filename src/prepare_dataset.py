@@ -15,6 +15,7 @@ import pandas as pd
 import re
 import string
 import random
+from scipy.io import savemat
 
 random.seed(42)
 
@@ -416,6 +417,11 @@ class TextDataLoader:
                     'counts': to_numpy_array(bow_test_h2_counts),
                 }
             }
+            # saving to the prepared_data folder:
+            savemat("src/prepared_data" + 'bow_train.mat', {'train': train_dataset}, do_compression=True)
+            savemat("src/prepared_data" + 'bow_test.mat', {'test': test_dataset}, do_compression=True)
+            savemat("src/prepared_data" + 'bow_val.mat', {'validation': test_dataset}, do_compression=True)
+            
             del bow_train_tokens
             del bow_train_counts
             del bow_test_tokens
