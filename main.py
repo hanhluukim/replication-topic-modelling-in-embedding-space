@@ -4,7 +4,7 @@ from collections import Counter
 import pandas as pd
 from src.embedding import WordEmbeddingCreator, read_prefitted_embedding
 from pathlib import Path
-from src.train_etm import DocSet, ETMTrain
+from src.train_etm import DocSet, TrainETM
 from src.etm import ETM
 import torch
 
@@ -89,7 +89,7 @@ train_docs_df['text-after-preprocessing'] = [' '.join(doc) for doc in docs_tr[:1
 print(train_docs_df)
 
 # embedding training
-save_path = Path.joinpath(Path.cwd(), "vocab_embedding.txt")
+save_path = Path.joinpath(Path.cwd(), "prepared_data/vocab_embedding.txt")
 wb_creator = WordEmbeddingCreator(model_name="cbow", documents = docs_tr, save_path= save_path)
 wb_creator.train(min_count=0, embedding_size= 10)
 vocab = list(word2id.keys())
@@ -98,7 +98,7 @@ wb_creator.create_and_save_vocab_embedding(vocab, save_path)
 # embedding word-vectors visualize
 #embedding_path = save_path
 #fig_path = Path.joinpath(Path.cwd(), "figures")
-#wb_creator.cluster_words(embedding_path, fig_path)
+#wb_creator.cluster_words(embedding_path, fig_path, 2)
 
 # setting parameters for training ETM
 class TrainArguments:
@@ -113,7 +113,7 @@ class OptimizerArguments:
             self.wdecay = wdecay
             
 train_args = TrainArguments(epochs=epochs, batch_size=6, log_interval=None)
-optimizer_args = OptimizerArguments(optimizer_name="Adam", lr=0.005, wdecay=0.1)
+optimizer_args = OptimizerArguments(optimizer_name="adam", lr=0.005, wdecay=0.1)
 print(f'using epochs: {train_args.epochs}')
 print(f'using optimizer: {optimizer_args.optimizer}')
 
@@ -143,7 +143,7 @@ def get_normalized_bows(dataset):
     
 train_set = get_normalized_bows(train_set)
 #
-train_class = ETMTrain().train(
+train_class = TrainETM().train(
     etm_model,
     vocab_size, 
     train_args, optimizer_args, train_set,
