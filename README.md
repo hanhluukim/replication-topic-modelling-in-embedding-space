@@ -47,3 +47,8 @@
 8. !git remote add origin https://username:token@github.com/hanhluukim/replication-topic-modelling-in-embedding-space.git
 9. !git push --set-upstream origin main
 10. !git pull
+
+**Unklarheiten aus dem originalen Paper und Implementierung**
+1. Keine festlegene Zerlegung von Datensätzen (Trainset kann unterschiedlich bei den unterschiedlichen Durchführungen sein)
+2. Keine klare Information über Trainingsparameters wie Learn-rate, ...
+3. Keine klare Information über das Netzarchitektur wie Hidden-Layer-Dimensionen, ...
