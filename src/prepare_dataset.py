@@ -53,7 +53,7 @@ class TextDataLoader:
             def filter_special_character(docs):
                 filter_patter = r'''[\w']+|[.,!?;-~{}`´_<=>:/@*()&'$%#"]'''
                 return [re.findall(filter_patter, docs[doc_idx]) for doc_idx in range(len(docs))]
-            init_docs_tr = filter_special_character(train_data.data[:250])
+            init_docs_tr = filter_special_character(train_data.data[:1000])
             init_docs_ts = filter_special_character(test_data.data[:100])
             #[re.findall(filter_patter, test_data.data[doc]) for doc in range(len(test_data.data[:50]))]
             self.complete_docs = init_docs_tr + init_docs_ts

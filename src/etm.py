@@ -53,18 +53,22 @@ class ETM(nn.Module):
     def encode(self, normalized_bows):
         # return latent variables
         # get mu and logsigma for the next representation of inputted data in latent space with gaussion distribution
-        q_theta = self.q_theta(normalized_bows)
+        q_theta = self.q_theta(normalized_bows) #encoder_network get the input data as normalized bows
         if self.enc_drop > 0:
             q_theta = self.t_drop(q_theta)
-        mu_theta = self.mu_q_theta(q_theta)
-        logsigma_theta = self.logsigma_q_theta(q_theta)
+
+        mu_theta = self.mu_q_theta(q_theta) #using nn.linear
+        logsigma_theta = self.logsigma_q_theta(q_theta) #using nn.linear
+
         kl_theta = -0.5 * torch.sum(1 + logsigma_theta - mu_theta.pow(2) - logsigma_theta.exp(), dim=-1).mean()
         return mu_theta, logsigma_theta, kl_theta
     
     def get_theta_document_distribution_over_topics(self, mu_theta, logsigma_theta):
         # get the sampling reprensentation of inputted data from latent space
         z = self.reparameterize(mu_theta, logsigma_theta)
+        #print(f'shape of z: {z.shape}')
         theta = F.softmax(z, dim=-1) 
+        #print(f'shape of theta: {theta.shape}')
         return theta
     
     def get_beta_topic_distribution_over_vocab(self):
@@ -73,6 +77,7 @@ class ETM(nn.Module):
         except:
             logit = self.topic_embeddings_alphas(self.vocab_embeddings_rho)
         beta = F.softmax(logit, dim=0).transpose(1, 0) ## softmax over vocab dimension
+        #print(f'shape of beta: {beta.shape}')
         return beta
     
     def decode(self, theta, beta):

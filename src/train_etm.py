@@ -13,7 +13,6 @@ class DocSet(Dataset):
     def __init__(self, set_name, vocab_size, data, normalize_data = True):
         self.set_name = set_name
         self.data = data
-        # must be normalized???
         self.normalize_data = normalize_data
         self.vocab_size = vocab_size
     def __len__(self):
@@ -38,7 +37,12 @@ def loss_function(pred_bows, normalized_bows, kl_theta):
     #sum over the vocabulary
     #print((pred_bows * normalized_bows).sum(1).shape) #over vocabulary of each document in batch
     #print(kl_theta.shape)
-    mean_recon_loss = -(pred_bows * normalized_bows).sum(1).mean()
+   
+    #print(f'sum of vector: {sum(pred_bows[0])}')
+    #print(f'length of vector: {torch.norm(pred_bows[0])}')
+
+    #sum over the vocabulary and mean of datch. covert to float to use mean()
+    mean_recon_loss = -(pred_bows * normalized_bows).sum(1).float().mean()
     return mean_recon_loss, kl_theta
 
 def get_optimizer(model, opt_args):
@@ -61,10 +65,13 @@ class TrainETM():
         #print(batch[0])
         #print(batch[0].shape)
         return batch
-    def visualize_losses(self, train_losses):
+    def visualize_losses(self, train_losses, neg_rec_losses, neg_kld_losses):
         import matplotlib.pyplot as plt
         plt.figure()
         plt.plot(train_losses, label = 'loss-train')
+        plt.plot(neg_rec_losses, label = 'rec-loss')
+        plt.plot(neg_kld_losses, label = 'kld')
+
         plt.title(f'losses for {len(train_losses)} epochs')
         plt.legend()
         plt.savefig(f'figures/losses_epoch_{len(train_losses)}.png')
@@ -109,33 +116,44 @@ class TrainETM():
         
         # starting training
         epoch_losses = []
+        neg_rec_losses = []
+        neg_kld_losses = []
         for epoch in range(0, epochs):
             #print('Epoch {}/{}:'.format(epoch, epochs))
             # mode-train
             etm_model.train()
             epoch_loss = 0
+            neg_rec = 0
+            neg_kld = 0
             for j, batch_doc_as_bows in enumerate(train_loader, 1):
-                #if normalize_data == True:
-                #batch_normalized_bows = batch_doc_as_bows #self.get_normalized_batch(batch_doc_as_bows)
                 opt.zero_grad()
                 # get the output from net
                 pred_bows, kl_theta = etm_model.forward(batch_doc_as_bows)
                 pred_bows = pred_bows.to(device)
                 # compute the individual losses
                 reconstruction_loss, kld_loss = loss_function(pred_bows, batch_doc_as_bows, kl_theta)
-                #print(reconstruction_loss)
+                #print(f'reconstruction loss: {reconstruction_loss}')
+                #print(f'KL-divergence loss: {kld_loss}')
                 avg_batch_loss = reconstruction_loss + kld_loss
                 # backward and update weights
                 avg_batch_loss.backward()
                 opt.step()
                 # sum(total_loss_batch)/size(batch)
                 epoch_loss += avg_batch_loss
+                neg_rec += reconstruction_loss
+                neg_kld += kld_loss
+
             epoch_loss = (epoch_loss/len(train_loader)).item()
-            print(f'Epoch: {epoch}/{epochs}  -  Loss: {epoch_loss}')
+            neg_rec = (neg_rec/len(train_loader)).item()
+            neg_kld = (neg_kld/len(train_loader)).item()
+
+            print(f'Epoch: {epoch}/{epochs}  -  Loss: {epoch_loss} \t Rec: {neg_rec} \t KL: {neg_kld}')
             epoch_losses.append(epoch_loss)
+            neg_rec_losses.append(neg_rec)
+            neg_kld_losses.append(neg_kld)
             
         # visualize the losses during training
-        self.visualize_losses(epoch_losses)
+        self.visualize_losses(epoch_losses, neg_rec_losses, neg_kld_losses)
       
 
         
