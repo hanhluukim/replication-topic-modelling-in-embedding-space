@@ -53,8 +53,8 @@ class TextDataLoader:
             def filter_special_character(docs):
                 filter_patter = r'''[\w']+|[.,!?;-~{}`´_<=>:/@*()&'$%#"]'''
                 return [re.findall(filter_patter, docs[doc_idx]) for doc_idx in range(len(docs))]
-            init_docs_tr = filter_special_character(train_data.data)
-            init_docs_ts = filter_special_character(test_data.data)
+            init_docs_tr = filter_special_character(train_data.data[:250])
+            init_docs_ts = filter_special_character(test_data.data[:50])
             #[re.findall(filter_patter, test_data.data[doc]) for doc in range(len(test_data.data[:50]))]
             self.complete_docs = init_docs_tr + init_docs_ts
             self.train_size = round(len(init_docs_tr)/len(self.complete_docs),1)
@@ -102,7 +102,7 @@ class TextDataLoader:
         #return True
         print("finised: preprocessing!")
         
-    def split_and_create_voca_from_trainset(self,max_df=0.7, min_df=10, stopwords_remove_from_voca = True):
+    def split_and_create_voca_from_trainset(self,max_df=0.7, min_df=2, stopwords_remove_from_voca = True):
         """
         This block is used for creating the init-word2id and init-id2word and the vocabulary.
         The Vocabulary and Dictionaries will be later updated by only train-dataset and stopwords.
@@ -421,7 +421,9 @@ class TextDataLoader:
             savemat("prepared_data/" + 'bow_train.mat', {'train': train_dataset}, do_compression=True)
             savemat("prepared_data/" + 'bow_test.mat', {'test': test_dataset}, do_compression=True)
             savemat("prepared_data/" + 'bow_val.mat', {'validation': test_dataset}, do_compression=True)
-            
+            # saving id2word:
+            savemat("prepared_data/" + 'id2word.mat', {'id2word': self.id2word}, do_compression=True)
+
             del bow_train_tokens
             del bow_train_counts
             del bow_test_tokens

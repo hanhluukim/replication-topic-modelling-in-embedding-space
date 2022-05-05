@@ -31,7 +31,7 @@ print("total documents {}".format(len(textsloader.complete_docs)))
 # 
 textsloader.preprocess_texts(length_one_remove=True, punctuation_lower = True, stopwords_filter = True)
 print("\n")
-textsloader.split_and_create_voca_from_trainset(max_df=0.7, min_df=100, stopwords_remove_from_voca=True)
+textsloader.split_and_create_voca_from_trainset(max_df=0.7, min_df=10, stopwords_remove_from_voca=True)
 print("\n")
 
 """
@@ -132,11 +132,11 @@ print(50*"-" + 'TRAIN' + 50*"-")
 # reading embedding data from file
 embedding_data = read_prefitted_embedding(save_path)
 # etm-model setting parameters
-num_topics = 5
+num_topics = 10
 t_hidden_size = 800
 rho_size = len(embedding_data[0])
 emb_size = len(embedding_data[0])
-theta_act = "relu"
+theta_act = "tanh"
 
 etm_model = ETM(
   num_topics, vocab_size, t_hidden_size, rho_size, emb_size, theta_act, 
