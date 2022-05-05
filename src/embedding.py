@@ -117,15 +117,22 @@ class WordEmbeddingCreator:
             reducer = umap.UMAP(random_state=42,n_components=n_components)
             embedding = reducer.fit_transform(embedding_data)
             # show samples after dim-reduction in dataframe
-            wb = pd.DataFrame(embedding, columns=['x', 'y', 'z'])
+            if n_components == 3:
+                  wb = pd.DataFrame(embedding, columns=['x', 'y', 'z'])
+            else:
+                  wb = pd.DataFrame(embedding, columns=['x', 'y'])
             wb['word'] = words_data
             wb['cluster'] = ['cluster ' + str(c) for c in labels]
             # visualization with plotply
-            fig = px.scatter_3d(wb, 
-                                text = wb['word'],
-                                x='x', y='y', z='z',
-                                color = wb['cluster'],
-                                title ="word-embedding-samples")
+            if n_components==3:
+                  fig = px.scatter_3d(wb, 
+                                    text = wb['word'],
+                                    x='x', y='y', z='z',
+                                    color = wb['cluster'],
+                                    title ="word-embedding-samples")
+            else:
+                  # n_components = 2
+                  fig = px.scatter(wb, text = wb['word'], x='x', y='y', color=wb['cluster'], title='word embedding samples')
             fig.write_image(Path.joinpath(fig_path, f'embedding_space_dim_{n_components}.png'))
             fig.write_html(Path.joinpath(fig_path, f'embedding_space_dim_{n_components}.html'))
             fig.show()
