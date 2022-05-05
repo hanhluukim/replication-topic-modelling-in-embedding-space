@@ -336,9 +336,9 @@ class TextDataLoader:
                 ).tocsr()
             print("finised creating bow input!\n")
             # return normalized bows / tfdif?
-            if normalize:
-              print("need normalized bows")
-              bow = bow
+            #if normalize:
+            #  print("need normalized bows")
+            #  bow = bow
             return bow
         
         print(f'length train-documents-indices : {len(doc_indices_tr)}')

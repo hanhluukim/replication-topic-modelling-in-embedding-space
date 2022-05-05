@@ -51,6 +51,10 @@ class TrainETM():
     def save_checkpoint(self, state, path):
         torch.save(state, path)
         print("Checkpoint saved at {}".format(path))
+    def get_normalized_batch(self, batch):
+        # if normalize with only in the batch
+        
+        return batch
     def visualize_losses(self, train_losses):
         import matplotlib.pyplot as plt
         plt.figure()
@@ -80,7 +84,7 @@ class TrainETM():
         # define etm model
         etm_model = etm_model.to(device)
                 
-        #optimizer is class of follow attributs: optimizer.name, optimizer.lr, optimizer.wdecay
+        # get optimizer is class of follow attributs: optimizer.name, optimizer.lr, optimizer.wdecay
         opt = get_optimizer(etm_model, optimizer_args)
         
         #data loading with DataLoader, data must be transform to Dataset Object
@@ -90,6 +94,13 @@ class TrainETM():
             shuffle=True, drop_last = True, 
             num_workers = 0, worker_init_fn = np.random.seed(seed))
         print(f'number of batches: {len(train_loader)}')
+        val_loader = DataLoader(
+            DocSet("train_set", vocab_size, training_set), 
+            batch_size, 
+            shuffle=True, drop_last = True, 
+            num_workers = 0, worker_init_fn = np.random.seed(seed))
+        
+        # starting training
         epoch_losses = []
         for epoch in range(0, epochs):
             #print('Epoch {}/{}:'.format(epoch, epochs))
@@ -97,7 +108,7 @@ class TrainETM():
             etm_model.train()
             epoch_loss = 0
             for j, batch_doc_as_bows in enumerate(train_loader, 1):
-                batch_normalized_bows = batch_doc_as_bows
+                batch_normalized_bows = self.get_normalized_batch(batch_doc_as_bows)
                 opt.zero_grad()
                 # get the output from net
                 pred_bows, kl_theta = etm_model.forward(batch_normalized_bows)
@@ -114,6 +125,8 @@ class TrainETM():
             epoch_loss = (epoch_loss/len(train_loader)).item()
             print(f'Epoch: {epoch}/{epochs}  -  Loss: {epoch_loss}')
             epoch_losses.append(epoch_loss)
+            
+        # visualize the losses during training
         self.visualize_losses(epoch_losses)
       
 
