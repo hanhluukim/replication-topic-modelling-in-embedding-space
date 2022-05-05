@@ -423,7 +423,7 @@ class TextDataLoader:
             savemat("prepared_data/" + 'bow_val.mat', {'validation': test_dataset}, do_compression=True)
             # saving id2word:
             print(f'id2word befor saving: {self.id2word.keys()}')
-            savemat("prepared_data/" + 'id2word.mat', {'word-id': self.id2word}, do_compression=True)
+            savemat("prepared_data/" + 'id2word.mat', {'id': list(self.id2word.keys()), 'word': list(self.id2word.values())}, do_compression=True)
 
             del bow_train_tokens
             del bow_train_counts
