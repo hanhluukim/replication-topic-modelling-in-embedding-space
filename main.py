@@ -10,6 +10,7 @@ import torch
 from datetime import datetime
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu") 
+print(f'using cuda: {torch.cuda.is_available()}')
 
 parser = argparse.ArgumentParser(description='main.py')
 parser.add_argument('--model', type=str, default="LDA", help='which topic model should be used')
@@ -90,6 +91,18 @@ train_docs_df = pd.DataFrame()
 train_docs_df['text-after-preprocessing'] = [' '.join(doc) for doc in docs_tr[:100]]
 print(train_docs_df)
 """
+# save preprocessed documents to file to use with julia later
+
+def save_preprocessed_docs(name=None, docs=None):
+  docs_df = pd.DataFrame()
+  docs_df['text-after-preprocessing'] = [' '.join(doc) for doc in docs]
+  docs_df.to_csv(f'prepared_data/{name}.csv',index=False)
+  del docs_df
+  return True
+
+save_preprocessed_docs(name="preprocessed_docs_train", docs = docs_tr)
+save_preprocessed_docs(name="preprocessed_docs_test", docs = docs_t)
+save_preprocessed_docs(name="preprocessed_docs_val", docs = docs_v)
 
 # embedding training
 save_path = Path.joinpath(Path.cwd(), "prepared_data/vocab_embedding.txt")
@@ -127,7 +140,6 @@ print(len(tr_set))
 print(f'sum of vector: {sum(tr_set.__getitem__(0))}')
 print(f'length of vector: {torch.norm(tr_set.__getitem__(0))}')
 
-print(50*"-" + 'TRAIN' + 50*"-")
 
 # reading embedding data from file
 embedding_data = read_prefitted_embedding(save_path)
@@ -141,7 +153,10 @@ theta_act = "tanh"
 etm_model = ETM(
   num_topics, vocab_size, t_hidden_size, rho_size, emb_size, theta_act, 
   embedding_data, enc_drop=0.5).to(device)
+print(50*"-" + 'MODEL-SUMMARY' + 50*"-")
+print(etm_model)
 
+print(50*"-" + 'TRAIN' + 50*"-")
 # train_set must be normalized??
 """
 def get_normalized_bows(dataset):

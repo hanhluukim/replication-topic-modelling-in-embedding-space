@@ -60,7 +60,14 @@ class ETM(nn.Module):
         mu_theta = self.mu_q_theta(q_theta) #using nn.linear
         logsigma_theta = self.logsigma_q_theta(q_theta) #using nn.linear
 
-        kl_theta = -0.5 * torch.sum(1 + logsigma_theta - mu_theta.pow(2) - logsigma_theta.exp(), dim=-1).mean()
+        print(f'kld-size {(1 + logsigma_theta - mu_theta.pow(2) - logsigma_theta.exp()).shape}')
+        print(f'kld-size {torch.sum(1 + logsigma_theta - mu_theta.pow(2) - logsigma_theta.exp(), dim=-1).shape}')
+        print(f'kld-size {torch.sum(1 + logsigma_theta - mu_theta.pow(2) - logsigma_theta.exp(), dim=-1).mean().shape}')
+
+        kl_theta = -0.5 * torch.sum(
+          1 + logsigma_theta - mu_theta.pow(2) - logsigma_theta.exp(), 
+          dim=-1
+          ).mean()
         return mu_theta, logsigma_theta, kl_theta
     
     def get_theta_document_distribution_over_topics(self, mu_theta, logsigma_theta):
