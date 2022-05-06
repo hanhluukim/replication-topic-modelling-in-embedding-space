@@ -5,6 +5,7 @@ from torch.utils.data import Dataset
 import torchvision.transforms.functional as TF
 from torch.utils.data import DataLoader
 import numpy as np
+from pathlib import Path
 
 seed = 42
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu") 
@@ -55,9 +56,15 @@ def get_optimizer(model, opt_args):
 
 
 class TrainETM():
-    def save_checkpoint(self, state, path):
-        torch.save(state, path)
-        print("Checkpoint saved at {}".format(path))
+    def save_checkpoint(self, state, path=None):
+        if path==None:
+          print(state.keys())
+          dir_path = Path(f'checkpoints').mkdir(parents=True, exist_ok=True)
+          path = Path.joinpath(dir_path,'etm_epoch_{state["epoch"]}.pth.tar')
+          print(path)
+          torch.save(state, path)
+          print("Checkpoint saved at {}".format(path))
+
     def get_normalized_batch(self, batch):
         # if normalize with only in the batch
         # normalize
@@ -151,7 +158,21 @@ class TrainETM():
             epoch_losses.append(epoch_loss)
             neg_rec_losses.append(neg_rec)
             neg_kld_losses.append(neg_kld)
-            
+        # save checkpoints
+        self.save_checkpoint(
+              {
+                  'epoch': epochs, 
+                  'params': {
+                    'lr': optimizer_args.lr, 
+                    'wdecay': optimizer_args.wdecay,
+                    },
+                  'total_losses': epoch_losses,
+                  'rec_losses': neg_rec_losses,
+                  'kld_losses': neg_kld_losses,
+                  'state_dict': etm_model.state_dict(), 
+                  'optimizer' : opt.state_dict()
+                  }
+              , path = None)
         # visualize the losses during training
         self.visualize_losses(epoch_losses, neg_rec_losses, neg_kld_losses)
       

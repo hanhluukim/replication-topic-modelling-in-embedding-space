@@ -60,10 +60,10 @@ class ETM(nn.Module):
         mu_theta = self.mu_q_theta(q_theta) #using nn.linear
         logsigma_theta = self.logsigma_q_theta(q_theta) #using nn.linear
 
-        print(f'kld-size {(1 + logsigma_theta - mu_theta.pow(2) - logsigma_theta.exp()).shape}')
-        print(f'kld-size {torch.sum(1 + logsigma_theta - mu_theta.pow(2) - logsigma_theta.exp(), dim=-1).shape}')
-        print(f'kld-size {torch.sum(1 + logsigma_theta - mu_theta.pow(2) - logsigma_theta.exp(), dim=-1).mean().shape}')
-
+        #print(f'kld-size {(1 + logsigma_theta - mu_theta.pow(2) - logsigma_theta.exp()).shape}')
+        #print(f'kld-size {torch.sum(1 + logsigma_theta - mu_theta.pow(2) - logsigma_theta.exp(), dim=-1).shape}')
+        #print(f'kld-size {torch.sum(1 + logsigma_theta - mu_theta.pow(2) - logsigma_theta.exp(), dim=-1).mean().shape}')
+        #https://arxiv.org/pdf/1312.6114.pdf -DKL in Gaussian Case. With log-var-trick is little different
         kl_theta = -0.5 * torch.sum(
           1 + logsigma_theta - mu_theta.pow(2) - logsigma_theta.exp(), 
           dim=-1
