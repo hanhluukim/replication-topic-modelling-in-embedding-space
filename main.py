@@ -32,7 +32,8 @@ print("total documents {}".format(len(textsloader.complete_docs)))
 # 
 textsloader.preprocess_texts(length_one_remove=True, punctuation_lower = True, stopwords_filter = True)
 print("\n")
-textsloader.split_and_create_voca_from_trainset(max_df=0.7, min_df=10, stopwords_remove_from_voca=True)
+min_df = 10
+textsloader.split_and_create_voca_from_trainset(max_df=0.7, min_df=min_df, stopwords_remove_from_voca=True)
 print("\n")
 
 """
@@ -91,21 +92,10 @@ train_docs_df = pd.DataFrame()
 train_docs_df['text-after-preprocessing'] = [' '.join(doc) for doc in docs_tr[:100]]
 print(train_docs_df)
 """
-# save preprocessed documents to file to use with julia later
 
-def save_preprocessed_docs(name=None, docs=None):
-  docs_df = pd.DataFrame()
-  docs_df['text-after-preprocessing'] = [' '.join(doc) for doc in docs]
-  docs_df.to_csv(f'prepared_data/{name}.csv',index=False)
-  del docs_df
-  return True
-
-save_preprocessed_docs(name="preprocessed_docs_train", docs = docs_tr)
-save_preprocessed_docs(name="preprocessed_docs_test", docs = docs_t)
-save_preprocessed_docs(name="preprocessed_docs_val", docs = docs_v)
 
 # embedding training
-save_path = Path.joinpath(Path.cwd(), "prepared_data/vocab_embedding.txt")
+save_path = Path.joinpath(Path.cwd(), f'prepared_data/min_df_{min_df}/vocab_embedding.txt')
 wb_creator = WordEmbeddingCreator(model_name="cbow", documents = docs_tr, save_path= save_path)
 wb_creator.train(min_count=0, embedding_size= 300)
 vocab = list(word2id.keys())

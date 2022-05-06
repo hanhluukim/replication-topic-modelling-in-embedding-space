@@ -39,12 +39,17 @@ def loss_function(pred_bows, normalized_bows, kl_theta):
     #print((pred_bows * normalized_bows).sum(1).shape) #over vocabulary of each document in batch
     #print(kl_theta.shape)
    
-    #print(f'sum of vector: {sum(pred_bows[0])}')
-    #print(f'length of vector: {torch.norm(pred_bows[0])}')
+    print(f'sum of pred-vector: {sum(pred_bows[0])}')
+    #print(f'length of pred-vector: {torch.norm(pred_bows[0])}')
+
+    print(f'sum of true-vector: {sum(normalized_bows[0])}')
+    #print(f'length of true-vector: {torch.norm(normalized_bows[0])}')
 
     #sum over the vocabulary and mean of datch. covert to float to use mean()
-    mean_recon_loss = -(pred_bows * normalized_bows).sum(1).float().mean()
-    return mean_recon_loss, kl_theta
+    #torch.log(res+1e-6)
+    # using log(pred)
+    mean_recon_loss = -(torch.log(pred_bows + 1e-6) * normalized_bows).sum(1).float().mean()
+    return mean_recon_loss, kl_theta.mean()
 
 def get_optimizer(model, opt_args):
     if opt_args.optimizer == 'adam':
@@ -62,7 +67,7 @@ class TrainETM():
           Path('checkpoints').mkdir(parents=True, exist_ok=True)
           #print(path)
           torch.save(state, f'checkpoints/etm_epoch_{state["epoch"]}.pth.tar')
-          print("Checkpoint saved at {}".format(path))
+          print(f'Checkpoint saved at checkpoints/etm_epoch_{state["epoch"]}.pth.tar')
 
     def get_normalized_batch(self, batch):
         # if normalize with only in the batch
@@ -132,6 +137,7 @@ class TrainETM():
             neg_rec = 0
             neg_kld = 0
             for j, batch_doc_as_bows in enumerate(train_loader, 1):
+                #print(f'batch-shape: {batch_doc_as_bows.shape}')
                 opt.zero_grad()
                 # get the output from net
                 pred_bows, kl_theta = etm_model.forward(batch_doc_as_bows.to(device))

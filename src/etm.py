@@ -31,6 +31,7 @@ class ETM(nn.Module):
         
         # Read the prefitted-embedding. Weights of self.alphas are itself the representation of topic-embeddings
         #_, emsize = embeddings.size()
+        print(embeddings[0])
         self.vocab_embeddings_rho = torch.from_numpy(np.array(embeddings)).float().to(device)
         self.topic_embeddings_alphas = nn.Linear(rho_size, num_topics, bias=False)
         
@@ -67,7 +68,7 @@ class ETM(nn.Module):
         kl_theta = -0.5 * torch.sum(
           1 + logsigma_theta - mu_theta.pow(2) - logsigma_theta.exp(), 
           dim=-1
-          ).mean()
+          )#.mean()
         return mu_theta, logsigma_theta, kl_theta
     
     def get_theta_document_distribution_over_topics(self, mu_theta, logsigma_theta):
@@ -91,10 +92,10 @@ class ETM(nn.Module):
         # make the predictions about the per-doc distribution over vocabulary (or over the words in the documents)
         # try to reconstruct the document-distribution over words (vocabulary)
         # after multiplication maybe zeros. add 1e-6 to get no-zeros matrix
-        res = torch.mm(theta, beta)
-        almost_zeros = torch.full_like(res, 1e-6)
-        results_without_zeros = res.add(almost_zeros)
-        predictions = torch.log(results_without_zeros)
+        predictions = torch.mm(theta, beta)
+        #almost_zeros = torch.full_like(res, 1e-6)
+        #results_without_zeros = res.add(almost_zeros)
+        #predictions = torch.log(results_without_zeros)
         return predictions
     
     def forward(self,normalized_bows):

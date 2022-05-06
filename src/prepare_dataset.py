@@ -54,7 +54,7 @@ class TextDataLoader:
             def filter_special_character(docs):
                 filter_patter = r'''[\w']+|[.,!?;-~{}`´_<=>:/@*()&'$%#"]'''
                 return [re.findall(filter_patter, docs[doc_idx]) for doc_idx in range(len(docs))]
-            init_docs_tr = filter_special_character(train_data.data[:250])
+            init_docs_tr = filter_special_character(train_data.data[:500])
             init_docs_ts = filter_special_character(test_data.data[:50])
             #[re.findall(filter_patter, test_data.data[doc]) for doc in range(len(test_data.data[:50]))]
             self.complete_docs = init_docs_tr + init_docs_ts
@@ -239,6 +239,20 @@ class TextDataLoader:
         docs_va = [doc_in_words(doc) for doc in docs_va]
         docs_ts = [doc_in_words(doc) for doc in docs_ts]
         # todo: saving the train-documents in words in a file
+
+        # save preprocessed documents to file to use with julia later
+
+        def save_preprocessed_docs(path=None, name=None, docs=None):
+          docs_df = pd.DataFrame()
+          docs_df['text-after-preprocessing'] = [' '.join(doc) for doc in docs]
+          docs_df.to_csv(f'{path}/{name}.csv',index=False)
+          del docs_df
+          return True
+        save_path = 'prepared_data/min_df_'+str(self.min_df)
+        save_preprocessed_docs(path = save_path, name="preprocessed_docs_train", docs = docs_tr)
+        save_preprocessed_docs(path = save_path, name="preprocessed_docs_test", docs = docs_ts)
+        save_preprocessed_docs(path = save_path, name="preprocessed_docs_val", docs = docs_va)
+
         
         return docs_tr, docs_va, docs_ts
 
@@ -423,12 +437,12 @@ class TextDataLoader:
             # saving to the prepared_data folder:
             bow_save_path = 'prepared_data/min_df_'+str(self.min_df)
             Path(bow_save_path).mkdir(parents=True, exist_ok=True)
-            savemat(bow_save_path + 'bow_train.mat', {'train': train_dataset}, do_compression=True)
-            savemat(bow_save_path + 'bow_test.mat', {'test': test_dataset}, do_compression=True)
-            savemat(bow_save_path + 'bow_val.mat', {'validation': test_dataset}, do_compression=True)
+            savemat(bow_save_path + '/bow_train.mat', {'train': train_dataset}, do_compression=True)
+            savemat(bow_save_path + '/bow_test.mat', {'test': test_dataset}, do_compression=True)
+            savemat(bow_save_path + '/bow_val.mat', {'validation': test_dataset}, do_compression=True)
             # saving id2word:
             print(f'id2word befor saving: {self.id2word.keys()}')
-            savemat("prepared_data/" + 'id2word.mat', {'id': list(self.id2word.keys()), 'word': list(self.id2word.values())}, do_compression=True)
+            savemat("prepared_data/" + '/id2word.mat', {'id': list(self.id2word.keys()), 'word': list(self.id2word.values())}, do_compression=True)
 
             del bow_train_tokens
             del bow_train_counts
