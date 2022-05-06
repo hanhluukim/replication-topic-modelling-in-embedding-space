@@ -4,6 +4,7 @@
 1. Replizieren des Artikels: [Topic Modelling in embedding space](https://arxiv.org/abs/1907.04907) von Adji B. Dieng, Francisco J. R. Ruiz, David M. Blei. Das originales [Code](https://github.com/adjidieng/ETM) von Autoren. 
 2. Neues Experiment: Kombination von pre-fitted BERT-Embedding mit ETM
 3. (optional) Vergleich der Laufzeit beim Trainieren zwischen dem python-ETM und dem julia-ETM
+
 **Gebrauchte Pakette**
 
 `pip install -r requirements.txt`
