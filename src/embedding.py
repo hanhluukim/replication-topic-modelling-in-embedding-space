@@ -12,13 +12,20 @@ import matplotlib.pyplot as plt
 import pandas as pd
 from pathlib import Path
 
-def read_prefitted_embedding(save_path):
+def read_prefitted_embedding(vocab, save_path):
     with open(save_path) as f:
         lines = f.readlines()
-    embedding_data_as_list = []
+    embedding_data = {}
     for t in lines:
+        w = t.split("\t")[0]
         v = [float(e) for e in t.split("\t")[1].split(" ")]
-        embedding_data_as_list.append(v)
+        embedding_data[w] = v
+    # sort embedding_data again by the ordner of the vocabulary from bow
+    embedding_data_as_list = []
+    for w in vocab:
+      if w in list(embedding_data.keys()):
+        embedding_data_as_list.append(embedding_data[w])
+    del embedding_data
     return embedding_data_as_list
 
 class WordEmbeddingCreator:

@@ -16,6 +16,7 @@ import re
 import string
 import random
 from scipy.io import savemat
+from pathlib import Path
 
 random.seed(42)
 
@@ -41,7 +42,7 @@ class TextDataLoader:
         self.test_indices = None
         self.val_indices = None
         # to delete
-        self.idx_permute = []
+        self.min_df = None
         
     def load_tokenize_texts(self, source="20newsgroups"):
         print("loading texts: ...")
@@ -108,7 +109,9 @@ class TextDataLoader:
         The Vocabulary and Dictionaries will be later updated by only train-dataset and stopwords.
         Sort the list of words in the vocabulary by the (word-df)
         """
-
+        # --------------
+        self.min_df = min_df
+        # --------------
         # filter by max-df and min-df with CountVectorizer
         # CountVectorizer create Vocabulary (Word-Ids). For each doc: Word-Frequency of each word of this document
         vectorizer = CountVectorizer(min_df=min_df, max_df=max_df, stop_words=None) # stopwords will be used later
@@ -418,9 +421,11 @@ class TextDataLoader:
                 }
             }
             # saving to the prepared_data folder:
-            savemat("prepared_data/" + 'bow_train.mat', {'train': train_dataset}, do_compression=True)
-            savemat("prepared_data/" + 'bow_test.mat', {'test': test_dataset}, do_compression=True)
-            savemat("prepared_data/" + 'bow_val.mat', {'validation': test_dataset}, do_compression=True)
+            bow_save_path = 'prepared_data/min_df_'+str(self.min_df)
+            Path(bow_save_path).mkdir(parents=True, exist_ok=True)
+            savemat(bow_save_path + 'bow_train.mat', {'train': train_dataset}, do_compression=True)
+            savemat(bow_save_path + 'bow_test.mat', {'test': test_dataset}, do_compression=True)
+            savemat(bow_save_path + 'bow_val.mat', {'validation': test_dataset}, do_compression=True)
             # saving id2word:
             print(f'id2word befor saving: {self.id2word.keys()}')
             savemat("prepared_data/" + 'id2word.mat', {'id': list(self.id2word.keys()), 'word': list(self.id2word.values())}, do_compression=True)

@@ -142,7 +142,8 @@ print(f'length of vector: {torch.norm(tr_set.__getitem__(0))}')
 
 
 # reading embedding data from file
-embedding_data = read_prefitted_embedding(save_path)
+embedding_data = read_prefitted_embedding(vocab, save_path)
+
 # etm-model setting parameters
 num_topics = 10
 t_hidden_size = 800
