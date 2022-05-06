@@ -39,10 +39,10 @@ def loss_function(pred_bows, normalized_bows, kl_theta):
     #print((pred_bows * normalized_bows).sum(1).shape) #over vocabulary of each document in batch
     #print(kl_theta.shape)
    
-    print(f'sum of pred-vector: {sum(pred_bows[0])}')
+    #print(f'sum of pred-vector: {sum(pred_bows[0])}')
     #print(f'length of pred-vector: {torch.norm(pred_bows[0])}')
 
-    print(f'sum of true-vector: {sum(normalized_bows[0])}')
+    #print(f'sum of true-vector: {sum(normalized_bows[0])}')
     #print(f'length of true-vector: {torch.norm(normalized_bows[0])}')
 
     #sum over the vocabulary and mean of datch. covert to float to use mean()
@@ -63,7 +63,7 @@ def get_optimizer(model, opt_args):
 class TrainETM():
     def save_checkpoint(self, state, path=None):
         if path==None:
-          print(state.keys())
+          #print(state.keys())
           Path('checkpoints').mkdir(parents=True, exist_ok=True)
           #print(path)
           torch.save(state, f'checkpoints/etm_epoch_{state["epoch"]}.pth.tar')
