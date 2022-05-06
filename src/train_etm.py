@@ -59,10 +59,9 @@ class TrainETM():
     def save_checkpoint(self, state, path=None):
         if path==None:
           print(state.keys())
-          dir_path = Path(f'checkpoints').mkdir(parents=True, exist_ok=True)
-          path = Path.joinpath(dir_path,'etm_epoch_{state["epoch"]}.pth.tar')
-          print(path)
-          torch.save(state, path)
+          Path('checkpoints').mkdir(parents=True, exist_ok=True)
+          #print(path)
+          torch.save(state, f'checkpoints/etm_epoch_{state["epoch"]}.pth.tar')
           print("Checkpoint saved at {}".format(path))
 
     def get_normalized_batch(self, batch):
