@@ -13,6 +13,8 @@ import pandas as pd
 from pathlib import Path
 
 def read_prefitted_embedding(vocab, save_path):
+    save_path = Path.joinpath(save_path, 'vocab_embedding.txt')
+
     with open(save_path) as f:
         lines = f.readlines()
     embedding_data = {}
@@ -84,7 +86,8 @@ class WordEmbeddingCreator:
             print(f'length of vocabulary from word-embedding model {len(model_vocab)}')
             print(f'length of the vocabulary of prepraring-dataset-vocabulary: {len(train_vocab)}')
             del self.documents
-            f = open(embedding_path, 'w') #add to prepared_data
+            
+            f = open(Path.joinpath(embedding_path, 'vocab_embedding.txt'), 'w') #add to prepared_data
             # sort words in embedding matrix by the ordner from vocabulary
             for v in tqdm(train_vocab):
                 if v in model_vocab:
@@ -94,7 +97,9 @@ class WordEmbeddingCreator:
                     vec_str = " ".join(vec_str)
                     f.write(vec_str + '\n')
             f.close()
+            self.model.save(str(Path.joinpath(embedding_path, 'word2vec.model')))
             return True
+
       def cluster_words(self, embedding_save_path = None, fig_path = None, n_components=3):
             import umap.umap_ as umap
             import time

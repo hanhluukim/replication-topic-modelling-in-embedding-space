@@ -105,7 +105,7 @@ print(train_docs_df)
 
 
 #-------------------------embedding training------------------------------------------
-save_path = Path.joinpath(Path.cwd(), f'prepared_data/min_df_{min_df}/vocab_embedding.txt')
+save_path = Path.joinpath(Path.cwd(), f'prepared_data/min_df_{min_df}')
 wb_creator = WordEmbeddingCreator(model_name="cbow", documents = docs_tr, save_path= save_path)
 wb_creator.train(min_count=0, embedding_size= 300)
 vocab = list(word2id.keys())
