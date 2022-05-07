@@ -32,7 +32,7 @@ class ETM(nn.Module):
         
         # Read the prefitted-embedding. Weights of self.alphas are itself the representation of topic-embeddings
         #_, emsize = embeddings.size()
-        print(embeddings[0])
+        #print(embeddings[0])
         self.vocab_embeddings_rho = torch.from_numpy(np.array(embeddings)).float().to(device)
         self.topic_embeddings_alphas = nn.Linear(rho_size, num_topics, bias=False)
         
