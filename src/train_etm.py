@@ -6,6 +6,7 @@ import torchvision.transforms.functional as TF
 from torch.utils.data import DataLoader
 import numpy as np
 from pathlib import Path
+from torch import nn
 
 seed = 42
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu") 
@@ -48,7 +49,14 @@ def loss_function(pred_bows, normalized_bows, kl_theta):
     #sum over the vocabulary and mean of datch. covert to float to use mean()
     #torch.log(res+1e-6)
     # using log(pred)
-    mean_recon_loss = -(torch.log(pred_bows + 1e-6) * normalized_bows).sum(1).float().mean()
+    cross_entropy = True
+    if cross_entropy:
+      mean_recon_loss = -(normalized_bows * torch.log(pred_bows + 1e-6)).sum(1).float().mean()
+    else:
+      # mean square error
+      loss = nn.MSELoss(reduce="mean")
+      mean_recon_loss = loss(pred_bows, normalized_bows)
+
     return mean_recon_loss, kl_theta.mean()
 
 def get_optimizer(model, opt_args):
