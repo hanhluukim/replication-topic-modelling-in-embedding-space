@@ -54,8 +54,8 @@ class TextDataLoader:
             def filter_special_character(docs):
                 filter_patter = r'''[\w']+|[.,!?;-~{}`´_<=>:/@*()&'$%#"]'''
                 return [re.findall(filter_patter, docs[doc_idx]) for doc_idx in range(len(docs))]
-            init_docs_tr = filter_special_character(train_data.data[:500])
-            init_docs_ts = filter_special_character(test_data.data[:50])
+            init_docs_tr = filter_special_character(train_data.data[:700])
+            init_docs_ts = filter_special_character(test_data.data[:100])
             #[re.findall(filter_patter, test_data.data[doc]) for doc in range(len(test_data.data[:50]))]
             self.complete_docs = init_docs_tr + init_docs_ts
             self.train_size = round(len(init_docs_tr)/len(self.complete_docs),1)
@@ -442,7 +442,9 @@ class TextDataLoader:
             savemat(bow_save_path + '/bow_val.mat', {'validation': test_dataset}, do_compression=True)
             # saving id2word:
             print(f'id2word befor saving: {self.id2word.keys()}')
-            savemat("prepared_data/" + '/id2word.mat', {'id': list(self.id2word.keys()), 'word': list(self.id2word.values())}, do_compression=True)
+            savemat(bow_save_path + '/id2word.mat', {'id': list(self.id2word.keys()), 'word': list(self.id2word.values())}, do_compression=True)
+            # saving id2word to csv test
+
 
             del bow_train_tokens
             del bow_train_counts

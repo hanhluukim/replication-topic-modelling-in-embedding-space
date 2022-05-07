@@ -82,10 +82,10 @@ class ETM(nn.Module):
     
     def get_beta_topic_distribution_over_vocab(self):
         try:
-            logit = self.topic_embeddings_alphas(self.vocab_embeddings_rho.weight) # torch.mm(self.rho, self.alphas)
+            prod = self.topic_embeddings_alphas(self.vocab_embeddings_rho.weight) # torch.mm(self.rho, self.alphas)
         except:
-            logit = self.topic_embeddings_alphas(self.vocab_embeddings_rho)
-        beta = F.softmax(logit, dim=0).transpose(1, 0) ## softmax over vocab dimension
+            prod = self.topic_embeddings_alphas(self.vocab_embeddings_rho)
+        beta = F.softmax(prod, dim=0).transpose(1, 0) ## softmax over vocab dimension
         #print(f'shape of beta: {beta.shape}')
         return beta
     
@@ -109,6 +109,20 @@ class ETM(nn.Module):
         # make the prediction about the per-document distribuation over words
         preds = self.decode(theta, beta)
         return preds, kl_theta
-    def show_topics(self, vocab):
-        print("show topics: ")
-        return True
+
+    def show_topics(self, vocab, num_top_words):
+        #print(vocab[:10])
+        with torch.no_grad():
+          topics = []
+          #print("show topics: ")
+          #beta: topic-distribution over the vocabulary: beta K*V
+          betas = self.get_beta_topic_distribution_over_vocab()
+          #print(f'shape of beta: {betas.shape}')
+          for beta in betas:
+            # get the index of words, which idx haven the most probabilities
+            top_indices = list(beta.argsort()[-num_top_words:])
+            #print(list(top_indices))
+            top_words = {vocab[wid]:beta[wid].item() for wid in top_indices}
+            top_words = sorted(top_words.items(), key=lambda x: x[1], reverse=True)
+            topics.append(top_words)
+          return topics

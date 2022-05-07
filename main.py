@@ -139,7 +139,7 @@ print(f'using optimizer: {optimizer_args.optimizer}')
 #--------------------------using Dataset Modul to create DocSet-------------------------
 
 vocab_size = len(list(word2id.keys()))
-tr_set = DocSet("train", vocab_size, train_set)
+tr_set = DocSet("train", vocab_size, train_set, normalize_data=True)
 print(len(tr_set))
 print(f'sum of vector: {sum(tr_set.__getitem__(0))}')
 print(f'length of vector: {torch.norm(tr_set.__getitem__(0))}')
@@ -187,3 +187,7 @@ f = open("python_runtime.txt", "a")
 f.write(f'run time: {datetime.now()-start}')
 f.close()
 
+#-------------------show topics
+topics = etm_model.show_topics(vocab, 10)
+for tp in topics:
+  print(tp)

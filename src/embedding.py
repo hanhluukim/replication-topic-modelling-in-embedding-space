@@ -85,8 +85,9 @@ class WordEmbeddingCreator:
             print(f'length of the vocabulary of prepraring-dataset-vocabulary: {len(train_vocab)}')
             del self.documents
             f = open(embedding_path, 'w') #add to prepared_data
-            for v in tqdm(model_vocab):
-                if v in train_vocab:
+            # sort words in embedding matrix by the ordner from vocabulary
+            for v in tqdm(train_vocab):
+                if v in model_vocab:
                     vec = list(self.model.wv.__getitem__(v))
                     f.write(v + '\t')
                     vec_str = ['%.9f' % val for val in vec]
