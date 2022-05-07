@@ -8,6 +8,7 @@ from src.train_etm import DocSet, TrainETM
 from src.etm import ETM
 import torch
 from datetime import datetime
+from src.visualization import show_embedding_with_kmeans_umap
 
 #---------------------check cuda-------------------------------------
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu") 
@@ -191,3 +192,6 @@ f.close()
 topics = etm_model.show_topics(id2word, 20)
 for tp in topics:
   print(tp)
+
+#----------------
+show_embedding_with_kmeans_umap(id2word, embedding_data, num_topics, etm_model.topic_embeddings_alphas.weight)
