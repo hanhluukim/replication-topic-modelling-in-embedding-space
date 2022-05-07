@@ -1,3 +1,4 @@
+from typing_extensions import TypeVarTuple
 import torch
 import torch.nn.functional as F 
 from torch import nn
@@ -108,3 +109,6 @@ class ETM(nn.Module):
         # make the prediction about the per-document distribuation over words
         preds = self.decode(theta, beta)
         return preds, kl_theta
+    def show_topics(self, vocab):
+        print("show topics: ")
+        return True

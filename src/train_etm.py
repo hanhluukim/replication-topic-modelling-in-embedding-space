@@ -78,6 +78,7 @@ class TrainETM():
         return batch
     def visualize_losses(self, train_losses, neg_rec_losses, neg_kld_losses):
         import matplotlib.pyplot as plt
+        #------reconstruction-loss
         plt.figure()
         plt.plot(train_losses, label = 'loss-train')
         plt.plot(neg_rec_losses, label = 'rec-loss')
@@ -88,6 +89,16 @@ class TrainETM():
         plt.savefig(f'figures/losses_epoch_{len(train_losses)}.png')
         plt.show()
         plt.close()
+        #------
+        plt.figure()
+        plt.plot(neg_kld_losses, label = 'kld')
+        plt.title(f'kld-losses for {len(train_losses)} epochs')
+        plt.legend()
+        plt.savefig(f'figures/kld_epoch_{len(train_losses)}.png')
+        plt.show()
+        plt.close()
+        return True
+
     def get_topic_embedding_from_etm(self):
         topic_embeddings = []
         topic_words = []
@@ -159,7 +170,7 @@ class TrainETM():
             neg_rec = (neg_rec/len(train_loader)).item()
             neg_kld = (neg_kld/len(train_loader)).item()
 
-            print(f'Epoch: {epoch}/{epochs}  -  Loss: {epoch_loss} \t Rec: {neg_rec} \t KL: {neg_kld}')
+            print(f'Epoch: {epoch}/{epochs}  -  Loss: {round(epoch_loss,5)} \t Rec: {round(neg_rec,5)} \t KL: {round(neg_kld,5)}')
             epoch_losses.append(epoch_loss)
             neg_rec_losses.append(neg_rec)
             neg_kld_losses.append(neg_kld)

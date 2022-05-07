@@ -9,18 +9,21 @@ from src.etm import ETM
 import torch
 from datetime import datetime
 
+#---------------------check cuda-------------------------------------
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu") 
 print(f'using cuda: {torch.cuda.is_available()}')
 
+#----------------------argument--------------------------------------
 parser = argparse.ArgumentParser(description='main.py')
 parser.add_argument('--model', type=str, default="LDA", help='which topic model should be used')
 parser.add_argument('--epochs', type=int, default=1000, help='train epochs')
 args = parser.parse_args()
 
+#------------------------parser--------------------------------------
 model_name = args.model
 epochs = args.epochs
 
-# loading
+#------------------------prepare data---------------------------------
 textsloader = TextDataLoader(source="20newsgroups", train_size=None, test_size=None)
 print("\n")
 textsloader.load_tokenize_texts("20newsgroups")
@@ -29,13 +32,13 @@ textsloader.show_example_raw_texts(n_docs=2)
 print("\n")
 print("total documents {}".format(len(textsloader.complete_docs)))
 
-# 
-textsloader.preprocess_texts(length_one_remove=True, punctuation_lower = True, stopwords_filter = True)
-print("\n")
+#-------------------------preprocessing-------------------------------
 min_df = 10
+textsloader.preprocess_texts(length_one_remove=True, punctuation_lower = True, stopwords_filter = True)
 textsloader.split_and_create_voca_from_trainset(max_df=0.7, min_df=min_df, stopwords_remove_from_voca=True)
 print("\n")
 
+#-------------------------test data for LDA---------------------------
 """
 for_lda_model = True
 word2id, id2word, train_set, test_set, val_set = textsloader.create_bow_and_savebow_for_each_set(for_lda_model=for_lda_model)
@@ -55,10 +58,14 @@ if for_lda_model == True:
   print(lda_token_ids)
   print(lda_counts)
 """
+
+#-------------------------------test data for ETM--------------------------------------
 for_lda_model = False
 word2id, id2word, train_set, test_set, val_set = textsloader.create_bow_and_savebow_for_each_set(for_lda_model=for_lda_model, normalize = True)
 print("train-bow-representation for ETM: \n")
 print(f'id2word for ETM: {id2word}')
+print(100*"=")
+
 """
 print("compare lda and etm representation: \n")
 print(lda_token_ids)
@@ -69,11 +76,13 @@ print(train_set['counts'][0])
 print(len(lda_token_ids))
 print(len(train_set['tokens'][0]))
 """
-print(100*"=")
+
+#------------------------------short summary information-------------------------------
 print(f'Size of the vocabulary after prprocessing ist: {len(textsloader.vocabulary)}')
 print(f'Size of train set: {len(train_set["tokens"])}')
 print(f'Size of val set: {len(val_set["tokens"])}')
 print(f'Size of test set: {len(test_set["test"]["tokens"])}')
+
 
 """
 # example word2id
@@ -84,27 +93,31 @@ word2id_df_100['id'] = list(word2id.values())[:100]
 print(word2id_df_100)
 """
 
-# doc in words for embedding training
-# re-erstellen von Dokumenten nach der Vorverarbeitungen. Die Dokumenten sind in Wörtern und werden für Word-Embedding Training benutzt
+#------------------------get docs in words to use for training embedding---------------
+#------------------------doc in words for embedding training---------------------------
+#------------------------re-erstellen von Dokumenten nach der Vorverarbeitungen.-------
+#------------------------Die Dokumenten sind in Wörtern und werden für Word-Embedding Training benutzt
+
 docs_tr, docs_t, docs_v = textsloader.get_docs_in_words_for_each_set()
-"""
 train_docs_df = pd.DataFrame()
-train_docs_df['text-after-preprocessing'] = [' '.join(doc) for doc in docs_tr[:100]]
+train_docs_df['text-after-preprocessing'] = [' '.join(doc) for doc in docs_tr[:10]]
 print(train_docs_df)
-"""
 
 
-# embedding training
+#-------------------------embedding training------------------------------------------
 save_path = Path.joinpath(Path.cwd(), f'prepared_data/min_df_{min_df}/vocab_embedding.txt')
 wb_creator = WordEmbeddingCreator(model_name="cbow", documents = docs_tr, save_path= save_path)
 wb_creator.train(min_count=0, embedding_size= 300)
 vocab = list(word2id.keys())
 wb_creator.create_and_save_vocab_embedding(vocab, save_path)
 
-# embedding word-vectors visualize
+#--------------------------topic embedding training-----------------------------------
+
+#embedding word-vectors visualize
 #embedding_path = save_path
 #fig_path = Path.joinpath(Path.cwd(), "figures")
 #wb_creator.cluster_words(embedding_path, fig_path, 2)
+
 
 # setting parameters for training ETM
 class TrainArguments:
@@ -123,7 +136,8 @@ optimizer_args = OptimizerArguments(optimizer_name="adam", lr=0.005, wdecay=0.1)
 print(f'using epochs: {train_args.epochs}')
 print(f'using optimizer: {optimizer_args.optimizer}')
 
-# DocSet test
+#--------------------------using Dataset Modul to create DocSet-------------------------
+
 vocab_size = len(list(word2id.keys()))
 tr_set = DocSet("train", vocab_size, train_set)
 print(len(tr_set))
@@ -131,23 +145,24 @@ print(f'sum of vector: {sum(tr_set.__getitem__(0))}')
 print(f'length of vector: {torch.norm(tr_set.__getitem__(0))}')
 
 
-# reading embedding data from file
+#---------------------------reading embedding data from file----------------------------
 embedding_data = read_prefitted_embedding(vocab, save_path)
 
-# etm-model setting parameters
+#---------------------------etm-model setting parameters--------------------------------
 num_topics = 10
 t_hidden_size = 800
 rho_size = len(embedding_data[0])
 emb_size = len(embedding_data[0])
 theta_act = "tanh"
 
+#--------------------------etm model setting-------------------------------------------
 etm_model = ETM(
   num_topics, vocab_size, t_hidden_size, rho_size, emb_size, theta_act, 
   embedding_data, enc_drop=0.5).to(device)
 print(50*"-" + 'MODEL-SUMMARY' + 50*"-")
 print(etm_model)
 
-print(50*"-" + 'TRAIN' + 50*"-")
+
 # train_set must be normalized??
 """
 def get_normalized_bows(dataset):
@@ -157,6 +172,9 @@ def get_normalized_bows(dataset):
 train_set = get_normalized_bows(train_sprint("end train time: {}".format(datetime.now()-start_time))et)
 #
 """
+
+#--------------------------training----------------------------------------------------
+print(50*"-" + 'TRAIN' + 50*"-")
 start = datetime.now()
 train_class = TrainETM().train(
     etm_model,
@@ -168,3 +186,4 @@ train_class = TrainETM().train(
 f = open("python_runtime.txt", "a")
 f.write(f'run time: {datetime.now()-start}')
 f.close()
+
