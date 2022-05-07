@@ -178,7 +178,7 @@ class TrainETM():
             neg_rec = (neg_rec/len(train_loader)).item()
             neg_kld = (neg_kld/len(train_loader)).item()
 
-            print(f'Epoch: {epoch}/{epochs}  -  Loss: {round(epoch_loss,5)} \t Rec: {round(neg_rec,5)} \t KL: {round(neg_kld,5)}')
+            print(f'Epoch: {epoch+1}/{epochs}  -  Loss: {round(epoch_loss,5)} \t Rec: {round(neg_rec,5)} \t KL: {round(neg_kld,5)}')
             epoch_losses.append(epoch_loss)
             neg_rec_losses.append(neg_rec)
             neg_kld_losses.append(neg_kld)

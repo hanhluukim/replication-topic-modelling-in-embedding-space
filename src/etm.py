@@ -110,7 +110,12 @@ class ETM(nn.Module):
         preds = self.decode(theta, beta)
         return preds, kl_theta
 
-    def show_topics(self, vocab, num_top_words):
+    def show_topics(self, id2word, num_top_words):
+        """
+        beta is topic-distribution over the vocabulary
+        alphas.weights is topic-embedding of each topic
+        """
+
         #print(vocab[:10])
         with torch.no_grad():
           topics = []
@@ -124,7 +129,7 @@ class ETM(nn.Module):
             # get the index of words, which idx haven the most probabilities
             top_indices = list(beta.argsort()[-num_top_words:])
             #print(list(top_indices))
-            top_words = {vocab[wid]:beta[wid].item() for wid in top_indices}
+            top_words = {id2word[wid.item()]:beta[wid].item() for wid in top_indices}
             top_words = sorted(top_words.items(), key=lambda x: x[1], reverse=True)
             topics.append(top_words)
           return topics

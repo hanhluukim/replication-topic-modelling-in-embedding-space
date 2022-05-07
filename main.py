@@ -35,7 +35,7 @@ print("total documents {}".format(len(textsloader.complete_docs)))
 #-------------------------preprocessing-------------------------------
 min_df = 10
 textsloader.preprocess_texts(length_one_remove=True, punctuation_lower = True, stopwords_filter = True)
-textsloader.split_and_create_voca_from_trainset(max_df=0.7, min_df=min_df, stopwords_remove_from_voca=True)
+textsloader.split_and_create_voca_from_trainset(max_df=0.85, min_df=min_df, stopwords_remove_from_voca=True)
 print("\n")
 
 #-------------------------test data for LDA---------------------------
@@ -184,10 +184,10 @@ train_class = TrainETM().train(
     #num_topics, t_hidden_size, rho_size, emb_size, theta_act,  embedding_data, 0.5)
 
 f = open("python_runtime.txt", "a")
-f.write(f'run time: {datetime.now()-start}')
+f.write(f'run time: {datetime.now()-start}\n')
 f.close()
 
 #-------------------show topics
-topics = etm_model.show_topics(vocab, 10)
+topics = etm_model.show_topics(id2word, 20)
 for tp in topics:
   print(tp)

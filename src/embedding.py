@@ -22,13 +22,15 @@ def read_prefitted_embedding(vocab, save_path):
         w = t.split("\t")[0]
         v = [float(e) for e in t.split("\t")[1].split(" ")]
         embedding_data[w] = v
+    """
     # sort embedding_data again by the ordner of the vocabulary from bow
     embedding_data_as_list = []
     for w in vocab:
       if w in list(embedding_data.keys()):
         embedding_data_as_list.append(embedding_data[w])
     del embedding_data
-    return embedding_data_as_list
+    """
+    return list(embedding_data.values())
 
 class WordEmbeddingCreator:
       def __init__(self, model_name="cbow", documents = None, save_path = ""):
