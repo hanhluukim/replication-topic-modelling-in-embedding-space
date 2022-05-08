@@ -110,7 +110,7 @@ class WordEmbeddingCreator:
             from sklearn import metrics
 
             # read embedding from file
-            with open(embedding_save_path) as f:
+            with open(Path.joinpath(embedding_save_path, 'vocab_embedding.txt')) as f:
               lines = f.readlines()
             embedding_data = []
             words_data = []

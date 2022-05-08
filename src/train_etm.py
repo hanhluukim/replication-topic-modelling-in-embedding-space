@@ -84,7 +84,7 @@ class TrainETM():
         #print(batch[0])
         #print(batch[0].shape)
         return batch
-    def visualize_losses(self, train_losses, neg_rec_losses, neg_kld_losses):
+    def visualize_losses(self, train_losses, neg_rec_losses, neg_kld_losses, figures_path):
         import matplotlib.pyplot as plt
         #------reconstruction-loss
         plt.figure()
@@ -94,7 +94,7 @@ class TrainETM():
 
         plt.title(f'losses for {len(train_losses)} epochs')
         plt.legend()
-        plt.savefig(f'figures/losses_epoch_{len(train_losses)}.png')
+        plt.savefig(f'{figures_path}/losses_epoch_{len(train_losses)}.png')
         plt.show()
         plt.close()
         #------
@@ -102,7 +102,7 @@ class TrainETM():
         plt.plot(neg_kld_losses, label = 'kld')
         plt.title(f'kld-losses for {len(train_losses)} epochs')
         plt.legend()
-        plt.savefig(f'figures/kld_epoch_{len(train_losses)}.png')
+        plt.savefig(f'{figures_path}/kld_epoch_{len(train_losses)}.png')
         plt.show()
         plt.close()
         return True
@@ -115,7 +115,8 @@ class TrainETM():
               etm_model,
               vocab_size, 
               train_args, optimizer_args, training_set,
-              normalize_data = True
+              normalize_data = True,
+              figures_path = None
               ):
               #num_topics, t_hidden_size, rho_size, emb_size, theta_act,
               #embeddings=None, enc_drop=0.5
@@ -198,7 +199,7 @@ class TrainETM():
                   }
               , path = None)
         # visualize the losses during training
-        self.visualize_losses(epoch_losses, neg_rec_losses, neg_kld_losses)
+        self.visualize_losses(epoch_losses, neg_rec_losses, neg_kld_losses, figures_path)
       
 
         

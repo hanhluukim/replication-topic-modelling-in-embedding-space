@@ -104,13 +104,19 @@ train_docs_df = pd.DataFrame()
 train_docs_df['text-after-preprocessing'] = [' '.join(doc) for doc in docs_tr[:10]]
 print(train_docs_df)
 
+#------------------paths
+
+save_path = Path.joinpath(Path.cwd(), f'prepared_data/min_df_{min_df}')
+figures_path = Path.joinpath(Path.cwd(), f'figures/min_df_{min_df}')
+Path(figures_path).mkdir(parents=True, exist_ok=True)
 
 #-------------------------embedding training------------------------------------------
-save_path = Path.joinpath(Path.cwd(), f'prepared_data/min_df_{min_df}')
+
 wb_creator = WordEmbeddingCreator(model_name="cbow", documents = docs_tr, save_path= save_path)
 wb_creator.train(min_count=0, embedding_size= 300)
 vocab = list(word2id.keys())
 wb_creator.create_and_save_vocab_embedding(vocab, save_path)
+wb_creator.cluster_words(save_path, figures_path , 2)
 
 #--------------------------topic embedding training-----------------------------------
 
@@ -181,7 +187,8 @@ train_class = TrainETM().train(
     etm_model,
     vocab_size, 
     train_args, optimizer_args, train_set,
-    normalize_data = True)
+    normalize_data = True,
+    figures_path = figures_path)
     #num_topics, t_hidden_size, rho_size, emb_size, theta_act,  embedding_data, 0.5)
 
 f = open("python_runtime.txt", "a")
