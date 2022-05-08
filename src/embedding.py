@@ -102,7 +102,7 @@ class WordEmbeddingCreator:
             self.model.save(str(Path.joinpath(embedding_path, 'word2vec.model')))
             return True
 
-      def cluster_words(self, embedding_save_path = None, fig_path = None, n_components=3):
+      def cluster_words(self, embedding_save_path = None, fig_path = None, n_components=3, text = False):
             import umap.umap_ as umap
             import time
             import plotly.express as px
@@ -147,7 +147,11 @@ class WordEmbeddingCreator:
                                     title ="word-embedding-samples")
             else:
                   # n_components = 2
-                  fig = px.scatter(wb, text = wb['word'], x='x', y='y', color=wb['cluster'], title='word embedding samples')
+                  if text:
+                    fig = px.scatter(wb, text = wb['word'], x='x', y='y', color=wb['cluster'], title='word embedding samples')
+                  else:
+                    fig = px.scatter(wb, x='x', y='y', color=wb['cluster'], title='word embedding samples')
+                    
             fig.write_image(Path.joinpath(fig_path, f'embedding_space_dim_{n_components}.png'))
             fig.write_html(Path.joinpath(fig_path, f'embedding_space_dim_{n_components}.html'))
             fig.show()

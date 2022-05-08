@@ -10,7 +10,11 @@ from sklearn import cluster
 from sklearn import metrics
 import torch
 
-def show_embedding_with_kmeans_umap(id2word, embedding_data, num_topics, etm_model_topic_embedding_alphas_weights):
+
+def show_embedding_with_kmeans_umap(
+  id2word, embedding_data, num_topics, etm_model_topic_embedding_alphas_weights,
+  figures_path):
+
   we = torch.from_numpy(np.array(embedding_data)).float()
   print(we.shape)
   te = etm_model_topic_embedding_alphas_weights
@@ -32,7 +36,7 @@ def show_embedding_with_kmeans_umap(id2word, embedding_data, num_topics, etm_mod
     labels.append(tp)
 
   for t in te:
-    embedding_data.append(t.detach().numpy())
+    embedding_data.append(t.detach().cpu().numpy())
 
   # dimension reduction with umap
   start = time.time()
@@ -51,5 +55,5 @@ def show_embedding_with_kmeans_umap(id2word, embedding_data, num_topics, etm_mod
                   x='x', y='y',
                   color = wb['cluster'],
                   title ="word-embedding-samples")
-  fig.write_image("figures/wb_clustering_with_kmeans.png")
+  fig.write_image(f'{figures_path}/wb_clustering_with_kmeans.png')
   fig.show()

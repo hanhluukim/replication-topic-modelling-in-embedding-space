@@ -201,4 +201,6 @@ for tp in topics:
   print(tp)
 
 #----------------
-show_embedding_with_kmeans_umap(id2word, embedding_data, num_topics, etm_model.topic_embeddings_alphas.weight)
+show_embedding_with_kmeans_umap(
+  id2word, embedding_data, num_topics, etm_model.topic_embeddings_alphas.weight,
+  figures_path)
