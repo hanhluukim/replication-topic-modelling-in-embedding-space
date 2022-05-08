@@ -27,6 +27,8 @@ def marg(w,documents):
 	return anzw/anzwAll
 
 def pointwiseInf(documents,w1,w2,anzDoc):
+	if coocurenceP(documents,w1,w2,anzDoc)==0: 
+		return -1
 	f= math.log(coocurenceP(documents,w1,w2,anzDoc)/(marg(w1,documents)*marg(w2,documents)))/(-math.log(coocurenceP(documents,w1,w2,anzDoc)))
 	return f
 
