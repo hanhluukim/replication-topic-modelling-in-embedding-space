@@ -50,3 +50,11 @@ def topicCoherence(topicsWords,anzahlTopics,documents,anzDoc):
 				c=c+pointwiseInf(documents,topicWords[i],topicWords[j],anzDoc,1)
 	c=c/(45*anzahlTopics)
 	return c
+def topicCoherence2(topicsWords,anzahlTopics,documents,anzDoc):
+	c=0
+	for topicWords in topicsWords:
+		for i in range(10):
+			for j in range(i+1,10):
+				c=c+pointwiseInf(documents,topicWords[i],topicWords[j],anzDoc,2)
+	c=c/(45*anzahlTopics)
+	return c
