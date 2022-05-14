@@ -58,3 +58,9 @@ def topicCoherence2(topicsWords,anzahlTopics,documents,anzDoc):
 				c=c+pointwiseInf(documents,topicWords[i],topicWords[j],anzDoc,2)
 	c=c/(45*anzahlTopics)
 	return c
+def topicPerplexity():
+	#todo
+	return 0
+def topicDiversity():
+	#todo
+	return 0
