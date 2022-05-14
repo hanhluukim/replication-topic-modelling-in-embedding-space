@@ -61,6 +61,13 @@ def topicCoherence2(topicsWords,anzahlTopics,documents,anzDoc):
 def topicPerplexity():
 	#todo
 	return 0
-def topicDiversity():
-	#todo
-	return 0
+def topicDiversity(topicsTopk):
+	unique=[]
+	gesamt=len(topicsTopk)*len(topicsTopk[0])
+	for topk in topicsTopk:
+		for word in topk
+			if word in unique:
+			else:
+				unique.append(word)
+	uniqueAnzahl= len(unique)
+	return uniqueAnzahl/gesamt
