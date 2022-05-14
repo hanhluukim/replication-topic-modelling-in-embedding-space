@@ -33,10 +33,13 @@ def marg2(w,documents):
 
 	return anzw/len(documents)
 
-def pointwiseInf(documents,w1,w2,anzDoc):
+def pointwiseInf(documents,w1,w2,anzDoc,margBerechnung):
 	if coocurenceP(documents,w1,w2,anzDoc)==0: 
 		return -1
-	f= math.log(coocurenceP(documents,w1,w2,anzDoc)/(marg(w1,documents)*marg(w2,documents)))/(-math.log(coocurenceP(documents,w1,w2,anzDoc)))
+	if margBerechnung==1:
+		f= math.log(coocurenceP(documents,w1,w2,anzDoc)/(marg(w1,documents)*marg(w2,documents)))/(-math.log(coocurenceP(documents,w1,w2,anzDoc)))
+	else:
+		f= math.log(coocurenceP(documents,w1,w2,anzDoc)/(marg2(w1,documents)*marg2(w2,documents)))/(-math.log(coocurenceP(documents,w1,w2,anzDoc)))
 	return f
 
 def topicCoherence(topicsWords,anzahlTopics,documents,anzDoc):
@@ -44,6 +47,6 @@ def topicCoherence(topicsWords,anzahlTopics,documents,anzDoc):
 	for topicWords in topicsWords:
 		for i in range(10):
 			for j in range(i+1,10):
-				c=c+pointwiseInf(documents,topicWords[i],topicWords[j],anzDoc)
+				c=c+pointwiseInf(documents,topicWords[i],topicWords[j],anzDoc,1)
 	c=c/(45*anzahlTopics)
 	return c
