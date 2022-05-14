@@ -25,6 +25,13 @@ def marg(w,documents):
 				anzw=anzw+1
 
 	return anzw/anzwAll
+def marg2(w,documents):
+	anzw=0
+	for document in documents:
+		if word in document:
+			anzw=anzw+1
+
+	return anzw/len(documents)
 
 def pointwiseInf(documents,w1,w2,anzDoc):
 	if coocurenceP(documents,w1,w2,anzDoc)==0: 
