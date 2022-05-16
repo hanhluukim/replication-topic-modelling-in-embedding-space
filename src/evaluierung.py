@@ -70,7 +70,8 @@ def topicPerplexity(thetatest1,tests2anzahl_perword,anzahlVocabulary,betatest1):
 		else:
 			erwartung.append(0)
 	for m in range(anzahlVocabulary):
-	#todo
+		h=h+tests2anzahl_perword[m]*erwartung[m]
+	#todo mean
 	return 0
 def topicDiversity(topicsTopk):
 	unique=[]
