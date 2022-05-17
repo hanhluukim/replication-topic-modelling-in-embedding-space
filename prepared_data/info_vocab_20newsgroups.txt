@@ -1,0 +1,5 @@
+min-df: 2	 tokens-train: 1421084 	 tokens-valid: 17610 	 tokens-test: 967948 	 vocab: 54264
+min-df: 5	 tokens-train: 1362208 	 tokens-valid: 17132 	 tokens-test: 936729 	 vocab: 29871
+min-df: 10	 tokens-train: 1299155 	 tokens-valid: 16488 	 tokens-test: 895461 	 vocab: 18677
+min-df: 30	 tokens-train: 1149822 	 tokens-valid: 14883 	 tokens-test: 794947 	 vocab: 8496
+min-df: 100	 tokens-train: 895843 	 tokens-valid: 11537 	 tokens-test: 622654 	 vocab: 3102
