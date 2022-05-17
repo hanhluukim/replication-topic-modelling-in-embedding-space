@@ -124,10 +124,10 @@ class WordEmbeddingCreator:
             kmeans.fit(embedding_data)
             labels = kmeans.labels_
             centroids = kmeans.cluster_centers_
-            print("Cluster id labels for inputted data")
-            print(labels)
-            print("Centroids data")
-            print(centroids)
+            #print("Cluster id labels for inputted data")
+            #print(labels)
+            #print("Centroids data")
+            #print(centroids)
             # dimension reduction with umap
             reducer = umap.UMAP(random_state=42,n_components=n_components)
             embedding = reducer.fit_transform(embedding_data)
