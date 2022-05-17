@@ -17,8 +17,11 @@ print(f'using cuda: {torch.cuda.is_available()}')
 #----------------------argument--------------------------------------
 parser = argparse.ArgumentParser(description='main.py')
 parser.add_argument('--model', type=str, default="LDA", help='which topic model should be used')
-parser.add_argument('--epochs', type=int, default=1000, help='train epochs')
+parser.add_argument('--epochs', type=int, default=150, help='train epochs')
+parser.add_argument('--wordvec-model', type=str, default="skipgram", help='method for training word embedding')
+
 args = parser.parse_args()
+
 
 #------------------------parser--------------------------------------
 model_name = args.model
@@ -64,7 +67,8 @@ if for_lda_model == True:
 for_lda_model = False
 word2id, id2word, train_set, test_set, val_set = textsloader.create_bow_and_savebow_for_each_set(for_lda_model=for_lda_model, normalize = True)
 print("train-bow-representation for ETM: \n")
-print(f'id2word for ETM: {id2word}')
+print(f'example ids of dict-id2word for ETM: {list(id2word.keys())[:5]}')
+print(f'example words of dict-id2word for ETM: {list(id2word.values())[:5]}')
 print(100*"=")
 
 """
