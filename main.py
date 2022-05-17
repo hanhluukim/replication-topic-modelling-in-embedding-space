@@ -26,6 +26,7 @@ args = parser.parse_args()
 #------------------------parser--------------------------------------
 model_name = args.model
 epochs = args.epochs
+word2vec_model = args.wordvec_model
 
 #------------------------prepare data---------------------------------
 textsloader = TextDataLoader(source="20newsgroups", train_size=None, test_size=None)
@@ -39,7 +40,7 @@ print("total documents {}".format(len(textsloader.complete_docs)))
 #-------------------------preprocessing-------------------------------
 min_df = 10
 textsloader.preprocess_texts(length_one_remove=True, punctuation_lower = True, stopwords_filter = True)
-textsloader.split_and_create_voca_from_trainset(max_df=0.85, min_df=min_df, stopwords_remove_from_voca=True)
+textsloader.split_and_create_voca_from_trainset(max_df=0.7, min_df=min_df, stopwords_remove_from_voca=True)
 print("\n")
 
 #-------------------------test data for LDA---------------------------
@@ -116,7 +117,7 @@ Path(figures_path).mkdir(parents=True, exist_ok=True)
 
 #-------------------------embedding training------------------------------------------
 
-wb_creator = WordEmbeddingCreator(model_name="cbow", documents = docs_tr, save_path= save_path)
+wb_creator = WordEmbeddingCreator(model_name=word2vec_model, documents = docs_tr, save_path= save_path)
 wb_creator.train(min_count=0, embedding_size= 300)
 vocab = list(word2id.keys())
 wb_creator.create_and_save_vocab_embedding(vocab, save_path)
@@ -142,8 +143,8 @@ class OptimizerArguments:
             self.lr = lr
             self.wdecay = wdecay
             
-train_args = TrainArguments(epochs=epochs, batch_size=100, log_interval=None)
-optimizer_args = OptimizerArguments(optimizer_name="adam", lr=0.005, wdecay=0.1)
+train_args = TrainArguments(epochs=epochs, batch_size=1000, log_interval=None)
+optimizer_args = OptimizerArguments(optimizer_name="adam", lr=0.002, wdecay=0.1)
 print(f'using epochs: {train_args.epochs}')
 print(f'using optimizer: {optimizer_args.optimizer}')
 
