@@ -122,6 +122,11 @@ wb_creator.train(min_count=0, embedding_size= 300)
 vocab = list(word2id.keys())
 wb_creator.create_and_save_vocab_embedding(vocab, save_path)
 wb_creator.cluster_words(save_path, figures_path , 2)
+# show embedding of some words
+print("neighbor words of some sample selected words")
+for i in range(0,5):
+  print(wb_creator.find_most_similar_words(n_neighbor=20, word=vocab[i]))
+
 
 #--------------------------topic embedding training-----------------------------------
 

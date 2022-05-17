@@ -49,21 +49,26 @@ class WordEmbeddingCreator:
             self.documents = documents
             self.model = None
             
-      def train(self, min_count = 10, embedding_size = 300):
+      def train(self, min_count = 0, embedding_size = 300):
             if self.model_name=="cbow":
                   print("word-embedding train begins")
                   self.model = gensim.models.Word2Vec(self.documents, 
+                                                      seed = 42,
                                                       min_count=min_count, 
                                                       sg=0, 
                                                       window=5,
-                                                      size=embedding_size)
+                                                      size=embedding_size,
+                                                      iter=50)
             elif self.model_name=="skipgram":
                   print("train begin:word-embedding with skipgram")
                   self.model = gensim.models.Word2Vec(self.documents, 
+                                                      seed = 42,
                                                       min_count=min_count, 
                                                       sg=1, 
                                                       window=5,
-                                                      size=embedding_size)
+                                                      size=embedding_size,
+                                                      negative=1,
+                                                      iter=50)
             else:
                   print("word-embedding with BERT")
             print("word-embedding train finished")
@@ -102,6 +107,12 @@ class WordEmbeddingCreator:
             self.model.save(str(Path.joinpath(embedding_path, 'word2vec.model')))
             return True
 
+      def find_most_similar_words(self, n_neighbor=20, word = None):
+            if word!=None:
+                  return self.model.wv.most_similar(word, topn=n_neighbor)
+            else:
+                  print(f'give a word to get the {n_neighbor} neighbor words')
+      
       def cluster_words(self, embedding_save_path = None, fig_path = None, n_components=3, text = False):
             import umap.umap_ as umap
             import time
