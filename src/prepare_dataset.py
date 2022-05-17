@@ -4,6 +4,7 @@
 # the retured data here will be imported to the word-embedding modul to create word-embedding. After that can ETM will be used
 # returned data can be used as input for LDA Model
 
+from cv2 import sort
 from sklearn.datasets import fetch_20newsgroups
 import pathlib
 from sklearn.feature_extraction.text import CountVectorizer
@@ -41,8 +42,11 @@ class TextDataLoader:
         self.train_indices = None
         self.test_indices = None
         self.val_indices = None
-        # to delete
-        self.min_df = None
+    
+        self.min_df = 0
+        self.n_tokens_train = 0
+        self.n_tokens_test = 0
+        self.n_tokens_val = 0
         
     def load_tokenize_texts(self, source="20newsgroups"):
         print("loading texts: ...")
@@ -58,8 +62,10 @@ class TextDataLoader:
             init_docs_ts = filter_special_character(test_data.data)
             #[re.findall(filter_patter, test_data.data[doc]) for doc in range(len(test_data.data[:50]))]
             self.complete_docs = init_docs_tr + init_docs_ts
-            self.train_size = round(len(init_docs_tr)/len(self.complete_docs),1)
-            self.test_size = round(len(init_docs_ts)/len(self.complete_docs),1)
+            self.train_size = len(init_docs_tr) #round(len(init_docs_tr)/len(self.complete_docs),1)
+            print(f'train-size after loading: {self.train_size}')
+            self.test_size = len(init_docs_ts) #round(len(init_docs_ts)/len(self.complete_docs),1)
+            print(f'test-size after loading: {self.test_size}')
             
             del train_data
             del test_data
@@ -157,7 +163,9 @@ class TextDataLoader:
         # get dataset-docs-indices for each set
         val_dataset_size = 100
         docs_tr, docs_ts, docs_tr_indices, docs_ts_indices = train_test_split(self.complete_docs, range(0,len(self.complete_docs)), test_size=self.test_size, random_state=42)
-        docs_tr, docs_va, docs_tr_indices, docs_va_indices = train_test_split(docs_tr, docs_tr_indices, test_size=round(val_dataset_size/len(docs_tr),2), random_state=42)
+        print(f'validation-size ist: {round(val_dataset_size/len(docs_tr),2)}')
+        docs_tr, docs_va, docs_tr_indices, docs_va_indices = train_test_split(docs_tr, docs_tr_indices, test_size=100, random_state=42)
+        
         self.train_indices = docs_tr_indices
         self.test_indices = docs_ts_indices
         self.val_indices = docs_va_indices
@@ -221,7 +229,14 @@ class TextDataLoader:
     
     def get_docs_in_word_ids_for_each_set(self):
         #using the self.train_indices, self.test_indices, self.val_indices to get the documents
-
+        
+        with open('prepared_data/train_docs_from_complete_docs.txt', 'w') as f:
+            #print(self.train_indices)
+            sorted_indices = sorted(self.train_indices)
+            for train_doc_idx in sorted_indices:
+                f.write(f'{train_doc_idx}: {self.complete_docs[train_doc_idx]}')
+                f.write("\n")
+        
         docs_tr = [[self.word2id[w] for w in self.complete_docs[train_doc_idx].split() if w in self.word2id] for train_doc_idx in self.train_indices]
         docs_va = [[self.word2id[w] for w in self.complete_docs[val_doc_idx].split() if w in self.word2id] for val_doc_idx in self.val_indices]
         docs_ts = [[self.word2id[w] for w in self.complete_docs[test_doc_idx].split() if w in self.word2id] for test_doc_idx in self.test_indices]
@@ -244,8 +259,8 @@ class TextDataLoader:
 
         def save_preprocessed_docs(path=None, name=None, docs=None, docs_indices = None):
           docs_df = pd.DataFrame()
-          docs_df['text-after-preprocessing'] = [' '.join(doc) for doc in docs]
           docs_df['index-in-complete-docs'] = docs_indices #indices_in complete-doc
+          docs_df['text-after-preprocessing'] = [' '.join(doc) for doc in docs]
           docs_df.to_csv(f'{path}/{name}.csv',index=False)
           del docs_df
           return True
@@ -284,6 +299,11 @@ class TextDataLoader:
         docs_ts = [doc for doc in docs_ts if len(doc)>1]
         docs_va = remove_empty(docs_va)
         """
+        
+        print(f'train-size-after-all: {len(docs_tr)}')
+        print(f'test-size-after-all: {len(docs_ts)}')
+        print(f'validation-size-after-all: {len(docs_va)}')
+        
         
         # split test-set to two halves
         docs_ts_h1, docs_ts_h2,_,_ = train_test_split(docs_ts, self.test_indices, test_size=0.5, random_state=42)
@@ -479,7 +499,7 @@ class TextDataLoader:
     def write_info_vocab_to_text(self):
         
         f = open(f'prepared_data/info_vocab_{self.source}.txt', "a")
-        f.write(f'min-df: {self.min_df}\t tokens-train: {self.n_token_train} \t tokens-valid: {self.n_token_val} \t tokens-test: {self.n_token_test} \t vocab: {len(self.vocab)}')
+        f.write(f'min-df: {self.min_df}\t tokens-train: {self.n_tokens_train} \t tokens-valid: {self.n_tokens_val} \t tokens-test: {self.n_tokens_test} \t vocab: {len(self.vocabulary)}')
         f.write("\n")
         f.close()
                 

@@ -32,7 +32,7 @@ class DocSet(Dataset):
             # normalize the item?
             return item
 
-def loss_function(pred_bows, normalized_bows, kl_theta):
+def loss_function(loss_name, pred_bows, normalized_bows, kl_theta):
     # reconstruction-loss between pred-normalized-bows and normalized-bows??
     #print(pred_bows.shape)
     #print(normalized_bows.shape)
@@ -49,14 +49,16 @@ def loss_function(pred_bows, normalized_bows, kl_theta):
     #sum over the vocabulary and mean of datch. covert to float to use mean()
     #torch.log(res+1e-6)
     # using log(pred)
-    cross_entropy = True
-    if cross_entropy:
-      mean_recon_loss = -(normalized_bows * torch.log(pred_bows + 1e-6)).sum(1).float().mean()
+    if loss_name != "paper-loss":
+        cross_entropy = True
+        if cross_entropy:
+            mean_recon_loss = -(normalized_bows * torch.log(pred_bows + 1e-6)).sum(1).float().mean()
+        else:
+        # mean square error
+            loss = nn.MSELoss(reduce="mean")
+            mean_recon_loss = loss(pred_bows, normalized_bows)
     else:
-      # mean square error
-      loss = nn.MSELoss(reduce="mean")
-      mean_recon_loss = loss(pred_bows, normalized_bows)
-
+        mean_recon_loss = -torch.log(pred_bows + 1e-6).sum(1).float().mean()
     return mean_recon_loss, kl_theta.mean()
 
 def get_optimizer(model, opt_args):
@@ -125,6 +127,7 @@ class TrainETM():
         # training setting
         epochs = train_args.epochs
         batch_size = train_args.batch_size
+        loss_name = "paper-loss"
                 
         # define etm model
         etm_model = etm_model.to(device)
@@ -163,7 +166,7 @@ class TrainETM():
                 pred_bows, kl_theta = etm_model.forward(batch_doc_as_bows.to(device))
                 pred_bows = pred_bows.to(device)
                 # compute the individual losses
-                reconstruction_loss, kld_loss = loss_function(pred_bows, batch_doc_as_bows.to(device), kl_theta)
+                reconstruction_loss, kld_loss = loss_function(loss_name, pred_bows, batch_doc_as_bows.to(device), kl_theta)
                 #print(f'reconstruction loss: {reconstruction_loss}')
                 #print(f'KL-divergence loss: {kld_loss}')
                 avg_batch_loss = reconstruction_loss + kld_loss

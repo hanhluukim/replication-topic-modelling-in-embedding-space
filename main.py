@@ -28,7 +28,19 @@ model_name = args.model
 epochs = args.epochs
 word2vec_model = args.wordvec_model
 
+
+#-----------------------check statistic--------------------------------
+for min_df in [2, 5, 10, 30, 100]:
+      textsloader = TextDataLoader(source="20newsgroups", train_size=None, test_size=None)
+      textsloader.load_tokenize_texts("20newsgroups")
+      textsloader.preprocess_texts(length_one_remove=True, punctuation_lower = True, stopwords_filter = True)
+      textsloader.split_and_create_voca_from_trainset(max_df=0.7, min_df=min_df, stopwords_remove_from_voca=True)
+      for_lda_model = False
+      word2id, id2word, train_set, test_set, val_set = textsloader.create_bow_and_savebow_for_each_set(for_lda_model=for_lda_model, normalize = True)
+      textsloader.write_info_vocab_to_text()
+      del textsloader  
 #------------------------prepare data---------------------------------
+
 textsloader = TextDataLoader(source="20newsgroups", train_size=None, test_size=None)
 print("\n")
 textsloader.load_tokenize_texts("20newsgroups")
@@ -45,7 +57,6 @@ textsloader.split_and_create_voca_from_trainset(max_df=0.7, min_df=min_df, stopw
 print("\n")
 
 #------------------------save information about vocabulary-------------------
-textsloader.write_info_vocab_to_text()
 
 #-------------------------test data for LDA---------------------------
 """
@@ -75,6 +86,7 @@ print("train-bow-representation for ETM: \n")
 print(f'example ids of dict-id2word for ETM: {list(id2word.keys())[:5]}')
 print(f'example words of dict-id2word for ETM: {list(id2word.values())[:5]}')
 print(100*"=")
+textsloader.write_info_vocab_to_text()
 
 """
 print("compare lda and etm representation: \n")
@@ -113,6 +125,8 @@ train_docs_df = pd.DataFrame()
 train_docs_df['text-after-preprocessing'] = [' '.join(doc) for doc in docs_tr[:10]]
 print(train_docs_df)
 
+del textsloader
+
 #------------------paths
 
 save_path = Path.joinpath(Path.cwd(), f'prepared_data/min_df_{min_df}')
@@ -125,7 +139,7 @@ wb_creator = WordEmbeddingCreator(model_name=word2vec_model, documents = docs_tr
 wb_creator.train(min_count=0, embedding_size= 300)
 vocab = list(word2id.keys())
 wb_creator.create_and_save_vocab_embedding(vocab, save_path)
-wb_creator.cluster_words(save_path, figures_path , 2)
+#wb_creator.cluster_words(save_path, figures_path , 2)
 # show embedding of some words
 print("neighbor words of some sample selected words")
 for i in range(0,5):
@@ -198,6 +212,7 @@ train_set = get_normalized_bows(train_sprint("end train time: {}".format(datetim
 
 #--------------------------training----------------------------------------------------
 print(50*"-" + 'TRAIN' + 50*"-")
+
 start = datetime.now()
 train_class = TrainETM().train(
     etm_model,
@@ -217,6 +232,8 @@ for tp in topics:
   print(tp)
 
 #----------------
+"""
 show_embedding_with_kmeans_umap(
   id2word, embedding_data, num_topics, etm_model.topic_embeddings_alphas.weight,
   figures_path)
+"""
