@@ -41,9 +41,9 @@ dir2= ("with-stopwords", "data_nyt/stopwords_not_remove_glove/min_df_5000")
 
 
 repo_list = {repo_slug_1:dir1, repo_slug_2:dir2}
-repo_list_new = {repo_slug_1:dir1}
+#repo_list_new = {repo_slug_1:dir1}
 
-for repo_slug, folder_name in repo_list_new.items():
+for repo_slug, folder_name in repo_list.items():
     for file_name in file_names:
         download_url = f'https://api.bitbucket.org/2.0/repositories/{host_username}/{repo_slug}/src/master/{folder_name[1]}/{file_name}'
         print(download_url)
