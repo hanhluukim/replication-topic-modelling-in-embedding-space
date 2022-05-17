@@ -32,16 +32,20 @@ word2vec_model = args.wordvec_model
 textsloader = TextDataLoader(source="20newsgroups", train_size=None, test_size=None)
 print("\n")
 textsloader.load_tokenize_texts("20newsgroups")
+
+#-------------------------preprocessing-------------------------------
+min_df = 10
+textsloader.preprocess_texts(length_one_remove=True, punctuation_lower = True, stopwords_filter = True)
 print("\n")
 textsloader.show_example_raw_texts(n_docs=2)
 print("\n")
 print("total documents {}".format(len(textsloader.complete_docs)))
 
-#-------------------------preprocessing-------------------------------
-min_df = 10
-textsloader.preprocess_texts(length_one_remove=True, punctuation_lower = True, stopwords_filter = True)
 textsloader.split_and_create_voca_from_trainset(max_df=0.7, min_df=min_df, stopwords_remove_from_voca=True)
 print("\n")
+
+#------------------------save information about vocabulary-------------------
+textsloader.write_info_vocab_to_text()
 
 #-------------------------test data for LDA---------------------------
 """
@@ -125,7 +129,9 @@ wb_creator.cluster_words(save_path, figures_path , 2)
 # show embedding of some words
 print("neighbor words of some sample selected words")
 for i in range(0,5):
-  print(wb_creator.find_most_similar_words(n_neighbor=20, word=vocab[i]))
+      print(f'neighbor of word {vocab[i]}')
+      print([r[0] for r in wb_creator.find_most_similar_words(n_neighbor=5, word=vocab[i])])
+      print([r[1] for r in wb_creator.find_most_similar_words(n_neighbor=5, word=vocab[i])])
 
 
 #--------------------------topic embedding training-----------------------------------

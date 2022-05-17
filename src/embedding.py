@@ -58,7 +58,7 @@ class WordEmbeddingCreator:
                                                       sg=0, 
                                                       window=5,
                                                       size=embedding_size,
-                                                      iter=50)
+                                                      iter=5)
             elif self.model_name=="skipgram":
                   print("train begin:word-embedding with skipgram")
                   self.model = gensim.models.Word2Vec(self.documents, 
@@ -68,7 +68,7 @@ class WordEmbeddingCreator:
                                                       window=5,
                                                       size=embedding_size,
                                                       negative=1,
-                                                      iter=50)
+                                                      iter=5)
             else:
                   print("word-embedding with BERT")
             print("word-embedding train finished")

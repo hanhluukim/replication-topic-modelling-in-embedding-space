@@ -71,15 +71,6 @@ class TextDataLoader:
             with open(pathlib.Path(source)) as f:
                 self.complete_docs = f.readlines()
         print("finished load!")
-                
-    def show_example_raw_texts(self, n_docs=2):
-        print("check some sample texts of the dataset")
-        try:
-            for i in range(0,n_docs):
-                print(self.complete_docs[i])
-                print(100*"=")
-        except:
-            print("complete raw texts was be deleted for memory problem")
             
     def preprocess_texts(self, 
                          length_one_remove=True, 
@@ -102,7 +93,16 @@ class TextDataLoader:
         self.complete_docs = [" ".join(self.complete_docs[doc]) for doc in range(len(self.complete_docs))]   
         #return True
         print("finised: preprocessing!")
-        
+    
+    def show_example_raw_texts(self, n_docs=2):
+        print("check some sample texts of the dataset after filter punctuation and digits")
+        try:
+            for i in range(0,n_docs):
+                print(self.complete_docs[i])
+                print(100*"=")
+        except:
+            print("complete raw texts was be deleted for memory problem")
+            
     def split_and_create_voca_from_trainset(self,max_df=0.7, min_df=2, stopwords_remove_from_voca = True):
         """
         This block is used for creating the init-word2id and init-id2word and the vocabulary.
@@ -242,16 +242,17 @@ class TextDataLoader:
 
         # save preprocessed documents to file to use with julia later
 
-        def save_preprocessed_docs(path=None, name=None, docs=None):
+        def save_preprocessed_docs(path=None, name=None, docs=None, docs_indices = None):
           docs_df = pd.DataFrame()
           docs_df['text-after-preprocessing'] = [' '.join(doc) for doc in docs]
+          docs_df['index-in-complete-docs'] = docs_indices #indices_in complete-doc
           docs_df.to_csv(f'{path}/{name}.csv',index=False)
           del docs_df
           return True
         save_path = 'prepared_data/min_df_'+str(self.min_df)
-        save_preprocessed_docs(path = save_path, name="preprocessed_docs_train", docs = docs_tr)
-        save_preprocessed_docs(path = save_path, name="preprocessed_docs_test", docs = docs_ts)
-        save_preprocessed_docs(path = save_path, name="preprocessed_docs_val", docs = docs_va)
+        save_preprocessed_docs(path = save_path, name="preprocessed_docs_train", docs = docs_tr, docs_indices= self.train_indices)
+        save_preprocessed_docs(path = save_path, name="preprocessed_docs_test", docs = docs_ts, docs_indices= self.test_indices)
+        save_preprocessed_docs(path = save_path, name="preprocessed_docs_val", docs = docs_va, docs_indices= self.val_indices)
 
         
         return docs_tr, docs_va, docs_ts
@@ -277,12 +278,12 @@ class TextDataLoader:
         
         def remove_empty(in_docs):
             return [doc for doc in in_docs if doc!=[]]
-        
+        """
         docs_tr = remove_empty(docs_tr)
         docs_ts = remove_empty(docs_ts)
         docs_ts = [doc for doc in docs_ts if len(doc)>1]
         docs_va = remove_empty(docs_va)
-        
+        """
         
         # split test-set to two halves
         docs_ts_h1, docs_ts_h2,_,_ = train_test_split(docs_ts, self.test_indices, test_size=0.5, random_state=42)
@@ -296,7 +297,9 @@ class TextDataLoader:
         words_ts_h1 = create_list_words(docs_ts_h1)
         words_ts_h2 = create_list_words(docs_ts_h2)
         words_va = create_list_words(docs_va)
-        
+        self.n_tokens_train = len(words_tr)
+        self.n_tokens_test = len(words_ts)
+        self.n_tokens_val = len(words_va)
         
         def create_doc_indices(in_docs):
             # repeatly saving the doc-id for each word-id in the doc
@@ -472,4 +475,11 @@ class TextDataLoader:
         self.split_and_create_voca_from_trainset(max_df, min_df, stopwords_remove_from_voca)
         _,_,train_dataset, test_dataset, val_dataset = self.create_bow_and_savebow_for_each_set()
         return self.vocabulary, self.word2id, self.id2word, train_dataset, test_dataset, val_dataset
+    
+    def write_info_vocab_to_text(self):
         
+        f = open(f'prepared_data/info_vocab_{self.source}.txt', "a")
+        f.write(f'min-df: {self.min_df}\t tokens-train: {self.n_token_train} \t tokens-valid: {self.n_token_val} \t tokens-test: {self.n_token_test} \t vocab: {len(self.vocab)}')
+        f.write("\n")
+        f.close()
+                
