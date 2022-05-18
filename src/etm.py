@@ -7,6 +7,24 @@ import numpy as np
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu") 
 
+"""
+ETM:
+1. Encoder-Teil:
+    + input: normalized-bag-of-words w_d
+    + encoder-output: mu_theta und logvar_theta und KL_theta
+        + wir benutzen reparametrization trick and log-var-trick
+2. Embedding-Teil:
+    + input: word-embedding-matrix
+    + matrix-weights (zum Lernen: alphas): alphas (alpha_k = topic-embedding über L)
+    + output: rho * alpha
+    + softmax: \beta
+3. Decoder:
+    + Input: \theta, \beta
+    + Output: \theta * \beta (D x V)
+4. Lossfunktion:
+    + cross-entropy
+"""
+
 class ETM(nn.Module):
     def __init__(self, 
                  num_topics, vocab_size, t_hidden_size, rho_size, emsize, 
@@ -31,9 +49,9 @@ class ETM(nn.Module):
             self.theta_act = nn.ReLU()
         
         # Read the prefitted-embedding. Weights of self.alphas are itself the representation of topic-embeddings
-        #_, emsize = embeddings.size()
-        #print(embeddings[0])
         self.vocab_embeddings_rho = torch.from_numpy(np.array(embeddings)).float().to(device)
+        # word-embedding-vocabulary will be the input for topic_embedding_alphas
+        # weights of topic_embedding_alphas are the representation of each topic
         self.topic_embeddings_alphas = nn.Linear(rho_size, num_topics, bias=False)
         
         # define the encoder-network
@@ -50,6 +68,7 @@ class ETM(nn.Module):
     def reparameterize(self, mu, logvar):
         # trick to get the sample from Gaussian-Distribuation for update gradient-updating
         # using log-var-trik to allowed positive and negative values
+        # see the tutorial: https://www.youtube.com/watch?v=pmvo0S3-G-I
         std = torch.exp(0.5 * logvar) 
         eps = torch.randn_like(std)
         return eps.mul_(std).add_(mu) # e*stad + \mu
@@ -66,7 +85,7 @@ class ETM(nn.Module):
         #print(f'kld-size {torch.sum(1 + logsigma_theta - mu_theta.pow(2) - logsigma_theta.exp(), dim=-1).mean().shape}')
         #https://arxiv.org/pdf/1312.6114.pdf -DKL in Gaussian Case. With log-var-trick is little different
         K = self.num_topics
-        
+        # this one equal to the equation (11). We use log-var-trick
         kl_theta = -0.5 * torch.sum(
           1 - logsigma_theta.exp()  - mu_theta.pow(2)  + logsigma_theta, 
           dim=-1

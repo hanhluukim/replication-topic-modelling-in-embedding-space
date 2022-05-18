@@ -68,7 +68,6 @@ def get_optimizer(model, opt_args):
     if opt_args.optimizer == 'adam':
         optimizer = optim.Adam(model.parameters(), lr=opt_args.lr, weight_decay=opt_args.wdecay)
     else:
-        print('Defaulting to vanilla SGD')
         optimizer = optim.SGD(model.parameters(), lr=opt_args.lr)
     return optimizer
 
@@ -81,14 +80,7 @@ class TrainETM():
           #print(path)
           torch.save(state, f'checkpoints/etm_epoch_{state["epoch"]}.pth.tar')
           print(f'Checkpoint saved at checkpoints/etm_epoch_{state["epoch"]}.pth.tar')
-
-    def get_normalized_batch(self, batch):
-        # if normalize with only in the batch
-        # normalize
-        #print(f'batch-shape: {batch.shape}')
-        #print(batch[0])
-        #print(batch[0].shape)
-        return batch
+          
     def visualize_losses(self, train_losses, neg_rec_losses, neg_kld_losses, figures_path):
         import matplotlib.pyplot as plt
         #------reconstruction-loss
@@ -112,10 +104,6 @@ class TrainETM():
         plt.close()
         return True
 
-    def get_topic_embedding_from_etm(self):
-        topic_embeddings = []
-        topic_words = []
-        return topic_embeddings, topic_words
     def train(self, 
               etm_model,
               loss_name,
@@ -124,9 +112,6 @@ class TrainETM():
               normalize_data = True,
               figures_path = None
               ):
-              #num_topics, t_hidden_size, rho_size, emb_size, theta_act,
-              #embeddings=None, enc_drop=0.5
-              #):
         
         # training setting
         epochs = train_args.epochs
