@@ -19,6 +19,7 @@ parser = argparse.ArgumentParser(description='main.py')
 parser.add_argument('--model', type=str, default="LDA", help='which topic model should be used')
 parser.add_argument('--epochs', type=int, default=150, help='train epochs')
 parser.add_argument('--wordvec-model', type=str, default="skipgram", help='method for training word embedding')
+parser.add_argument('--loss-name', type=str, default="skipgram", help='loss-name')
 
 args = parser.parse_args()
 
@@ -216,6 +217,7 @@ print(50*"-" + 'TRAIN' + 50*"-")
 start = datetime.now()
 train_class = TrainETM().train(
     etm_model,
+    args.loss_name,
     vocab_size, 
     train_args, optimizer_args, train_set,
     normalize_data = True,

@@ -293,12 +293,12 @@ class TextDataLoader:
         
         def remove_empty(in_docs):
             return [doc for doc in in_docs if doc!=[]]
-        """
+        
         docs_tr = remove_empty(docs_tr)
         docs_ts = remove_empty(docs_ts)
         docs_ts = [doc for doc in docs_ts if len(doc)>1]
         docs_va = remove_empty(docs_va)
-        """
+        
         
         print(f'train-size-after-all: {len(docs_tr)}')
         print(f'test-size-after-all: {len(docs_ts)}')

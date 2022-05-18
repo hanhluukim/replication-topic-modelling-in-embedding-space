@@ -50,8 +50,8 @@ def loss_function(loss_name, pred_bows, normalized_bows, kl_theta):
     #torch.log(res+1e-6)
     # using log(pred)
     if loss_name != "paper-loss":
-        cross_entropy = True
-        if cross_entropy:
+        #cross_entropy = True
+        if loss_name == "cross-entropy":
             mean_recon_loss = -(normalized_bows * torch.log(pred_bows + 1e-6)).sum(1).float().mean()
         else:
         # mean square error
@@ -115,6 +115,7 @@ class TrainETM():
         return topic_embeddings, topic_words
     def train(self, 
               etm_model,
+              loss_name,
               vocab_size, 
               train_args, optimizer_args, training_set,
               normalize_data = True,
@@ -127,7 +128,6 @@ class TrainETM():
         # training setting
         epochs = train_args.epochs
         batch_size = train_args.batch_size
-        loss_name = "paper-loss"
                 
         # define etm model
         etm_model = etm_model.to(device)

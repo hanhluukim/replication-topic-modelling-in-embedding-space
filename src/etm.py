@@ -66,8 +66,9 @@ class ETM(nn.Module):
         #print(f'kld-size {torch.sum(1 + logsigma_theta - mu_theta.pow(2) - logsigma_theta.exp(), dim=-1).shape}')
         #print(f'kld-size {torch.sum(1 + logsigma_theta - mu_theta.pow(2) - logsigma_theta.exp(), dim=-1).mean().shape}')
         #https://arxiv.org/pdf/1312.6114.pdf -DKL in Gaussian Case. With log-var-trick is little different
+        K = self.num_topics
         kl_theta = -0.5 * torch.sum(
-          1 + logsigma_theta - mu_theta.pow(2) - logsigma_theta.exp(), 
+          K - logsigma_theta.exp()  - mu_theta.pow(2)  + logsigma_theta, 
           dim=-1
           )#.mean()
         return mu_theta, logsigma_theta, kl_theta
