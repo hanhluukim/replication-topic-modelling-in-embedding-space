@@ -49,17 +49,20 @@ def loss_function(loss_name, pred_bows, normalized_bows, kl_theta):
     #sum over the vocabulary and mean of datch. covert to float to use mean()
     #torch.log(res+1e-6)
     # using log(pred)
+    almost_zeros = torch.full_like(pred_bows, 1e-6)
+    pred_bows_without_zeros = pred_bows.add(almost_zeros)
+        
     if loss_name != "paper-loss":
         #cross_entropy = True
         if loss_name == "cross-entropy":
-            mean_recon_loss = -(normalized_bows * torch.log(pred_bows + 1e-6)).sum(1).float().mean()
+            mean_recon_loss = -(normalized_bows * torch.log(pred_bows_without_zeros)).sum(1).float().mean()
         else:
         # mean square error
             loss = nn.MSELoss(reduce="mean")
-            mean_recon_loss = loss(pred_bows, normalized_bows)
+            mean_recon_loss = loss(pred_bows_without_zeros, normalized_bows)
     else:
-        mean_recon_loss = -torch.log(pred_bows + 1e-6).sum(1).float().mean()
-    return mean_recon_loss, kl_theta.mean()
+        mean_recon_loss = -torch.log(pred_bows_without_zeros).sum(1).float().mean()
+    return mean_recon_loss, kl_theta#.mean()
 
 def get_optimizer(model, opt_args):
     if opt_args.optimizer == 'adam':

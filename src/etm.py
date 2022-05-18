@@ -68,9 +68,9 @@ class ETM(nn.Module):
         #https://arxiv.org/pdf/1312.6114.pdf -DKL in Gaussian Case. With log-var-trick is little different
         K = self.num_topics
         kl_theta = -0.5 * torch.sum(
-          K - logsigma_theta.exp()  - mu_theta.pow(2)  + logsigma_theta, 
+          1 - logsigma_theta.exp()  - mu_theta.pow(2)  + logsigma_theta, 
           dim=-1
-          )#.mean()
+          ).mean()
         return mu_theta, logsigma_theta, kl_theta
     
     def get_theta_document_distribution_over_topics(self, mu_theta, logsigma_theta):
