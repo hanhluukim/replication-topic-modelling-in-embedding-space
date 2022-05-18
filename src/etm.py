@@ -56,8 +56,8 @@ class ETM(nn.Module):
         # return latent variables
         # get mu and logsigma for the next representation of inputted data in latent space with gaussion distribution
         q_theta = self.q_theta(normalized_bows) #encoder_network get the input data as normalized bows
-        if self.enc_drop > 0:
-            q_theta = self.t_drop(q_theta)
+        #if self.enc_drop > 0:
+        #    q_theta = self.t_drop(q_theta)
 
         mu_theta = self.mu_q_theta(q_theta) #using nn.linear
         logsigma_theta = self.logsigma_q_theta(q_theta) #using nn.linear
@@ -68,7 +68,7 @@ class ETM(nn.Module):
         #https://arxiv.org/pdf/1312.6114.pdf -DKL in Gaussian Case. With log-var-trick is little different
         K = self.num_topics
         kl_theta = -0.5 * torch.sum(
-          1 - logsigma_theta.exp()  - mu_theta.pow(2)  + logsigma_theta, 
+          K - logsigma_theta.exp()  - mu_theta.pow(2)  + logsigma_theta, 
           dim=-1
           ).mean()
         return mu_theta, logsigma_theta, kl_theta
