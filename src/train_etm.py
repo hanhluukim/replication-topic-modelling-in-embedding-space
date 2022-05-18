@@ -62,7 +62,7 @@ def loss_function(loss_name, pred_bows, normalized_bows, kl_theta):
             mean_recon_loss = loss(pred_bows_without_zeros, normalized_bows)
     else:
         mean_recon_loss = -torch.log(pred_bows_without_zeros).sum(1).float().mean()
-    return mean_recon_loss, kl_theta#.mean()
+    return mean_recon_loss, kl_theta.mean()
 
 def get_optimizer(model, opt_args):
     if opt_args.optimizer == 'adam':

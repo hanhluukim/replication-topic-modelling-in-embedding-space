@@ -43,22 +43,21 @@ class ETM(nn.Module):
                 nn.Linear(t_hidden_size, t_hidden_size),
                 self.theta_act,
             )
+        # using log-var-trick to get latent variable
         self.mu_q_theta = nn.Linear(t_hidden_size, num_topics, bias=True)
         self.logsigma_q_theta = nn.Linear(t_hidden_size, num_topics, bias=True)
         
     def reparameterize(self, mu, logvar):
         # trick to get the sample from Gaussian-Distribuation for update gradient-updating
+        # using log-var-trik to allowed positive and negative values
         std = torch.exp(0.5 * logvar) 
         eps = torch.randn_like(std)
-        return eps.mul_(std).add_(mu)
+        return eps.mul_(std).add_(mu) # e*stad + \mu
     
     def encode(self, normalized_bows):
         # return latent variables
         # get mu and logsigma for the next representation of inputted data in latent space with gaussion distribution
         q_theta = self.q_theta(normalized_bows) #encoder_network get the input data as normalized bows
-        #if self.enc_drop > 0:
-        #    q_theta = self.t_drop(q_theta)
-
         mu_theta = self.mu_q_theta(q_theta) #using nn.linear
         logsigma_theta = self.logsigma_q_theta(q_theta) #using nn.linear
 
@@ -67,10 +66,11 @@ class ETM(nn.Module):
         #print(f'kld-size {torch.sum(1 + logsigma_theta - mu_theta.pow(2) - logsigma_theta.exp(), dim=-1).mean().shape}')
         #https://arxiv.org/pdf/1312.6114.pdf -DKL in Gaussian Case. With log-var-trick is little different
         K = self.num_topics
+        
         kl_theta = -0.5 * torch.sum(
           1 - logsigma_theta.exp()  - mu_theta.pow(2)  + logsigma_theta, 
           dim=-1
-          ).mean()
+          )
         return mu_theta, logsigma_theta, kl_theta
     
     def get_theta_document_distribution_over_topics(self, mu_theta, logsigma_theta):
@@ -82,10 +82,7 @@ class ETM(nn.Module):
         return theta
     
     def get_beta_topic_distribution_over_vocab(self):
-        try:
-            prod = self.topic_embeddings_alphas(self.vocab_embeddings_rho.weight) # torch.mm(self.rho, self.alphas)
-        except:
-            prod = self.topic_embeddings_alphas(self.vocab_embeddings_rho)
+        prod = self.topic_embeddings_alphas(self.vocab_embeddings_rho)
         beta = F.softmax(prod, dim=0).transpose(1, 0) ## softmax over vocab dimension
         #print(f'shape of beta: {beta.shape}')
         return beta
@@ -95,9 +92,6 @@ class ETM(nn.Module):
         # try to reconstruct the document-distribution over words (vocabulary)
         # after multiplication maybe zeros. add 1e-6 to get no-zeros matrix
         predictions = torch.mm(theta, beta)
-        #almost_zeros = torch.full_like(res, 1e-6)
-        #results_without_zeros = res.add(almost_zeros)
-        #predictions = torch.log(results_without_zeros)
         return predictions
     
     def forward(self,normalized_bows):
