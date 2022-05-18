@@ -188,29 +188,7 @@ class TextDataLoader:
             for w in self.complete_docs[train_idx].split():
                 if w in self.word2id: #it means that still not-stopwords will be saved, because word2id is before updated by not-stopwords-vocabulary
                     vocabulary.append(w)
-
-
-        """[latest old]
-        for idx_d in range(train_dataset_size):
-            for w in self.complete_docs[self.idx_permute[idx_d]].split():
-                if w in self.word2id: #it means that still not-stopwords will be saved, because word2id is before updated by not-stopwords-vocabulary
-                    #print("in word2id")
-                    vocabulary.append(w)
-        """
-
-        """[other old]
-        vocabulary = []
-        if stopwords_remove_from_voca == True:
-          for idx_d in range(train_dataset_size):
-            for w in self.documents_without_stop_words[self.idx_permute[idx_d]]:
-              if w in word2id:
-                vocabulary.append(w)
-        else:
-          for idx_d in range(train_dataset_size):
-            for w in self.complete_docs[self.idx_permute[idx_d]]:
-              if w in word2id:
-                vocabulary.append(w)
-        """
+                    
         self.vocabulary = list(set(vocabulary))
         #self.vocabulary = list(set(vocabulary))
         print(f'length of the vocabulary: {len(self.vocabulary)}')
