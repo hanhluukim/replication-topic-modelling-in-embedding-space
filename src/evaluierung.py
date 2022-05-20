@@ -28,7 +28,7 @@ def marg(w,documents):
 def marg2(w,documents):
 	anzw=0
 	for document in documents:
-		if word in document:
+		if w in document:
 			anzw=anzw+1
 
 	return anzw/len(documents)
@@ -61,7 +61,7 @@ def topicCoherence2(topicsWords,anzahlTopics,documents,anzDoc):
 def topicPerplexity(thetatest1,tests2anzahl_perword,anzahlVocabulary,betatest1):
 	erwartung=[]
 	h=0
-	for i in range(anzahlVocabulary)
+	for i in range(anzahlVocabulary):
 		p=0
 		for j in range(len(thetatest1)):
 			p=p+thetatest1[j][i]*betatest1[j]
@@ -77,9 +77,8 @@ def topicDiversity(topicsTopk):
 	unique=[]
 	gesamt=len(topicsTopk)*len(topicsTopk[0])
 	for topk in topicsTopk:
-		for word in topk
-			if word in unique:
-			else:
+		for word in topk:
+			if not word in unique:
 				unique.append(word)
 	uniqueAnzahl= len(unique)
 	return uniqueAnzahl/gesamt
