@@ -28,7 +28,7 @@ def marg(w,documents):
 def marg2(w,documents):
 	anzw=0
 	for document in documents:
-		if word in document:
+		if w in document:
 			anzw=anzw+1
 
 	return anzw/len(documents)
