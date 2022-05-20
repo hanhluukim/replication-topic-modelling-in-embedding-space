@@ -4,7 +4,6 @@
 # the retured data here will be imported to the word-embedding modul to create word-embedding. After that can ETM will be used
 # returned data can be used as input for LDA Model
 
-from cv2 import sort
 from sklearn.datasets import fetch_20newsgroups
 import pathlib
 from sklearn.feature_extraction.text import CountVectorizer
