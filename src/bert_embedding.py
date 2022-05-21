@@ -94,8 +94,8 @@ def get_final_words_embeddings_in_sent(original_sent, sent_tokens_ids, sent_outp
           words_embeddings_in_sent_dict[word] = mean_unique_word_embedding
     return words_embeddings_in_sent_dict
 
-def save_embeddings_in_sent_to_text(words_embeddings_in_sent_dict):
-    with open(r'./bert_sent_words_embeddings.txt', 'w') as fp:
+def save_embeddings_in_sent_to_text(sent_id, words_embeddings_in_sent_dict):
+    with open(f'./sent_{str(sent_id)}_words_embeddings.txt', 'w') as fp:
         for word, vector in words_embeddings_in_sent_dict.items():
             # write each item on a new line
             fp.write(f'{word}\t')
