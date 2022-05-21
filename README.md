@@ -1,40 +1,45 @@
 # replication-topic-modelling-in-embedding-space
 
 **Ziel des Projekts**
-1. Replizieren des Artikels: [Topic Modelling in embedding space](https://arxiv.org/abs/1907.04907) von Adji B. Dieng, Francisco J. R. Ruiz, David M. Blei. Das originales [Code](https://github.com/adjidieng/ETM) von Autoren. 
+1. Replizieren des Artikels: [Topic Modelling in embedding space](https://arxiv.org/abs/1907.04907) von Adji B. Dieng, Francisco J. R. Ruiz, David M. Blei. Die [originale Implementierung](https://github.com/adjidieng/ETM) von Autoren. 
 2. Neues Experiment: Kombination von pre-fitted BERT-Embedding mit ETM
 3. (optional) Vergleich der Laufzeit beim Trainieren zwischen dem python-ETM und dem julia-ETM
 
-**Gebrauchte Pakette**
-
-`pip install -r requirements.txt`
+**Verwandte Pakette**
+1. List aller verwendeten Paketten ist in der Datei: requirements.txt
+2. Installieren durch: `pip install -r requirements.txt`
 
 **Struktur des Repos**
 1. Implementierung befindet sich im Ordner [src](https://github.com/hanhluukim/replication-topic-modelling-in-embedding-space/tree/main/src)
-2. Jeder Schritt von den betrachteten Experimenten kann in der Datei [notebook_replication.ipynb](https://github.com/hanhluukim/replication-topic-modelling-in-embedding-space/blob/main/notebook_replication.ipynb) kontrolliert werden. Man kann dieses Notebook selbst auf dem Link Colab öffnen und durchführen. 
+2. Jeder Schritt von den durchgeführten Experimenten kann in der Datei [notebook_replication.ipynb](https://github.com/hanhluukim/replication-topic-modelling-in-embedding-space/blob/main/notebook_replication.ipynb) nachvollzieht und kontrolliert werden. Man kann dieses Notebook selbst auf dem Link Colab öffnen und durchführen. 
 
 
 **Genutzte Datensätze**
-1. [20NewsGroups](), [New York Times]()
-2. Vorverarbeitungsschritten: 
-3. Traindatensatz, Testdatensatz (Testdatensatz-h1, Testdatensatz-h2) und Validationssatz von 100 Dokumenten
+1. [20NewsGroups]()
+2. Vorverarbeitungsschritten für Raw-Datensatz: Entfernen von nicht-alphabeltischen Zeichen, Stoppwörtern, Kleinschreiben, ...
+3. Zerlegung: Traindatensatz, Testdatensatz (Testdatensatz-h1, Testdatensatz-h2) und Validationssatz von 100 Dokumenten
 
 **Angewandte Word-Embedding Methoden**
-- [ ] CBOW und Skipgram mittels [Gensim](https://radimrehurek.com/gensim/)
-- [ ] BERT-Wordembedding mittels [Transformer-Huggingface](https://huggingface.co/docs/transformers/installation)
+- [ ] CBOW und Skipgram mittels [Gensim](https://radimrehurek.com/gensim/). Word-Embeddings werden für jedes Wort des Traindatensatzes gelernt. Es wird ein Trainingsprozess gebraucht, um Word-Repräsentationen zu haben
+- [ ] based-BERT-Wordembedding mittels [Transformer-Huggingface](https://huggingface.co/docs/transformers/installation). Benutzung von pretrained-BERT-Modell um direkt Repräsentationen für Wörter zu haben. Kein Trainieren ist benötig. 
+- [ ] Implementierung in : `src/embedding.py` für CBOW und Skipgram und `src/bert_preparing.py`, `src/bert_embedding.py`, `src/bert_main.py`
 
 **Architektur des ETM-Modells**
-1. Das Vocabular besteht aus den einzigartigen Wörtern aus dem Traindatensatz
-2. Eingabedaten: BOW-Repräsentation für jedes Dokumentes des Datensatzes (doc={(word-id, word-frequency)})
-3. Das Modell ETM wird in `src/etm.py` implementiert.
+1. Einige wichtige Beschreibung:
+
+- Das Vocabular V: besteht aus den einzigartigen Wörtern aus dem Traindatensatz
+- Eingaben für ETM: (1) normalisierte-BOW für Encoder-Network und (2) Vocabular-Word-Embeddings
+- Topic Embedding ist numersiche Repränstation für ein Topic in dem Embedding-Space, in dem Wort-Embeddings sich auch befinden
+
+2. Das Modell ETM wird in `src/etm.py` implementiert.
 
 **Durchgeführte Experimenten**
 
 - [ ] Vergleich Top-5-Wörter von den top 7 meisten genutzen Topics (Datensatz: 1.8M Documents von NYT, Corpus V=212237, K=300) zwischen LDA und ETM
-- [ ] Vergleich zwischen LDA und ETM auf dem Datensatz: 20NewsGroups (Maß: Topic Quality = Topic Coherence * Topic Diversity, Predictive Performance)
-- [ ] Ergebnisse von ETM auf NYT-Stopwords und NYT-ohne-Stopwords
-- [ ] Vergleich der Embedding zwischen CBOW und BERT-Wortembedding
-- [ ] Vergleich zwischen prefitted-CBOW/SKIPGramm-ETM und prefitted-BERT-ETM
+- [ ] Vergleich zwischen LDA und ETM auf dem Datensatz: 20NewsGroups (Maß: Topic Quality = Topic Coherence * Topic Diversity, normalisierte-Perplexity)
+- [ ] Vergleich Ergebnisse von 20NewsGroup auf Stopwords und ohne-Stopwords
+- [ ] Vergleich der Embedding zwischen Skipgramm und BERT-Wortembedding
+- [ ] Vergleich zwischen prefitted-Skipramm-ETM und prefitted-BERT-ETM
 
 **Dokumentation für Teamarbeit**
 - Einpaar Befehlen für die Nutzung von Google Colab für Teamarbeit:
