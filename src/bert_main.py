@@ -14,6 +14,10 @@ nltk.download('punkt')
 from src.bert_preparing import read_raw_documents, simple_preprocess, handle_long_sentences, create_marked_senteces, save_sents_to_txt
 
 
+
+
+
+
 tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
 model = BertModel.from_pretrained('bert-base-uncased',
                                   output_hidden_states = True, # Whether the model returns all hidden-states.

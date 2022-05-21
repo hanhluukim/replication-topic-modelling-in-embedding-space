@@ -68,7 +68,7 @@ def transform_to_sentences(docs): #no labels
 
 def split_long_sentence(splitted_sent, given_len):
     subsents = []
-   #for i in range(0,len(splitted_sent), given_len):
+    #for i in range(0,len(splitted_sent), given_len):
     i=0
     while i < len(splitted_sent): 
         if i == 0:

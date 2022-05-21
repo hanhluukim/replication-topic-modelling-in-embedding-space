@@ -1,6 +1,6 @@
 import torch
 
-def tokenizer_for_a_sent(sent, tokenizer):
+def tokenizerfast_for_a_sent(sent, tokenizer):
     # using for tokenizerFast
     this_sent_tokenizer = tokenizer(sent)
     # index of token in the vocabulary
@@ -14,7 +14,6 @@ def tokenizer_for_a_sent(sent, tokenizer):
 def reform_token_embeddings_of_sentence(full_outputs):
     hidden_states = full_outputs[2]
     token_embeddings = torch.stack(hidden_states, dim=0)
-    print(token_embeddings.shape)
     token_embeddings = torch.squeeze(token_embeddings, dim=1) # size= (n_hidden_layers, n_tokens, 768)
     print(token_embeddings.shape)
     #token_embeddings = token_embeddings.permute(1,0,2) # size= (n_tokens, n_hidden_layers, 768)
@@ -22,7 +21,7 @@ def reform_token_embeddings_of_sentence(full_outputs):
     return token_embeddings 
 
 def get_token_embeddings(reformed_token_embeddings):
-    # using sum four last layers
+  # using sum four last layers
     token_vecs_sum = []
     print(f'shape befor geting embedding: {reformed_token_embeddings.shape}')
     #i = 0
@@ -34,17 +33,6 @@ def get_token_embeddings(reformed_token_embeddings):
         #i = i + 1
     return token_vecs_sum # size: n_tokens: 768
 
-"""
-def find_belonged_embeddings_of_token(token, tokenized_text, embeddings_outputs):
-  belonged_embeddings = []
-  belonged_indices = []
-  for idx, t in enumerate(tokenized_text):
-    if t.strip("#") in token:
-      belonged_indices.append(i)
-  for idx in belonged_indices:
-    belonged_embeddings.append(embeddings_outputs[i])
-  return belonged_embeddings
-"""
 def get_belonging_embeddings_of_word(bert_unique_token_id, tokenized_indices, tokens_embeddings):
     belongging_embeddings_of_word = []
     for idx, tokenizer_idx in enumerate(tokenized_indices):
@@ -52,12 +40,12 @@ def get_belonging_embeddings_of_word(bert_unique_token_id, tokenized_indices, to
             belongging_embeddings_of_word.append(tokens_embeddings[idx])
     return belongging_embeddings_of_word
 
-def get_word_embedding(belonging_embeddings=None, methode="mean"):
+def get_unique_embedding(embeddings=None, methode="mean"):
     if methode == "mean":
-        return torch.mean(belonging_embeddings, dim=0)
+        return torch.mean(embeddings, dim=0)
 
 def need_to_update(sent_tokens_ids):
-    special_ids = [101, 102]
+    special_ids = [101, 102] #of CLS and SEP
     for e in sent_tokens_ids:
         if e in special_ids:
             sent_tokens_ids.remove(e)
@@ -65,11 +53,13 @@ def need_to_update(sent_tokens_ids):
   
 def get_multiple_embeddings_for_words_in_sent(sent_tokens_ids, sent_outputs_tokens_embeddings):
     # a word can be one time oder multiple times in a sentence
+    sent_tokens_ids = need_to_update(sent_tokens_ids)
     multiple_words_embeddings = []
     unique_words_ids = list(set(sent_tokens_ids))
     for unique_id in unique_words_ids:
         belong_embeddings = get_belonging_embeddings_of_word(unique_id, sent_tokens_ids, sent_outputs_tokens_embeddings)
-        word_embedding = get_word_embedding(belong_embeddings, "mean")
+        # mean of belonging_embeddings to get embedding of whole word
+        word_embedding = get_unique_embedding(belong_embeddings, "mean")
         multiple_words_embeddings.append(word_embedding)
     return multiple_words_embeddings
 
@@ -83,21 +73,27 @@ def get_indices_of_word_in_original_sent(word, splitted_original_sent):
 def get_final_words_embeddings_in_sent(original_sent, sent_tokens_ids, sent_outputs_tokens_embeddings):
     not_unique_words_embeddings = get_multiple_embeddings_for_words_in_sent(sent_tokens_ids, sent_outputs_tokens_embeddings)
     original_words_list = original_sent.split(" ")
-
+    words_embeddings_in_sent_dict = {}
     for word in original_words_list:
         word_indices = get_indices_of_word_in_original_sent(word, original_words_list)
+        # a word can have different-word-embeddings in the sentence, because a word can occur multple times
+        # each occurance has a different embedding for this word
+        different_occurrences_embeddings_of_word = not_unique_words_embeddings[word_indices]
+        mean_unique_word_embedding = get_unique_embedding(different_occurrences_embeddings_of_word, "mean")
+        words_embeddings_in_sent_dict[word] = mean_unique_word_embedding
+    return words_embeddings_in_sent_dict
 
 
-
+"""
 def get_all_word_embeddings_in_sent(original_sent, sent_tokens_ids, sent_outputs_tokens_embeddings):
     # todo what is one word in multiple position in sentence
     # remove the special token ids from sent_tokens_ids
     def need_to_update(sent_tokens_ids):
-        special_ids = [101, 102]
-        for e in sent_tokens_ids:
-            if e in special_ids:
-                sent_tokens_ids.remove(e)
-        return sent_tokens_ids
+      special_ids = [101, 102]
+      for e in sent_tokens_ids:
+        if e in special_ids:
+          sent_tokens_ids.remove(e)
+      return sent_tokens_ids
     sent_tokens_id = need_to_update(sent_tokens_ids)
     #----------------------------------------------------------------------------------
     splitted_words_of_sent = original_sent.split(" ")
@@ -112,4 +108,5 @@ def get_all_word_embeddings_in_sent(original_sent, sent_tokens_ids, sent_outputs
         sent_words_embeddings[original_word] = get_word_embedding(word_belonging_embeddings)
       return sent_words_embeddings
     else:
-      return False
+      print("some thing wrong!!!")
+"""
