@@ -58,9 +58,10 @@ def topicCoherence2(topicsWords,anzahlTopics,documents,anzDoc):
 				c=c+pointwiseInf(documents,topicWords[i],topicWords[j],anzDoc,2)
 	c=c/(45*anzahlTopics)
 	return c
-def topicPerplexity(thetatest1,tests2anzahl_perword,anzahlVocabulary,betatest1):
+def topicPerplexityteil2(thetatest1,tests2anzahl_perword,anzahlVocabulary,betatest1):
 	erwartung=[]
 	h=0
+	anzahlwords=0
 	for i in range(anzahlVocabulary):
 		p=0
 		for j in range(len(thetatest1)):
@@ -71,8 +72,15 @@ def topicPerplexity(thetatest1,tests2anzahl_perword,anzahlVocabulary,betatest1):
 			erwartung.append(0)
 	for m in range(anzahlVocabulary):
 		h=h+tests2anzahl_perword[m]*erwartung[m]
-	#todo mean
-	return 0
+		anzahlwords=anzahlwords+tests2anzahl_perword[m]
+	if anzahlwords==0:
+		return 500
+	return h/anzahlwords
+def topicPerplexityTeil1(thetastest1,tests2anzahl_perword,anzahlVocabulary,betatest1)
+	mean=0
+	for thetatest1 in thetastest1:
+		mean=mean+topicPerplexityteil2(thetatest1,tests2anzahl_perword,anzahlVocabulary,betatest1)
+return	mean/len(thetastest1)
 def topicDiversity(topicsTopk):
 	unique=[]
 	gesamt=len(topicsTopk)*len(topicsTopk[0])
