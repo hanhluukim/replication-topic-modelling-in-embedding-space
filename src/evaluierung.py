@@ -80,7 +80,7 @@ def topicPerplexityTeil1(thetastest1,tests2anzahl_perword,anzahlVocabulary,betat
 	mean=0
 	for thetatest1 in thetastest1:
 		mean=mean+topicPerplexityteil2(thetatest1,tests2anzahl_perword,anzahlVocabulary,betatest1)
-return	mean/len(thetastest1)
+	return	mean/len(thetastest1)
 def topicDiversity(topicsTopk):
 	unique=[]
 	gesamt=len(topicsTopk)*len(topicsTopk[0])
