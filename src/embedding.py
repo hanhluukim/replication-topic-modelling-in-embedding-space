@@ -62,6 +62,8 @@ def read_prefitted_embedding(model_name, vocab, save_path):
             return words_in_vocab, words_embeddings #list(embedding_data.values())
       else:
             print("something wrong at the embedding.py/read_prefitted_embeddings")
+            print("use for testing bert")
+            return words, words_embeddings #list(embedding_data.values())
 
 class WordEmbeddingCreator:
       def __init__(self, model_name="cbow", documents = None, save_path = ""):
@@ -146,22 +148,23 @@ class WordEmbeddingCreator:
                  if v in model_vocab:
                        vec = list(self.model.wv.__getitem__(v))
                        all_embeddings.append(vec)
-            np.save(f'{self.model_name}_embedding.npy', all_embeddings)
-            return True
+            np.save(f'{self.model_name}_other_embedding.npy', all_embeddings)
+            return all_embeddings
 
       def find_most_similar_words(self, n_neighbor=20, word = None):
             if word!=None:
                   return self.model.wv.most_similar(word, topn=n_neighbor)
             else:
                   print(f'give a word to get the {n_neighbor} neighbor words')
-                  
+
       def find_similar_words_self_implemented(self, topn, train_vocab, word):
             top_words = {}
             model_vocab = list(self.model.wv.vocab)
+            all_embeddings = self.other_save_embeddings(train_vocab)
             if word in train_vocab:
                   if word in model_vocab:
                         considered_vector = list(self.model.wv.__getitem__(word))
-                        top_words = get_similar_vectors_to_given_vector(topn, model_vocab, considered_vector, list(self.model.wv))
+                        top_words = get_similar_vectors_to_given_vector(topn, model_vocab, considered_vector, all_embeddings)
             return top_words
 
       def cluster_words(self, embedding_save_path = None, fig_path = None, n_components=3, text = False):
