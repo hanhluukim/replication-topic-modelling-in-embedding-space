@@ -3,6 +3,7 @@
 # returns: word-embedding for each word in the vocabulary
 # inputs: train-documents in words and the vocabulary (?)
 
+
 import gensim
 import pickle
 import os
@@ -12,25 +13,29 @@ import matplotlib.pyplot as plt
 import pandas as pd
 from pathlib import Path
 
-def read_prefitted_embedding(vocab, save_path):
-    save_path = Path.joinpath(save_path, 'vocab_embedding.txt')
+def read_prefitted_embedding(model_name, vocab, save_path):
+      try:
+            save_path = Path.joinpath(save_path, f'{model_name}_vocab_embedding.txt')
+      except:
+            save_path = Path.joinpath(save_path, f'vocab_embedding.txt')
 
-    with open(save_path) as f:
-        lines = f.readlines()
-    embedding_data = {}
-    for t in lines:
-        w = t.split("\t")[0]
-        v = [float(e) for e in t.split("\t")[1].split(" ")]
-        embedding_data[w] = v
-    """
-    # sort embedding_data again by the ordner of the vocabulary from bow
-    embedding_data_as_list = []
-    for w in vocab:
-      if w in list(embedding_data.keys()):
-        embedding_data_as_list.append(embedding_data[w])
-    del embedding_data
-    """
-    return list(embedding_data.values())
+      with open(save_path) as f:
+            lines = f.readlines()
+      embedding_data = {}
+      for t in lines:
+            w = t.split("\t")[0]
+            v = [float(e) for e in t.split("\t")[1].split(" ")]
+            if w in vocab:
+                  embedding_data[w] = v
+      """
+      # sort embedding_data again by the ordner of the vocabulary from bow
+      embedding_data_as_list = []
+      for w in vocab:
+            if w in list(embedding_data.keys()):
+            embedding_data_as_list.append(embedding_data[w])
+      del embedding_data
+      """
+      return list(embedding_data.values())
 
 class WordEmbeddingCreator:
       def __init__(self, model_name="cbow", documents = None, save_path = ""):
@@ -71,6 +76,7 @@ class WordEmbeddingCreator:
                                                       iter=5)
             else:
                   print("word-embedding with BERT")
+                  print("!!!! please run src/bert_main.py to get prepared_data/bert_vocab_embeddings.txt")
             print("word-embedding train finished")
             # todo: save the trained-model
             #return self.model
@@ -94,7 +100,7 @@ class WordEmbeddingCreator:
             print(f'length of the vocabulary of prepraring-dataset-vocabulary: {len(train_vocab)}')
             del self.documents
             
-            f = open(Path.joinpath(embedding_path, 'vocab_embedding.txt'), 'w') #add to prepared_data
+            f = open(Path.joinpath(embedding_path, f'{self.model_name}_vocab_embedding.txt'), 'w') #add to prepared_data
             # sort words in embedding matrix by the ordner from vocabulary
             for v in tqdm(train_vocab):
                 if v in model_vocab:
@@ -121,7 +127,7 @@ class WordEmbeddingCreator:
             from sklearn import metrics
 
             # read embedding from file
-            with open(Path.joinpath(embedding_save_path, 'vocab_embedding.txt')) as f:
+            with open(Path.joinpath(embedding_save_path, f'{self.model_name}_vocab_embedding.txt')) as f:
               lines = f.readlines()
             embedding_data = []
             words_data = []
