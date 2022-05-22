@@ -12,6 +12,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 from pathlib import Path
 from numpy import dot, argmax, indices
+import pickle
 
 def unit_vec(vector):
       veclen = np.sqrt(np.sum(vector ** 2))
@@ -35,8 +36,26 @@ def get_similar_vectors_to_given_vector(topn, vocab, give_vector, all_vectors):
       #all_vectors[argmax([get_consine_similarity(give_vector, vector2) for vector2 in all_vectors])]
       #return 
       
-def compare_word2vec_methods_and_bert_embeddings(word, word2vec_embeddings, bert_embeddings):
-      return {'word2vec': [], 'bert': []}
+def read_prefitted_embedding_from_npy_pkl(model_name, etm_vocab, save_path):
+      eb_path =  Path.joinpath(save_path, f'{model_name}_embeddings.npy')
+      model_vocab_path = Path.joinpath(save_path, f'{model_name}_vocab.pkl')
+
+      all_embeddings = np.load(eb_path)
+      with open(model_vocab_path, 'rb') as f:
+            model_vocab = pickle.load(f)
+      words_in_vocab = []
+      embeddings = []
+      for w in etm_vocab:
+            idx = model_vocab.index(w)
+            eb = all_embeddings[idx]
+            embeddings.append(eb)
+      del all_embeddings
+      del model_vocab
+      if words_in_vocab == etm_vocab:
+            return words_in_vocab, embeddings
+      else:
+            print("something wrong with reading files")
+            return False
 
 def read_prefitted_embedding(model_name, vocab, save_path):
       try:
@@ -143,6 +162,13 @@ class WordEmbeddingCreator:
                     f.write(vec_str + '\n')
             f.close()
             self.model.save(str(Path.joinpath(embedding_path, 'word2vec.model')))
+            
+            # save embeddings as npy and pkl
+            model_vocab_path = f'prepared_data/{self.model_name}_vocab.pkl'
+            with open(model_vocab_path, 'wb') as f:
+                  pickle.dump(model_vocab, f)
+            # save embeddings
+            np.save('prepared_data/{self.model_name}_embeddings.npy',self.all_embeddings)
             return True
       
       def other_save_embeddings(self, train_vocab):
