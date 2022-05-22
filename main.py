@@ -164,8 +164,11 @@ if word2vec_model!="bert":
         print([r[1] for r in wb_creator.find_most_similar_words(n_neighbor=5, word=vocab[i])])
 else:
       #todo run subprocess
+      print("using prepared_data/bert_vocab_embedding.txt")
+      """
       subprocess.run(
-            ["python", "bert_main.py"])      
+            ["python", "bert_main.py"])
+      """     
 
 #--------------------------topic embedding training-----------------------------------
 
