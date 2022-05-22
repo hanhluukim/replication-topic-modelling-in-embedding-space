@@ -76,7 +76,7 @@ def split_long_sentence(splitted_sent, given_len):
             subsents.append(sub)
             i = i + given_len
         if i!=0:
-            j = i + given_len - 5 #windown 5
+            j = i + given_len - 10 #windown 5
             if j + given_len <= len(splitted_sent):
                 sub = " ".join(splitted_sent[j:j + given_len])
                 subsents.append(sub)

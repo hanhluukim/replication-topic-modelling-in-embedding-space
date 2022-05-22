@@ -2,7 +2,11 @@
 # https://datascience.stackexchange.com/questions/85566/how-pre-trained-bert-model-generates-word-embeddings-for-out-of-vocabulary-words
 
 from transformers import BertTokenizer, BertModel
+from transformers import BertTokenizerFast
 import torch
+
+tokenizerfast = BertTokenizerFast.from_pretrained('bert-base-uncased')
+#tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
 
 #----------------------------implemented bert-embedding-----------------------
 from src.bert_preparing import read_raw_documents, simple_preprocess, handle_long_sentences, create_marked_senteces, save_sents_to_txt
@@ -11,7 +15,7 @@ from src.bert_embedding import reform_token_embeddings_of_sentence, get_token_em
 from src.bert_embedding import tokenizerfast_for_a_sent, vocabulary_embeddings_to_text
 
 #----------------------------BERT-Models
-tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
+#tokenizer = BertTokenizerFast.from_pretrained('bert-base-uncased')
 model = BertModel.from_pretrained('bert-base-uncased', output_hidden_states = True)
 model.eval()
 
