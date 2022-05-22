@@ -24,7 +24,7 @@ def reform_token_embeddings_of_sentence(full_outputs):
 def get_token_embeddings(reformed_token_embeddings):
     # using sum four last layers
     token_vecs_sum = []
-    print(f'get-token-embedding-function: {reformed_token_embeddings.shape}')
+    #print(f'get-token-embedding-function: {reformed_token_embeddings.shape}')
     for i, token in enumerate(reformed_token_embeddings): 
         sum_vec = torch.sum(token[-4:], dim=0)
         token_vecs_sum.append(sum_vec)
@@ -56,18 +56,18 @@ def need_to_update(sent_tokens_ids):
   
 def get_multiple_embeddings_for_words_in_sent(sent_tokens_ids, sent_outputs_tokens_embeddings):
     # a word can be one time oder multiple times in a sentence
-    print(f'tokens-ids in get_multiple_embeddings_: {sent_tokens_ids}')
+    #print(f'tokens-ids in get_multiple_embeddings_: {sent_tokens_ids}')
     sent_tokens_ids = need_to_update(sent_tokens_ids)
     multiple_words_embeddings = []
     unique_words_ids = list(set(sent_tokens_ids))
     for unique_id in unique_words_ids:
         belong_embeddings = get_subwords_embeddings_of_word(unique_id, sent_tokens_ids, sent_outputs_tokens_embeddings)
-        print(f'word-id: {unique_id} - beling-embeddings shape: {belong_embeddings.shape}')
+        #print(f'word-id: {unique_id} - beling-embeddings shape: {belong_embeddings.shape}')
         # mean of belonging_embeddings to get embedding of whole word
         word_embedding = get_unique_embedding(belong_embeddings, "mean")
-        print(f'mean-word-id {unique_id} word-embedding {word_embedding.shape}')
+        #print(f'mean-word-id {unique_id} word-embedding {word_embedding.shape}')
         multiple_words_embeddings.append(word_embedding)
-        print("----------------------------------------------------------")
+        #print("----------------------------------------------------------")
     return torch.stack(multiple_words_embeddings, dim=0)
 
 def get_indices_of_word_in_original_sent(word, splitted_original_sent):
@@ -80,17 +80,17 @@ def get_indices_of_word_in_original_sent(word, splitted_original_sent):
 def get_final_words_embeddings_in_sent(original_sent, sent_tokens_ids, sent_outputs_tokens_embeddings):
     #import numpy as np
     not_unique_words_embeddings = get_multiple_embeddings_for_words_in_sent(sent_tokens_ids, sent_outputs_tokens_embeddings)
-    print(f'total found embeddings in sent: {not_unique_words_embeddings.shape}')
+    #print(f'total found embeddings in sent: {not_unique_words_embeddings.shape}')
     original_words_list = original_sent.split(" ")
     words_embeddings_in_sent_dict = {}
     for word in set(original_words_list):
         if word not in ['[CLS]', '[SEP]']:
           word_indices = get_indices_of_word_in_original_sent(word, original_words_list)
-          print(f'word---- {word} ---- indices in original sent: {word_indices}')
+          #print(f'word---- {word} ---- indices in original sent: {word_indices}')
           # a word can have different-word-embeddings in the sentence, because a word can occur multple times
           # each occurance has a different embedding for this word
           different_occurrences_embeddings_of_word = not_unique_words_embeddings[word_indices]
-          print(f'test: {different_occurrences_embeddings_of_word.shape}')
+          #print(f'test: {different_occurrences_embeddings_of_word.shape}')
           mean_unique_word_embedding = get_unique_embedding(torch.tensor(different_occurrences_embeddings_of_word), "mean")
           words_embeddings_in_sent_dict[word] = mean_unique_word_embedding
     return words_embeddings_in_sent_dict
@@ -103,7 +103,7 @@ def save_embeddings_in_sent_to_text(sent_id, words_embeddings_in_sent_dict):
             for e in vector.tolist():
                 fp.write(f'{e} ')
             fp.write("\n")
-        print('saving embeddings')
+        #print('saving embeddings')
     return True
 
 def save_embeddings_to_text(words_embeddings_in_sent_dict):
@@ -114,7 +114,7 @@ def save_embeddings_to_text(words_embeddings_in_sent_dict):
           for e in vector.tolist():
             fp.write(f'{e} ')
           fp.write("\n")
-      print('saving embeddings')
+      #print('saving embeddings')
     return True
 
 def vocabulary_embeddings_to_text(vocab_embeddings):

@@ -7,6 +7,8 @@ import torch
 import os
 import numpy as np
 import random
+from tqdm import tqdm
+
 seed = 42
 os.environ['PYTHONHASHSEED'] = str(seed)
 torch.manual_seed(seed)
@@ -48,7 +50,7 @@ marked_shorted_sentences = create_marked_senteces(shorted_sentences)
 
 vocab = {}
 
-for marked_sent in marked_shorted_sentences[:2]:
+for marked_sent in tqdm(marked_shorted_sentences, desc="creating bert embeddings"):
     #print(marked_sent)
     tokens_tensor, segments_tensors, tokens_ids_with_belonging_information = tokenizerfast_for_a_sent(marked_sent, tokenizerfast)
     with torch.no_grad():
@@ -76,10 +78,11 @@ for marked_sent in marked_shorted_sentences[:2]:
         del reformed
         del sent_tokens_embeddings
         del words_embeddings_in_sent_dict
-    print("---------------------------------------------------------------------------------------")
+    #print("---------------------------------------------------------------------------------------")
 
 #update vocab over all sentences
 updated_vocab = {}
 for word, (count, sum_vector) in vocab.items():
     updated_vocab[word] = (sum_vector/count)
 vocabulary_embeddings_to_text(updated_vocab)
+

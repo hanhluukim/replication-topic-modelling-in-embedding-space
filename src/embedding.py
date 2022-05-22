@@ -13,6 +13,9 @@ import matplotlib.pyplot as plt
 import pandas as pd
 from pathlib import Path
 
+def compare_word2vec_methods_and_bert_embeddings(word, word2vec_embeddings, bert_embeddings):
+      return {'word2vec': [], 'bert': []}
+
 def read_prefitted_embedding(model_name, vocab, save_path):
       try:
             save_path = Path.joinpath(save_path, f'{model_name}_vocab_embedding.txt')
@@ -27,14 +30,9 @@ def read_prefitted_embedding(model_name, vocab, save_path):
             v = [float(e) for e in t.split("\t")[1].split(" ")]
             if w in vocab:
                   embedding_data[w] = v
-      """
+      
       # sort embedding_data again by the ordner of the vocabulary from bow
-      embedding_data_as_list = []
-      for w in vocab:
-            if w in list(embedding_data.keys()):
-            embedding_data_as_list.append(embedding_data[w])
-      del embedding_data
-      """
+      
       return list(embedding_data.values())
 
 class WordEmbeddingCreator:
@@ -93,7 +91,7 @@ class WordEmbeddingCreator:
             """
             model_vocab = []
             if self.model_name=="bert":
-                  model_vocab = []
+                  model_vocab = [] #bert in other processing, ignore here
             else:
                   model_vocab = list(self.model.wv.vocab)
             print(f'length of vocabulary from word-embedding model {len(model_vocab)}')
@@ -102,7 +100,7 @@ class WordEmbeddingCreator:
             
             f = open(Path.joinpath(embedding_path, f'{self.model_name}_vocab_embedding.txt'), 'w') #add to prepared_data
             # sort words in embedding matrix by the ordner from vocabulary
-            for v in tqdm(train_vocab):
+            for v in tqdm(train_vocab): # sort the list embeddings by words in vocabulary
                 if v in model_vocab:
                     vec = list(self.model.wv.__getitem__(v))
                     f.write(v + '\t')
@@ -175,3 +173,12 @@ class WordEmbeddingCreator:
             return True
 
   
+class BertEmbedding:
+    def __init__(self, saved_embeddings_text_file):
+          self.file_path = saved_embeddings_text_file
+          
+    def read_prefitted_bert_embeddings(self, etm_vocab):
+          vocab_embeddings = read_prefitted_embedding("bert", etm_vocab, self.file_path)
+    
+    def find_similar_words(self, word, top_neighbors):
+        return True

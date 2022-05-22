@@ -149,8 +149,8 @@ save_path = Path.joinpath(Path.cwd(), f'prepared_data/min_df_{min_df}')
 figures_path = Path.joinpath(Path.cwd(), f'figures/min_df_{min_df}')
 Path(figures_path).mkdir(parents=True, exist_ok=True)
 
-#-------------------------embedding training------------------------------------------
 vocab = list(word2id.keys())
+#-------------------------embedding training------------------------------------------
 if word2vec_model!="bert":
   wb_creator = WordEmbeddingCreator(model_name=word2vec_model, documents = docs_tr, save_path= save_path)
   wb_creator.train(min_count=0, embedding_size= 300)
