@@ -1,6 +1,6 @@
 import torch
 
-def tokenizerFast_for_a_sent(sent, tokenizer):
+def tokenizerfast_for_a_sent(sent, tokenizer):
     this_sent_tokenizer = tokenizer(sent)
     # index of token in the vocabulary
     indexed_tokens = this_sent_tokenizer.input_ids
@@ -8,7 +8,8 @@ def tokenizerFast_for_a_sent(sent, tokenizer):
     # Convert inputs to PyTorch tensors
     tokens_tensor = torch.tensor([indexed_tokens])
     segments_tensors = torch.tensor([segments_ids])
-    return tokens_tensor, segments_tensors
+    tokens_ids_with_belonging_information = this_sent_tokenizer.word_ids()
+    return tokens_tensor, segments_tensors, tokens_ids_with_belonging_information
   
 def reform_token_embeddings_of_sentence(full_outputs):
     hidden_states = full_outputs[2]
@@ -103,4 +104,25 @@ def save_embeddings_in_sent_to_text(sent_id, words_embeddings_in_sent_dict):
                 fp.write(f'{e} ')
             fp.write("\n")
         print('saving embeddings')
+    return True
+
+def save_embeddings_to_text(words_embeddings_in_sent_dict):
+    with open(r'./bert_words_embeddings.txt', 'a') as fp:
+      for word, vector in words_embeddings_in_sent_dict.items():
+          # write each item on a new line
+          fp.write(f'{word}\t')
+          for e in vector.tolist():
+            fp.write(f'{e} ')
+          fp.write("\n")
+      print('saving embeddings')
+    return True
+
+def vocabulary_embeddings_to_text(vocab_embeddings):
+    with open(r'./bert_vocab_embeddings.txt', 'w') as fp:
+      for word, vector in vocab_embeddings.items():
+          fp.write(f'{word}\t')
+          for e in vector.tolist():
+            fp.write(f'{e} ')
+          fp.write("\n")
+      print('saving embeddings')
     return True
