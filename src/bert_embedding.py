@@ -107,7 +107,7 @@ def save_embeddings_in_sent_to_text(sent_id, words_embeddings_in_sent_dict):
     return True
 
 def save_embeddings_to_text(words_embeddings_in_sent_dict):
-    with open(r'./bert_words_embeddings.txt', 'a') as fp:
+    with open(r'prepared_data/bert_words_embeddings.txt', 'a') as fp:
       for word, vector in words_embeddings_in_sent_dict.items():
           # write each item on a new line
           fp.write(f'{word}\t')
@@ -118,7 +118,7 @@ def save_embeddings_to_text(words_embeddings_in_sent_dict):
     return True
 
 def vocabulary_embeddings_to_text(vocab_embeddings):
-    with open(r'./bert_vocab_embeddings.txt', 'w') as fp:
+    with open(r'prepared_data/bert_vocab_embeddings.txt', 'w') as fp:
       for word, vector in vocab_embeddings.items():
           fp.write(f'{word}\t')
           for e in vector.tolist():

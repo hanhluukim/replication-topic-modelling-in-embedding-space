@@ -105,9 +105,9 @@ def handle_long_sentences(sentences, given_len):
     return sentences
 
 def create_marked_senteces(sentences):
-    return ['[CLS]' + sent + '[SEP]' for sent in sentences]
+    return ['[CLS] ' + sent + ' [SEP]' for sent in sentences]
 def save_sents_to_txt(shorted_sentences):
-    with open(r'./bert_sentences.txt', 'w') as fp:
+    with open(r'prepared_data/bert_sentences.txt', 'w') as fp:
       for sent in shorted_sentences:
           # write each item on a new line
           fp.write(f'{sent} \n')
