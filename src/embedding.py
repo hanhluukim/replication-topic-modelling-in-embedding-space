@@ -28,12 +28,19 @@ def read_prefitted_embedding(model_name, vocab, save_path):
       for t in lines:
             w = t.split("\t")[0]
             v = [float(e) for e in t.split("\t")[1].split(" ")]
+            # check again only word in the etm-vocabulary
             if w in vocab:
                   embedding_data[w] = v
       
       # sort embedding_data again by the ordner of the vocabulary from bow
-      
-      return list(embedding_data.values())
+      words_embeddings = np.array(list(embedding_data.values()))
+      words = np.array(list(embedding_data.keys()))
+      if words == np.array(vocab):
+            indices = [vocab.index(words[i]) for i in range(0,len(words))]
+            words_embeddings = [e for _, e in sorted(zip(indices, words_embeddings))]
+            return words_embeddings #list(embedding_data.values())
+      else:
+            print("something wrong at the embedding.py/read_prefitted_embeddings")
 
 class WordEmbeddingCreator:
       def __init__(self, model_name="cbow", documents = None, save_path = ""):

@@ -82,8 +82,12 @@ def get_final_words_embeddings_in_sent(original_sent, sent_tokens_ids, sent_outp
     not_unique_words_embeddings = get_multiple_embeddings_for_words_in_sent(sent_tokens_ids, sent_outputs_tokens_embeddings)
     #print(f'total found embeddings in sent: {not_unique_words_embeddings.shape}')
     original_words_list = original_sent.split(" ")
+    set_original_words_list = []
+    for e in original_words_list:
+        if e not in set_original_words_list:
+            set_original_words_list.append(e) #[e for e in original_sent if e not in ]
     words_embeddings_in_sent_dict = {}
-    for word in set(original_words_list):
+    for word in set_original_words_list:
         if word not in ['[CLS]', '[SEP]']:
           word_indices = get_indices_of_word_in_original_sent(word, original_words_list)
           #print(f'word---- {word} ---- indices in original sent: {word_indices}')
@@ -93,6 +97,8 @@ def get_final_words_embeddings_in_sent(original_sent, sent_tokens_ids, sent_outp
           #print(f'test: {different_occurrences_embeddings_of_word.shape}')
           mean_unique_word_embedding = get_unique_embedding(torch.tensor(different_occurrences_embeddings_of_word), "mean")
           words_embeddings_in_sent_dict[word] = mean_unique_word_embedding
+    del original_words_list
+    del set_original_words_list
     return words_embeddings_in_sent_dict
 
 def save_embeddings_in_sent_to_text(sent_id, words_embeddings_in_sent_dict):
