@@ -10,6 +10,22 @@ import torch
 from datetime import datetime
 from src.visualization import show_embedding_with_kmeans_umap
 import subprocess
+import numpy as np
+import random
+
+#--------------------deterministic------------------------------------
+import os
+seed = 42
+os.environ['PYTHONHASHSEED'] = str(seed)
+torch.manual_seed(seed)
+torch.cuda.manual_seed(seed)
+torch.cuda.manual_seed_all(seed)
+torch.backends.cudnn.deterministic = True
+torch.backends.cudnn.benchmark = False
+np.random.seed(seed)
+random.seed(seed)
+
+
 
 #---------------------check cuda-------------------------------------
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu") 
@@ -50,10 +66,8 @@ textsloader.load_tokenize_texts("20newsgroups")
 #-------------------------preprocessing-------------------------------
 min_df = 10
 textsloader.preprocess_texts(length_one_remove=True, punctuation_lower = True, stopwords_filter = True)
-print("\n")
 textsloader.show_example_raw_texts(n_docs=2)
-print("\n")
-print("total documents {}".format(len(textsloader.complete_docs)))
+print("\ntotal documents {}".format(len(textsloader.complete_docs)))
 
 textsloader.split_and_create_voca_from_trainset(max_df=0.7, min_df=min_df, stopwords_remove_from_voca=True)
 print("\n")
@@ -151,7 +165,7 @@ if word2vec_model!="bert":
 else:
       #todo run subprocess
       subprocess.run(
-            ["python", "src/bert_main.py"])      
+            ["python", "bert_main.py"])      
 
 #--------------------------topic embedding training-----------------------------------
 

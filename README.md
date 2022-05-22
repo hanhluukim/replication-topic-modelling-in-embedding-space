@@ -23,7 +23,7 @@
 **Angewandte Word-Embedding Methoden**
 - [ ] CBOW und Skipgram mittels [Gensim](https://radimrehurek.com/gensim/). Word-Embeddings werden für jedes Wort des Traindatensatzes gelernt. Es wird ein Trainingsprozess gebraucht, um Word-Repräsentationen zu haben
 - [ ] based-BERT-Wordembedding mittels [Transformer-Huggingface](https://huggingface.co/docs/transformers/installation). Benutzung von pretrained-BERT-Modell um direkt Repräsentationen für Wörter zu haben. Kein Trainieren ist benötig. 
-- [ ] Implementierung in : `src/embedding.py` für CBOW und Skipgram und für BERT: `src/bert_preparing.py`, `src/bert_embedding.py`, `src/bert_main.py`
+- [ ] Implementierung in : `src/embedding.py` für CBOW und Skipgram und für BERT: `src/bert_preparing.py`, `src/bert_embedding.py`, `bert_main.py`. Durchfühen Bert-Embedding mit `python bert_main.py` aus dem Hauptordner
 
 **Architektur des ETM-Modells**
 1. Einige wichtige Beschreibung:
