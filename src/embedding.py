@@ -4,6 +4,7 @@
 # inputs: train-documents in words and the vocabulary (?)
 
 
+from tkinter.tix import DirTree
 import gensim
 import pickle
 import os
@@ -19,12 +20,15 @@ def unit_vec(vector):
       return veclen, vector/veclen
 def get_consine_similarity(vector1, vector2):
       #vector unit length so that just use dot product
+      vector1 = np.array(vector1)
+      vector2 = np.array(vector2)
       return dot(unit_vec(vector1), unit_vec(vector2))
 
 def get_similar_vectors_to_given_vector(topn, vocab, give_vector, all_vectors):
       dists = []
       for vector2 in all_vectors:
             dists.append(get_consine_similarity(give_vector, vector2))
+      dists = np.array(dists)
       top_indices = list(dists.argsort()[:topn+1]) #do not use dist = 0 of same vectors
       top_words = {} #np.array(vocab)[indices]
       for idx in top_indices:

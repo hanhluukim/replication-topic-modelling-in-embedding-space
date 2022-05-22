@@ -81,8 +81,10 @@ for marked_sent in tqdm(marked_shorted_sentences, desc="creating bert embeddings
     #print("---------------------------------------------------------------------------------------")
 
 #update vocab over all sentences
+"""
 updated_vocab = {}
 for word, (count, sum_vector) in vocab.items():
     updated_vocab[word] = (sum_vector/count)
 vocabulary_embeddings_to_text(updated_vocab)
+"""
 
