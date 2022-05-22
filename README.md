@@ -12,6 +12,7 @@
 **Struktur des Repos**
 1. Implementierung befindet sich im Ordner [src](https://github.com/hanhluukim/replication-topic-modelling-in-embedding-space/tree/main/src)
 2. Jeder Schritt von den durchgeführten Experimenten kann in der Datei [notebook_replication.ipynb](https://github.com/hanhluukim/replication-topic-modelling-in-embedding-space/blob/main/notebook_replication.ipynb) nachvollzieht und kontrolliert werden. Man kann dieses Notebook selbst auf dem Link Colab öffnen und durchführen. 
+3. Jeder Schritt für Erstellung von Word-embeddings mit BERT in der Datei [notebook_bert_embedding.jpynb](https://github.com/hanhluukim/replication-topic-modelling-in-embedding-space/blob/main/notebook_bert_embedding.ipynb)
 
 
 **Genutzte Datensätze**
@@ -22,7 +23,7 @@
 **Angewandte Word-Embedding Methoden**
 - [ ] CBOW und Skipgram mittels [Gensim](https://radimrehurek.com/gensim/). Word-Embeddings werden für jedes Wort des Traindatensatzes gelernt. Es wird ein Trainingsprozess gebraucht, um Word-Repräsentationen zu haben
 - [ ] based-BERT-Wordembedding mittels [Transformer-Huggingface](https://huggingface.co/docs/transformers/installation). Benutzung von pretrained-BERT-Modell um direkt Repräsentationen für Wörter zu haben. Kein Trainieren ist benötig. 
-- [ ] Implementierung in : `src/embedding.py` für CBOW und Skipgram und `src/bert_preparing.py`, `src/bert_embedding.py`, `src/bert_main.py`
+- [ ] Implementierung in : `src/embedding.py` für CBOW und Skipgram und für BERT: `src/bert_preparing.py`, `src/bert_embedding.py`, `src/bert_main.py`
 
 **Architektur des ETM-Modells**
 1. Einige wichtige Beschreibung:
