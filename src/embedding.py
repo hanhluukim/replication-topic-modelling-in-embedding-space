@@ -12,7 +12,27 @@ from tqdm import tqdm
 import matplotlib.pyplot as plt
 import pandas as pd
 from pathlib import Path
+from numpy import dot, argmax, indices
 
+def unit_vec(vector):
+      veclen = np.sqrt(np.sum(vector ** 2))
+      return veclen, vector/veclen
+def get_consine_similarity(vector1, vector2):
+      #vector unit length so that just use dot product
+      return dot(unit_vec(vector1), unit_vec(vector2))
+
+def get_similar_vectors_to_given_vector(topn, vocab, give_vector, all_vectors):
+      dists = []
+      for vector2 in all_vectors:
+            dists.append(get_consine_similarity(give_vector, vector2))
+      top_indices = list(dists.argsort()[:topn+1]) #do not use dist = 0 of same vectors
+      top_words = {} #np.array(vocab)[indices]
+      for idx in top_indices:
+            top_words[vocab[idx]] = dists[idx]
+      return top_words
+      #all_vectors[argmax([get_consine_similarity(give_vector, vector2) for vector2 in all_vectors])]
+      #return 
+      
 def compare_word2vec_methods_and_bert_embeddings(word, word2vec_embeddings, bert_embeddings):
       return {'word2vec': [], 'bert': []}
 
@@ -37,8 +57,9 @@ def read_prefitted_embedding(model_name, vocab, save_path):
       words = np.array(list(embedding_data.keys()))
       if words == np.array(vocab):
             indices = [vocab.index(words[i]) for i in range(0,len(words))]
+            words_in_vocab = [vocab[i] for i in range(0,len(words))]
             words_embeddings = [e for _, e in sorted(zip(indices, words_embeddings))]
-            return words_embeddings #list(embedding_data.values())
+            return words_in_vocab, words_embeddings #list(embedding_data.values())
       else:
             print("something wrong at the embedding.py/read_prefitted_embeddings")
 
@@ -117,13 +138,32 @@ class WordEmbeddingCreator:
             f.close()
             self.model.save(str(Path.joinpath(embedding_path, 'word2vec.model')))
             return True
+      
+      def other_save_embeddings(self, train_vocab):
+            all_embeddings = []
+            model_vocab = list(self.model.wv.vocab)
+            for v in tqdm(train_vocab): # sort the list embeddings by words in vocabulary
+                 if v in model_vocab:
+                       vec = list(self.model.wv.__getitem__(v))
+                       all_embeddings.append(vec)
+            np.save(f'{self.model_name}_embedding.npy', all_embeddings)
+            return True
 
       def find_most_similar_words(self, n_neighbor=20, word = None):
             if word!=None:
                   return self.model.wv.most_similar(word, topn=n_neighbor)
             else:
                   print(f'give a word to get the {n_neighbor} neighbor words')
-      
+                  
+      def find_similar_words_self_implemented(self, topn, train_vocab, word):
+            top_words = {}
+            model_vocab = list(self.model.wv.vocab)
+            if word in train_vocab:
+                  if word in model_vocab:
+                        considered_vector = list(self.model.wv.__getitem__(word))
+                        top_words = get_similar_vectors_to_given_vector(topn, model_vocab, considered_vector, list(self.model.wv))
+            return top_words
+
       def cluster_words(self, embedding_save_path = None, fig_path = None, n_components=3, text = False):
             import umap.umap_ as umap
             import time
@@ -183,9 +223,21 @@ class WordEmbeddingCreator:
 class BertEmbedding:
     def __init__(self, saved_embeddings_text_file):
           self.file_path = saved_embeddings_text_file
-          
-    def read_prefitted_bert_embeddings(self, etm_vocab):
-          vocab_embeddings = read_prefitted_embedding("bert", etm_vocab, self.file_path)
-    
+          self.bert_vocab = None
+          self.bert_embeddings = None
+          self.bert_norms = None
+    def get_bert_embeddings(self, etm_vocab):
+          # filtering words by etm_vocab
+          words_in_vocab, vocab_embeddings = read_prefitted_embedding("bert", etm_vocab, self.file_path)
+          self.bert_embeddings = np.array(vocab_embeddings)
+          self.bert_vocab = words_in_vocab
+          self.bert_norms = np.array()
+          print("bert-embedding ready!")
+          return True
+
     def find_similar_words(self, word, top_neighbors):
-        return True
+          word_idx_in_vocab = self.bert_vocab.index(word)
+          considered_vector = self.bert_embeddings[word_idx_in_vocab]
+          top_words = get_similar_vectors_to_given_vector(top_neighbors, self.bert_vocab, considered_vector, self.bert_embeddings)
+          return top_words
+
