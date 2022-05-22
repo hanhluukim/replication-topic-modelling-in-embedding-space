@@ -3,8 +3,6 @@
 # returns: word-embedding for each word in the vocabulary
 # inputs: train-documents in words and the vocabulary (?)
 
-
-from tkinter.tix import DirTree
 import gensim
 import pickle
 import os
@@ -17,7 +15,7 @@ from numpy import dot, argmax, indices
 
 def unit_vec(vector):
       veclen = np.sqrt(np.sum(vector ** 2))
-      return veclen, vector/veclen
+      return vector/veclen
 def get_consine_similarity(vector1, vector2):
       #vector unit length so that just use dot product
       vector1 = np.array(vector1)
@@ -29,7 +27,7 @@ def get_similar_vectors_to_given_vector(topn, vocab, give_vector, all_vectors):
       for vector2 in all_vectors:
             dists.append(get_consine_similarity(give_vector, vector2))
       dists = np.array(dists)
-      top_indices = list(dists.argsort()[:topn+1]) #do not use dist = 0 of same vectors
+      top_indices = list(dists.argsort()[:topn]) #do not use dist = 0 of same vectors
       top_words = {} #np.array(vocab)[indices]
       for idx in top_indices:
             top_words[vocab[idx]] = dists[idx]
@@ -85,6 +83,7 @@ class WordEmbeddingCreator:
             self.save_path = save_path
             self.documents = documents
             self.model = None
+            self.all_embeddings = []
             
       def train(self, min_count = 0, embedding_size = 300):
             if self.model_name=="cbow":
@@ -137,6 +136,7 @@ class WordEmbeddingCreator:
             for v in tqdm(train_vocab): # sort the list embeddings by words in vocabulary
                 if v in model_vocab:
                     vec = list(self.model.wv.__getitem__(v))
+                    self.all_embeddings.append(vec)
                     f.write(v + '\t')
                     vec_str = ['%.9f' % val for val in vec]
                     vec_str = " ".join(vec_str)
@@ -164,11 +164,11 @@ class WordEmbeddingCreator:
       def find_similar_words_self_implemented(self, topn, train_vocab, word):
             top_words = {}
             model_vocab = list(self.model.wv.vocab)
-            all_embeddings = self.other_save_embeddings(train_vocab)
+            #all_embeddings = self.other_save_embeddings(train_vocab)
             if word in train_vocab:
                   if word in model_vocab:
                         considered_vector = list(self.model.wv.__getitem__(word))
-                        top_words = get_similar_vectors_to_given_vector(topn, model_vocab, considered_vector, all_embeddings)
+                        top_words = get_similar_vectors_to_given_vector(topn, model_vocab, considered_vector, self.all_embeddings)
             return top_words
 
       def cluster_words(self, embedding_save_path = None, fig_path = None, n_components=3, text = False):
