@@ -75,7 +75,7 @@ def topicPerplexityteil2(thetatest1,tests2anzahl_perword,anzahlVocabulary,betate
 		anzahlwords=anzahlwords+tests2anzahl_perword[m]
 	if anzahlwords==0:
 		return 500
-	return h/anzahlwords
+	return math.exp(-h/anzahlwords)
 def topicPerplexityTeil1(thetastest1,tests2anzahl_perword,anzahlVocabulary,betatest1):
 	mean=0
 	for thetatest1 in thetastest1:
