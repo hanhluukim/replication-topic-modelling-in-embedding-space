@@ -213,14 +213,14 @@ class TextDataLoader:
     
     def get_docs_in_word_ids_for_each_set(self):
         #using the self.train_indices, self.test_indices, self.val_indices to get the documents
-        
+        """REMOVE_SAVING
         with open('prepared_data/train_docs_from_complete_docs.txt', 'w') as f:
             #print(self.train_indices)
             sorted_indices = sorted(self.train_indices)
             for train_doc_idx in sorted_indices:
                 f.write(f'{train_doc_idx}: {self.complete_docs[train_doc_idx]}')
                 f.write("\n")
-        
+        """
         docs_tr = [[self.word2id[w] for w in self.complete_docs[train_doc_idx].split() if w in self.word2id] for train_doc_idx in self.train_indices]
         docs_va = [[self.word2id[w] for w in self.complete_docs[val_doc_idx].split() if w in self.word2id] for val_doc_idx in self.val_indices]
         docs_ts = [[self.word2id[w] for w in self.complete_docs[test_doc_idx].split() if w in self.word2id] for test_doc_idx in self.test_indices]
@@ -248,11 +248,12 @@ class TextDataLoader:
           docs_df.to_csv(f'{path}/{name}.csv',index=False)
           del docs_df
           return True
+        """REMOVE_SAVING
         save_path = 'prepared_data/min_df_'+str(self.min_df)
         save_preprocessed_docs(path = save_path, name="preprocessed_docs_train", docs = docs_tr, docs_indices= self.train_indices)
         save_preprocessed_docs(path = save_path, name="preprocessed_docs_test", docs = docs_ts, docs_indices= self.test_indices)
         save_preprocessed_docs(path = save_path, name="preprocessed_docs_val", docs = docs_va, docs_indices= self.val_indices)
-
+        """
         
         return docs_tr, docs_va, docs_ts
 
@@ -441,6 +442,8 @@ class TextDataLoader:
                     'counts': to_numpy_array(bow_test_h2_counts),
                 }
             }
+            #---------------------REMOVE_SAVING--------------------
+            """
             # saving to the prepared_data folder:
             bow_save_path = 'prepared_data/min_df_'+str(self.min_df)
             Path(bow_save_path).mkdir(parents=True, exist_ok=True)
@@ -450,8 +453,9 @@ class TextDataLoader:
             # saving id2word:
             print(f'some id2word befor saving: {list(self.id2word.keys())[:20]}')
             savemat(bow_save_path + '/id2word.mat', {'id': list(self.id2word.keys()), 'word': list(self.id2word.values())}, do_compression=True)
+            """
             # saving id2word to csv test
-
+            #---------------------REMOVE_SAVING--------------------
 
             del bow_train_tokens
             del bow_train_counts
