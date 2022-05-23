@@ -193,7 +193,7 @@ class WordEmbeddingCreator:
             with open(model_vocab_path, 'wb') as f:
                   pickle.dump(model_vocab, f)
             # save embeddings
-            np.save('prepared_data/{self.model_name}_embeddings.npy',self.all_embeddings)
+            np.save(f'prepared_data/{self.model_name}_embeddings.npy',self.all_embeddings)
             return True
       
       def other_save_embeddings(self, train_vocab):
