@@ -36,6 +36,31 @@ def get_similar_vectors_to_given_vector(topn, vocab, give_vector, all_vectors):
       #all_vectors[argmax([get_consine_similarity(give_vector, vector2) for vector2 in all_vectors])]
       #return 
       
+def read_prefitted_embedding_from_npy_and_txt(model_name, etm_vocab, save_path):
+      eb_path =  Path.joinpath(save_path, f'{model_name}_embeddings.npy')
+      model_vocab_path = Path.joinpath(save_path, f'{model_name}_vocab.txt')
+      # loading
+      all_embeddings = np.load(eb_path)
+      words_in_vocab = []
+      with open(model_vocab_path) as f:
+            lines = f.readlines()
+      for w in lines:
+            words_in_vocab.append(w)
+            
+      embeddings = []
+      for w in etm_vocab:
+            idx = model_vocab.index(w)
+            eb = all_embeddings[idx]
+            embeddings.append(eb)
+      del all_embeddings
+      del model_vocab
+      if words_in_vocab == etm_vocab:
+            return words_in_vocab, embeddings
+      else:
+            print("something wrong with reading files")
+            return False
+      
+      
 def read_prefitted_embedding_from_npy_pkl(model_name, etm_vocab, save_path):
       eb_path =  Path.joinpath(save_path, f'{model_name}_embeddings.npy')
       model_vocab_path = Path.joinpath(save_path, f'{model_name}_vocab.pkl')
