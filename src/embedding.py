@@ -186,14 +186,14 @@ class WordEmbeddingCreator:
                     vec_str = " ".join(vec_str)
                     f.write(vec_str + '\n')
             f.close()
-            self.model.save(str(Path.joinpath(embedding_path, 'word2vec.model')))
+            self.model.save(str(Path.joinpath(embedding_path, f'{self.model_name}_word2vec.model')))
             
             # save embeddings as npy and pkl
-            model_vocab_path = f'prepared_data/{self.model_name}_vocab.pkl'
+            model_vocab_path = str(Path.joinpath(embedding_path, f'{self.model_name}_vocab.pkl'))
             with open(model_vocab_path, 'wb') as f:
                   pickle.dump(model_vocab, f)
             # save embeddings
-            np.save(f'prepared_data/{self.model_name}_embeddings.npy',self.all_embeddings)
+            np.save(str(Path.joinpath(embedding_path, f'{self.model_name}_embeddings.npy')),self.all_embeddings)
             return True
       
       def other_save_embeddings(self, train_vocab):

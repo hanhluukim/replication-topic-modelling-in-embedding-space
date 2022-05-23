@@ -129,8 +129,9 @@ dmypy.json
 .pyre/
 
 # Directories
-prepared_data/
-etm_in_julia/
-checkpoints/
+prepared_data/min_df*
+prepared_data/bert_vocab_embedding.txt
+#etm_in_julia/
+#checkpoints/
 # Files
 #.gitignore
