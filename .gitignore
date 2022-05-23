@@ -127,5 +127,9 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# Directories
 prepared_data/
-.gitignore
+#etm_in_julia/
+# Files
+#.gitignore
