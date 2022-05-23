@@ -4,6 +4,7 @@
 # the retured data here will be imported to the word-embedding modul to create word-embedding. After that can ETM will be used
 # returned data can be used as input for LDA Model
 
+from turtle import update
 from sklearn.datasets import fetch_20newsgroups
 import pathlib
 from sklearn.feature_extraction.text import CountVectorizer
@@ -131,8 +132,8 @@ class TextDataLoader:
         #signed_documents = vectorized_documents.sign()
         # document-frequency for each word in vocabulary
         sum_docs_counts = vectorized_documents.sign().sum(axis=0) 
-        print("test-document-frequency: ")
-        print(sum_docs_counts)
+        #print("test-document-frequency: ")
+        #print(sum_docs_counts)
         
         # init word2id and id2word with vectorizer
         # sort the init-voca-dictionary by documents-frequency
@@ -194,8 +195,9 @@ class TextDataLoader:
             for w in self.complete_docs[train_idx].split():
                 if w in self.word2id: #it means that still not-stopwords will be saved, because word2id is before updated by not-stopwords-vocabulary
                     vocabulary.append(w)
-                    
+                 
         self.vocabulary = list(set(vocabulary))
+        del vocabulary  
         #self.vocabulary = list(set(vocabulary))
         print(f'length of the vocabulary: {len(self.vocabulary)}')
         print(f'sample ten words of the vocabulary: {self.vocabulary[:10]}')
@@ -276,13 +278,49 @@ class TextDataLoader:
             train_sum_docs_counts = train_signed_documents.sum(axis=0)[0]
             """
         
-        def remove_empty(in_docs):
-            return [doc for doc in in_docs if doc!=[]]
+        def remove_empty(name, in_docs):
+            update_docs = []
+            if name == "train":
+                for i, doc in enumerate(in_docs):
+                    if doc==[]:
+                        e = None
+                        #self.train_indices.pop(i)
+                    else:
+                        update_docs.append(doc)
+            elif name == "test":
+                for i, doc in enumerate(in_docs):
+                    if doc==[]:
+                        e = None
+                        #self.test_indices.pop(i)
+                    else:
+                        update_docs.append(doc)
+            else: #validation
+                for i, doc in enumerate(in_docs):
+                    if doc==[]:
+                        e = None
+                        #self.val_indices.pop(i)
+                    else:
+                        e = None
+                        update_docs.append(doc)
+            return update_docs
         
-        docs_tr = remove_empty(docs_tr)
-        docs_ts = remove_empty(docs_ts)
-        docs_ts = [doc for doc in docs_ts if len(doc)>1]
-        docs_va = remove_empty(docs_va)
+        def remove_test_length_1(in_docs):
+            update_docs = []
+            for i, doc in enumerate(in_docs):
+                if len(doc) > 1:
+                    update_docs.append(doc)
+                else:
+                    e = None
+                    #self.test_indices.pop(i)
+            return update_docs
+        
+        docs_tr = remove_empty('train', docs_tr)
+        docs_ts = remove_empty('test', docs_ts)
+        #can be remove? 
+        docs_ts = remove_test_length_1(docs_ts) #[doc for doc in docs_ts if len(doc)>1]
+        docs_va = remove_empty('validation', docs_va)
+        # todo: update seft.train_indices, self.test_indices, self.val_indices
+        #docs_tr, docs_va, docs_ts = self.get_docs_in_word_ids_for_each_set()
         
         
         print(f'train-size-after-all: {len(docs_tr)}')
@@ -291,6 +329,14 @@ class TextDataLoader:
         
         
         # split test-set to two halves
+        print(f'test-size-after-all: {len(docs_tr)}')
+        print(f'test-indices-length: {len(self.train_indices)}')
+        
+        print(f'test-size-after-all: {len(docs_va)}')
+        print(f'test-indices-length: {len(self.val_indices)}')
+        
+        print(f'test-size-after-all: {len(docs_ts)}')
+        print(f'test-indices-length: {len(self.test_indices)}')
         docs_ts_h1, docs_ts_h2,_,_ = train_test_split(docs_ts, self.test_indices, test_size=0.5, random_state=42)
 
         def create_list_words(in_docs):
@@ -401,15 +447,43 @@ class TextDataLoader:
         if for_lda_model == True:
             print("compact representation for LDA")
             def create_lda_corpus(bow_set):
-                df = pd.DataFrame(bow_set.toarray())
+                as_array = list(bow_set.toarray())
+                del bow_set
+                print(f'len set in lda_corpus: {len(as_array)}')
+                print(f'len a doc: {len(as_array[0])}')
                 lda_corpus = []
-                for i in range(0,df.shape[0]):
-                    doc_corpus = [ (j,e) for j, e in enumerate(df.iloc[i])]
+                
+                #df = pd.DataFrame(bow_set.toarray())
+                #lda_corpus = []
+                for i in range(0,len(as_array)):
+                    #doc_corpus = [ (j,e) for j, e in enumerate(df.iloc[i])]
+                    doc_corpus = []
+                    j = 0
+                    #print("test")
+                    doc = as_array[i]
+                    
+                    for e in doc:
+                        doc_corpus.append((j,e))
+                        j += 1
                     lda_corpus.append(doc_corpus)
+                    del doc_corpus
+                    del doc
+                del as_array
                 return lda_corpus
-            train_dataset = gensim.matutils.Sparse2Corpus(bow_tr) #create_lda_corpus(bow_tr)
-            test_dataset = gensim.matutils.Sparse2Corpus(bow_ts) #create_lda_corpus(bow_ts)
-            val_dataset = gensim.matutils.Sparse2Corpus(bow_va) #create_lda_corpus(bow_va)
+
+            if self.min_df == 100:
+                # because 100, not all words like vocabulary, 
+                # so sparse2corpus create dataset with not exact number of words
+                train_dataset = bow_tr#create_lda_corpus(bow_tr)
+                print("end-train") 
+                test_dataset = bow_ts#create_lda_corpus(bow_ts) 
+                print("end-test")
+                val_dataset = bow_va#create_lda_corpus(bow_va) 
+                print("end-val")
+            else:
+                train_dataset = gensim.matutils.Sparse2Corpus(bow_tr) #create_lda_corpus(bow_tr)
+                test_dataset = gensim.matutils.Sparse2Corpus(bow_ts) #create_lda_corpus(bow_ts)
+                val_dataset = gensim.matutils.Sparse2Corpus(bow_va) #create_lda_corpus(bow_va)
         
         else: #other models 
             bow_train_tokens, bow_train_counts = split_bow(bow_tr, n_docs_tr)

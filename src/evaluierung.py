@@ -53,6 +53,7 @@ def topicCoherence(topicsWords,anzahlTopics,documents,anzDoc):
 def topicCoherence2(topicsWords,anzahlTopics,documents,anzDoc):
 	c=0
 	for topicWords in topicsWords:
+		topicWords = topicWords[:10]
 		for i in range(10):
 			for j in range(i+1,10):
 				c=c+pointwiseInf(documents,topicWords[i],topicWords[j],anzDoc,2)
@@ -85,6 +86,7 @@ def topicDiversity(topicsTopk):
 	unique=[]
 	gesamt=len(topicsTopk)*len(topicsTopk[0])
 	for topk in topicsTopk:
+		topk = topk[:25]
 		for word in topk:
 			if not word in unique:
 				unique.append(word)

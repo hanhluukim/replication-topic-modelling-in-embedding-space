@@ -13,7 +13,7 @@ print(f'total vectors: {len(lines)}')
 bert_embeddings = []
 bert_vocab = []
 
-f = open('bert_vocab.txt', 'w')
+f = open('prepared_data/bert_vocab.txt', 'w')
 for t in tqdm(lines, desc="covert embeddings"):
     # save word
     line = t.split("\t")

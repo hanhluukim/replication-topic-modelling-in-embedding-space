@@ -49,6 +49,9 @@ word2vec_model = args.wordvec_model
 
 #-----------------------check statistic--------------------------------
 for min_df in [2, 5, 10, 30, 100]:
+      Path('prepared_data').mkdir(parents=True, exist_ok=True)
+      Path(f'prepared_data/min_df_{min_df}').mkdir(parents=True, exist_ok=True)
+      
       textsloader = TextDataLoader(source="20newsgroups", train_size=None, test_size=None)
       textsloader.load_tokenize_texts("20newsgroups")
       textsloader.preprocess_texts(length_one_remove=True, punctuation_lower = True, stopwords_filter = True)
