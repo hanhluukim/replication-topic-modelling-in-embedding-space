@@ -68,7 +68,7 @@ def transform_to_sentences(docs): #no labels
 
 def split_long_sentence(splitted_sent, given_len):
     subsents = []
-   #for i in range(0,len(splitted_sent), given_len):
+    #for i in range(0,len(splitted_sent), given_len):
     i=0
     while i < len(splitted_sent): 
         if i == 0:
@@ -76,7 +76,7 @@ def split_long_sentence(splitted_sent, given_len):
             subsents.append(sub)
             i = i + given_len
         if i!=0:
-            j = i + given_len - 5 #windown 5
+            j = i + given_len - 10 #windown 5
             if j + given_len <= len(splitted_sent):
                 sub = " ".join(splitted_sent[j:j + given_len])
                 subsents.append(sub)
@@ -105,9 +105,9 @@ def handle_long_sentences(sentences, given_len):
     return sentences
 
 def create_marked_senteces(sentences):
-    return ['[CLS]' + sent + '[SEP]' for sent in sentences]
+    return ['[CLS] ' + sent + ' [SEP]' for sent in sentences]
 def save_sents_to_txt(shorted_sentences):
-    with open(r'./bert_sentences.txt', 'w') as fp:
+    with open(r'prepared_data/bert_sentences.txt', 'w') as fp:
       for sent in shorted_sentences:
           # write each item on a new line
           fp.write(f'{sent} \n')

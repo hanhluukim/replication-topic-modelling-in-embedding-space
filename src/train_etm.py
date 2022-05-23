@@ -7,6 +7,18 @@ from torch.utils.data import DataLoader
 import numpy as np
 from pathlib import Path
 from torch import nn
+import os
+import numpy as np
+import random
+seed = 42
+os.environ['PYTHONHASHSEED'] = str(seed)
+torch.manual_seed(seed)
+torch.cuda.manual_seed(seed)
+torch.cuda.manual_seed_all(seed)
+torch.backends.cudnn.deterministic = True
+torch.backends.cudnn.benchmark = False
+np.random.seed(seed)
+random.seed(seed)
 
 seed = 42
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu") 

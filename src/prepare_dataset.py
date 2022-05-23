@@ -17,6 +17,13 @@ import string
 import random
 from scipy.io import savemat
 from pathlib import Path
+import os
+import numpy as np
+import random
+seed = 42
+os.environ['PYTHONHASHSEED'] = str(seed)
+np.random.seed(seed)
+random.seed(seed)
 
 random.seed(42)
 

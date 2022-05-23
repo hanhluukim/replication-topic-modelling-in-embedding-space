@@ -9,6 +9,23 @@ from src.etm import ETM
 import torch
 from datetime import datetime
 from src.visualization import show_embedding_with_kmeans_umap
+import subprocess
+import numpy as np
+import random
+
+#--------------------deterministic------------------------------------
+import os
+seed = 42
+os.environ['PYTHONHASHSEED'] = str(seed)
+torch.manual_seed(seed)
+torch.cuda.manual_seed(seed)
+torch.cuda.manual_seed_all(seed)
+torch.backends.cudnn.deterministic = True
+torch.backends.cudnn.benchmark = False
+np.random.seed(seed)
+random.seed(seed)
+
+
 
 #---------------------check cuda-------------------------------------
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu") 
@@ -49,10 +66,8 @@ textsloader.load_tokenize_texts("20newsgroups")
 #-------------------------preprocessing-------------------------------
 min_df = 10
 textsloader.preprocess_texts(length_one_remove=True, punctuation_lower = True, stopwords_filter = True)
-print("\n")
 textsloader.show_example_raw_texts(n_docs=2)
-print("\n")
-print("total documents {}".format(len(textsloader.complete_docs)))
+print("\ntotal documents {}".format(len(textsloader.complete_docs)))
 
 textsloader.split_and_create_voca_from_trainset(max_df=0.7, min_df=min_df, stopwords_remove_from_voca=True)
 print("\n")
@@ -134,20 +149,26 @@ save_path = Path.joinpath(Path.cwd(), f'prepared_data/min_df_{min_df}')
 figures_path = Path.joinpath(Path.cwd(), f'figures/min_df_{min_df}')
 Path(figures_path).mkdir(parents=True, exist_ok=True)
 
-#-------------------------embedding training------------------------------------------
-
-wb_creator = WordEmbeddingCreator(model_name=word2vec_model, documents = docs_tr, save_path= save_path)
-wb_creator.train(min_count=0, embedding_size= 300)
 vocab = list(word2id.keys())
-wb_creator.create_and_save_vocab_embedding(vocab, save_path)
-#wb_creator.cluster_words(save_path, figures_path , 2)
-# show embedding of some words
-print("neighbor words of some sample selected words")
-for i in range(0,5):
-      print(f'neighbor of word {vocab[i]}')
-      print([r[0] for r in wb_creator.find_most_similar_words(n_neighbor=5, word=vocab[i])])
-      print([r[1] for r in wb_creator.find_most_similar_words(n_neighbor=5, word=vocab[i])])
-
+#-------------------------embedding training------------------------------------------
+if word2vec_model!="bert":
+  wb_creator = WordEmbeddingCreator(model_name=word2vec_model, documents = docs_tr, save_path= save_path)
+  wb_creator.train(min_count=0, embedding_size= 300)
+  wb_creator.create_and_save_vocab_embedding(vocab, save_path)
+  #wb_creator.cluster_words(save_path, figures_path , 2)
+  # show embedding of some words
+  print("neighbor words of some sample selected words")
+  for i in range(0,5):
+        print(f'neighbor of word {vocab[i]}')
+        print([r[0] for r in wb_creator.find_most_similar_words(n_neighbor=5, word=vocab[i])])
+        print([r[1] for r in wb_creator.find_most_similar_words(n_neighbor=5, word=vocab[i])])
+else:
+      #todo run subprocess
+      print("using prepared_data/bert_vocab_embedding.txt")
+      """
+      subprocess.run(
+            ["python", "bert_main.py"])
+      """     
 
 #--------------------------topic embedding training-----------------------------------
 
@@ -184,7 +205,7 @@ print(f'length of vector: {torch.norm(tr_set.__getitem__(0))}')
 
 
 #---------------------------reading embedding data from file----------------------------
-embedding_data = read_prefitted_embedding(vocab, save_path)
+embedding_data = read_prefitted_embedding(word2vec_model, vocab, save_path)
 
 #---------------------------etm-model setting parameters--------------------------------
 num_topics = 10
