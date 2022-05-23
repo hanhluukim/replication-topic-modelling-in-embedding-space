@@ -16,7 +16,7 @@ num_topics = 50
     
 f = open(f'prepared_data/info_vocab_20newsgroups.txt', "a")
 
-for min_df in [2,5,10,30,50,100]:
+for min_df in [2,5,10,30,100]:
     # data 
     textsloader = None
     textsloader = TextDataLoader(source="20newsgroups", 

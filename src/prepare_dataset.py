@@ -471,7 +471,7 @@ class TextDataLoader:
                 del as_array
                 return lda_corpus
 
-            if self.min_df == 100:
+            if self.min_df == 200:
                 # because 100, not all words like vocabulary, 
                 # so sparse2corpus create dataset with not exact number of words
                 train_dataset = bow_tr#create_lda_corpus(bow_tr)
