@@ -130,6 +130,7 @@ dmypy.json
 
 # Directories
 prepared_data/
-#etm_in_julia/
+etm_in_julia/
+checkpoints/
 # Files
 #.gitignore
