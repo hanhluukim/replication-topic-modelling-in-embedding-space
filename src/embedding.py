@@ -7,34 +7,62 @@ import gensim
 import pickle
 import os
 import numpy as np
+from torch import embedding
 from tqdm import tqdm
 import matplotlib.pyplot as plt
 import pandas as pd
 from pathlib import Path
 from numpy import dot, argmax, indices
 import pickle
+from scipy.spatial import distance
+
+def normalize(v):
+      norm=np.linalg.norm(v)
+      if norm==0:
+            norm=np.finfo(v.dtype).eps
+      return norm
 
 def unit_vec(vector):
       veclen = np.sqrt(np.sum(vector ** 2))
+      #other_veclen = normalize(vector)
+      #print(f'veclen: {veclen}')
+      #print(f'other-veclen: {other_veclen}')
       return vector/veclen
-def get_consine_similarity(vector1, vector2):
+def get_consine_similarity_2(vector1, vector2):
       #vector unit length so that just use dot product
-      vector1 = np.array(vector1)
-      vector2 = np.array(vector2)
-      return dot(unit_vec(vector1), unit_vec(vector2))
+      #print(np.array(vector1).shape)
+      vector1 = unit_vec(np.array(vector1))
+      vector2 = unit_vec(np.array(vector2))
+      #print(f'veclen after normalization: {normalize(vector1)}')
+      return dot(vector1, vector2)
+
+def get_consine_similarity(vector1, vector2):
+      #print("using distance.cosine")
+      #vector unit length so that just use dot product
+      #print(np.array(vector1).shape)
+      vector1 = unit_vec(np.array(vector1))
+      vector2 = unit_vec(np.array(vector2))
+      #print(f'veclen after normalization: {normalize(vector1)}')
+      return 1-distance.cosine(vector1, vector2) #1-dot()/norm
 
 def get_similar_vectors_to_given_vector(topn, vocab, give_vector, all_vectors):
+      #print(vocab[2539])
       dists = []
       for vector2 in all_vectors:
-            dists.append(get_consine_similarity(give_vector, vector2))
-      dists = np.array(dists)
-      top_indices = list(dists.argsort()[:topn]) #do not use dist = 0 of same vectors
+            dists.append(get_consine_similarity_2(give_vector, vector2))
+      #dists = np.array(dists)
+      #print(sorted(dists, reverse=True)[:10])
+      top_dists = sorted(dists, reverse=True)[1:topn+1]
+      #print(top_dists)
+      top_indices = [dists.index(d) for d in top_dists]
+      #[i for i in range(0, sorted(dists, reverse_))][1:topn+1]
+      #list(argsort(dists, reverse=False)[1:topn+1]) #do not use dist = 0 of same vectors
+      #print(top_indices)
       top_words = {} #np.array(vocab)[indices]
       for idx in top_indices:
             top_words[vocab[idx]] = dists[idx]
       return top_words
-      #all_vectors[argmax([get_consine_similarity(give_vector, vector2) for vector2 in all_vectors])]
-      #return 
+ 
       
 def read_prefitted_embedding_from_npy_and_txt(model_name, etm_vocab, save_path):
       eb_path =  Path.joinpath(save_path, f'{model_name}_embeddings.npy')
@@ -84,9 +112,11 @@ def read_prefitted_embedding_from_npy_pkl(model_name, etm_vocab, save_path):
 
 def read_prefitted_embedding(model_name, vocab, save_path):
       try:
-            save_path = Path.joinpath(save_path, f'{model_name}_vocab_embedding.txt')
+            save_path = str(save_path) + "/" + f'{model_name}_vocab_embedding.txt'
+            #Path.joinpath(save_path, f'{model_name}_vocab_embedding.txt')
       except:
-            save_path = Path.joinpath(save_path, f'vocab_embedding.txt')
+            save_path = str(save_path) + "/vocab_embedding.txt"
+            #Path.joinpath(save_path, f'vocab_embedding.txt')
 
       with open(save_path) as f:
             lines = f.readlines()
@@ -99,9 +129,15 @@ def read_prefitted_embedding(model_name, vocab, save_path):
                   embedding_data[w] = v
       
       # sort embedding_data again by the ordner of the vocabulary from bow
-      words_embeddings = np.array(list(embedding_data.values()))
-      words = np.array(list(embedding_data.keys()))
-      if words == np.array(vocab):
+      words_embeddings = []
+      words = []
+      for k, v in embedding_data.items():
+            #words_embeddings = np.array(list(embedding_data.values()))
+            #words = np.array(list(embedding_data.keys()))
+            words.append(k)
+            words_embeddings.append(v)
+
+      if len(words) == len(list(np.array(vocab))):
             indices = [vocab.index(words[i]) for i in range(0,len(words))]
             words_in_vocab = [vocab[i] for i in range(0,len(words))]
             words_embeddings = [e for _, e in sorted(zip(indices, words_embeddings))]
@@ -219,7 +255,7 @@ class WordEmbeddingCreator:
             if word in train_vocab:
                   if word in model_vocab:
                         considered_vector = list(self.model.wv.__getitem__(word))
-                        top_words = get_similar_vectors_to_given_vector(topn, model_vocab, considered_vector, self.all_embeddings)
+                        top_words = get_similar_vectors_to_given_vector(topn, train_vocab, considered_vector, self.all_embeddings)
             return top_words
 
       def cluster_words(self, embedding_save_path = None, fig_path = None, n_components=3, text = False):

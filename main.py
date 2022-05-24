@@ -8,7 +8,7 @@ from src.train_etm import DocSet, TrainETM
 from src.etm import ETM
 import torch
 from datetime import datetime
-from src.visualization import show_embedding_with_kmeans_umap
+#from src.visualization import show_embedding_with_kmeans_umap
 import subprocess
 import numpy as np
 import random
@@ -36,7 +36,9 @@ parser = argparse.ArgumentParser(description='main.py')
 parser.add_argument('--model', type=str, default="LDA", help='which topic model should be used')
 parser.add_argument('--epochs', type=int, default=150, help='train epochs')
 parser.add_argument('--wordvec-model', type=str, default="skipgram", help='method for training word embedding')
-parser.add_argument('--loss-name', type=str, default="skipgram", help='loss-name')
+parser.add_argument('--loss-name', type=str, default="cross-entropy", help='loss-name')
+parser.add_argument('--min-df', type=int, default=10, help='minimal document frequency for vocab size')
+parser.add_argument('--num-topics', type=int, default=10, help='number of topics')
 
 args = parser.parse_args()
 
@@ -45,9 +47,12 @@ args = parser.parse_args()
 model_name = args.model
 epochs = args.epochs
 word2vec_model = args.wordvec_model
+min_df = args.min_df
+num_topics = args.num_topics
 
 
 #-----------------------check statistic--------------------------------
+"""
 for min_df in [2, 5, 10, 30, 100]:
       Path('prepared_data').mkdir(parents=True, exist_ok=True)
       Path(f'prepared_data/min_df_{min_df}').mkdir(parents=True, exist_ok=True)
@@ -59,7 +64,8 @@ for min_df in [2, 5, 10, 30, 100]:
       for_lda_model = False
       word2id, id2word, train_set, test_set, val_set = textsloader.create_bow_and_savebow_for_each_set(for_lda_model=for_lda_model, normalize = True)
       textsloader.write_info_vocab_to_text()
-      del textsloader  
+      del textsloader 
+""" 
 #------------------------prepare data---------------------------------
 
 textsloader = TextDataLoader(source="20newsgroups", train_size=None, test_size=None)
@@ -67,7 +73,7 @@ print("\n")
 textsloader.load_tokenize_texts("20newsgroups")
 
 #-------------------------preprocessing-------------------------------
-min_df = 10
+
 textsloader.preprocess_texts(length_one_remove=True, punctuation_lower = True, stopwords_filter = True)
 textsloader.show_example_raw_texts(n_docs=2)
 print("\ntotal documents {}".format(len(textsloader.complete_docs)))
@@ -107,6 +113,7 @@ print(f'example words of dict-id2word for ETM: {list(id2word.values())[:5]}')
 print(100*"=")
 textsloader.write_info_vocab_to_text()
 
+
 """
 print("compare lda and etm representation: \n")
 print(lda_token_ids)
@@ -124,6 +131,8 @@ print(f'Size of train set: {len(train_set["tokens"])}')
 print(f'Size of val set: {len(val_set["tokens"])}')
 print(f'Size of test set: {len(test_set["test"]["tokens"])}')
 
+del test_set
+del val_set
 
 """
 # example word2id
@@ -140,9 +149,9 @@ print(word2id_df_100)
 #------------------------Die Dokumenten sind in Wörtern und werden für Word-Embedding Training benutzt
 
 docs_tr, docs_t, docs_v = textsloader.get_docs_in_words_for_each_set()
-train_docs_df = pd.DataFrame()
-train_docs_df['text-after-preprocessing'] = [' '.join(doc) for doc in docs_tr[:10]]
-print(train_docs_df)
+#train_docs_df = pd.DataFrame()
+#train_docs_df['text-after-preprocessing'] = [' '.join(doc) for doc in docs_tr[:10]]
+#print(train_docs_df)
 
 del textsloader
 
@@ -150,6 +159,7 @@ del textsloader
 
 save_path = Path.joinpath(Path.cwd(), f'prepared_data/min_df_{min_df}')
 figures_path = Path.joinpath(Path.cwd(), f'figures/min_df_{min_df}')
+Path(save_path).mkdir(parents=True, exist_ok=True)
 Path(figures_path).mkdir(parents=True, exist_ok=True)
 
 vocab = list(word2id.keys())
@@ -161,10 +171,14 @@ if word2vec_model!="bert":
   #wb_creator.cluster_words(save_path, figures_path , 2)
   # show embedding of some words
   print("neighbor words of some sample selected words")
-  for i in range(0,5):
+  print(f'word: {vocab[0]}')
+  print(f'vector: {list(wb_creator.model.wv.__getitem__(vocab[0]))[:5]} ')
+  """
+  for i in range(0,1):
         print(f'neighbor of word {vocab[i]}')
         print([r[0] for r in wb_creator.find_most_similar_words(n_neighbor=5, word=vocab[i])])
         print([r[1] for r in wb_creator.find_most_similar_words(n_neighbor=5, word=vocab[i])])
+  """
 else:
       #todo run subprocess
       print("using prepared_data/bert_vocab_embedding.txt")
@@ -192,9 +206,9 @@ class OptimizerArguments:
             self.optimizer = optimizer_name
             self.lr = lr
             self.wdecay = wdecay
-            
+
 train_args = TrainArguments(epochs=epochs, batch_size=1000, log_interval=None)
-optimizer_args = OptimizerArguments(optimizer_name="adam", lr=0.002, wdecay=0.1)
+optimizer_args = OptimizerArguments(optimizer_name="adam", lr=0.002, wdecay=0.0000012)
 print(f'using epochs: {train_args.epochs}')
 print(f'using optimizer: {optimizer_args.optimizer}')
 
@@ -208,14 +222,18 @@ print(f'length of vector: {torch.norm(tr_set.__getitem__(0))}')
 
 
 #---------------------------reading embedding data from file----------------------------
-embedding_data = read_prefitted_embedding(word2vec_model, vocab, save_path)
+embedding_vocab, embedding_data = read_prefitted_embedding(word2vec_model, vocab, save_path)
+w = vocab[0]
+idx = embedding_vocab.index(w)
+print(embedding_data[idx][:5])
+del embedding_vocab
 
 #---------------------------etm-model setting parameters--------------------------------
-num_topics = 10
+#num_topics = 50
 t_hidden_size = 800
 rho_size = len(embedding_data[0])
 emb_size = len(embedding_data[0])
-theta_act = "tanh"
+theta_act = "ReLU"
 
 #--------------------------etm model setting-------------------------------------------
 etm_model = ETM(
@@ -248,14 +266,49 @@ train_class = TrainETM().train(
     figures_path = figures_path)
     #num_topics, t_hidden_size, rho_size, emb_size, theta_act,  embedding_data, 0.5)
 
-f = open("python_runtime.txt", "a")
-f.write(f'run time: {datetime.now()-start}\n')
+#--------------------------------RUN TIME------------------------------------------------
+f = open("python_train_runtime.txt", "a")
+f.write(f'min_df: {min_df} \t vocab-size {len(vocab)} \t epochs: {epochs} \t run time: {datetime.now()-start}\n')
 f.close()
 
 #-------------------show topics
-topics = etm_model.show_topics(id2word, 20)
-for tp in topics:
-  print(tp)
+topics = etm_model.show_topics(id2word, 25)
+topics = [[e[0] for e in tp] for tp in topics] #get only top words
+
+#------------------save topics and evaluation-----------------------
+from src.evaluierung import topicCoherence2, topicDiversity
+from tqdm import tqdm
+
+save_topics_path = f'topics/min_df_{min_df}/etm'
+topics_f = open(f'{save_topics_path}/{num_topics}_topics.txt', 'w')
+for tp in tqdm(topics): 
+    topics_f.write(" ".join(tp[:10]) + "\n")
+topics_f.close()
+
+# topic coherence and topic diversity and quality
+dataset = {'train': None}
+for name, bow_documents in dataset.items():
+    tc = 0
+    td = 0
+    if name == 'train':
+        tc = topicCoherence2(topics,len(topics),docs_tr,len(docs_tr))
+        td = topicDiversity(topics)
+    else:
+        # test dataset - test_topics
+        # continue
+        print("no coherrence")
+    
+    eval_f = open(f'{save_topics_path}/{num_topics}_evaluation.txt', 'a')
+    eval_f.write(f'name \t epochs\t topic-coherrence \t topic-diversity \t quality\n')
+    eval_f.write(f'{name} \t {epochs} \t {tc} \t {td} \t {tc*td}\n')
+    eval_f.close()
+del dataset
+
+
+#get_topic_coherence(list(train_set['tokens']), topics, word2id)
+
+del etm_model
+del train_class 
 
 #----------------
 """

@@ -61,6 +61,8 @@ class ETM(nn.Module):
             self.theta_act = nn.ReLU()
         
         # Read the prefitted-embedding. Weights of self.alphas are itself the representation of topic-embeddings
+        #print(f'type embdding: {type(embeddings)}')
+
         self.vocab_embeddings_rho = torch.from_numpy(np.array(embeddings)).float().to(device)
         # word-embedding-vocabulary will be the input for topic_embedding_alphas
         # weights of topic_embedding_alphas are the representation of each topic

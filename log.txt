@@ -1,0 +1,93 @@
+using cuda: True
+
+
+loading texts: ...
+train-size after loading: 11314
+test-size after loading: 7532
+finished load!
+start: preprocessing: ...
+finised: preprocessing!
+check some sample texts of the dataset after filter punctuation and digits
+lerxst wam umd thing subject car nntp posting host wam umd organization university maryland college park lines wondering enlighten car day door sports car looked late early called bricklin doors small addition front bumper separate rest body tellme model engine specs years production car made history info funky car mail il brought neighborhood lerxst
+====================================================================================================
+guykuo carson washington guy kuo subject si clock poll final call summary final call si clock reports keywords si acceleration clock upgrade article shelley organization university washington lines nntp posting host carson washington fair number brave souls upgraded si clock oscillator shared experiences poll send message detailing experiences procedure top speed attained cpu rated speed add cards adapters heat sinks hour usage day floppy disk functionality floppies requested summarizing days add network knowledge base clock upgrade answered poll guy kuo guykuo washington
+====================================================================================================
+
+total documents 18846
+vocab-size in df: 18677
+validation-size ist: 0.01
+start creating vocabulary ...
+length of the vocabulary: 18677
+sample ten words of the vocabulary: ['stopped', 'glowing', 'lopez', 'marks', 'xc', 'manuscripts', 'courtyard', 'au', 'destroyed', 'mohit']
+length word2id list: 18677
+length id2word list: 18677
+finished: creating vocabulary
+
+
+train-size-after-all: 11214
+test-size-after-all: 7532
+validation-size-after-all: 100
+test-size-after-all: 11214
+test-indices-length: 11214
+test-size-after-all: 100
+test-indices-length: 100
+test-size-after-all: 7532
+test-indices-length: 7532
+length train-documents-indices : 1299485
+length of the vocabulary: 18677
+
+
+start: creating bow representation...
+finised creating bow input!
+
+start: creating bow representation...
+finised creating bow input!
+
+start: creating bow representation...
+finised creating bow input!
+
+start: creating bow representation...
+finised creating bow input!
+
+start: creating bow representation...
+finised creating bow input!
+
+train-bow-representation for ETM: 
+
+example ids of dict-id2word for ETM: [0, 1, 2, 3, 4]
+example words of dict-id2word for ETM: ['stopped', 'glowing', 'lopez', 'marks', 'xc']
+====================================================================================================
+Size of the vocabulary after prprocessing ist: 18677
+Size of train set: 11214
+Size of val set: 100
+Size of test set: 7532
+train begin:word-embedding with skipgram
+word-embedding train finished
+length of vocabulary from word-embedding model 18677
+length of the vocabulary of prepraring-dataset-vocabulary: 18677
+neighbor words of some sample selected words
+word: stopped
+vector: [0.100283705, 0.06339941, -0.012738428, 0.12598227, 0.15250528] 
+using epochs: 2
+using optimizer: adam
+11214
+sum of vector: 0.9999994039535522
+length of vector: 0.14386112987995148
+[0.100283705, 0.063399412, -0.012738428, 0.12598227, 0.152505279]
+type embdding: <class 'list'>
+--------------------------------------------------MODEL-SUMMARY--------------------------------------------------
+ETM(
+  (t_drop): Dropout(p=0.5, inplace=False)
+  (theta_act): ReLU()
+  (topic_embeddings_alphas): Linear(in_features=300, out_features=50, bias=False)
+  (q_theta): Sequential(
+    (0): Linear(in_features=18677, out_features=800, bias=True)
+    (1): ReLU()
+    (2): Linear(in_features=800, out_features=800, bias=True)
+    (3): ReLU()
+  )
+  (mu_q_theta): Linear(in_features=800, out_features=50, bias=True)
+  (logsigma_q_theta): Linear(in_features=800, out_features=50, bias=True)
+)
+--------------------------------------------------TRAIN--------------------------------------------------
+number of batches: 11

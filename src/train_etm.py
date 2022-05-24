@@ -61,8 +61,8 @@ def loss_function(loss_name, pred_bows, normalized_bows, kl_theta):
     #sum over the vocabulary and mean of datch. covert to float to use mean()
     #torch.log(res+1e-6)
     # using log(pred)
-    almost_zeros = torch.full_like(pred_bows, 1e-6)
-    pred_bows_without_zeros = pred_bows.add(almost_zeros)
+    #almost_zeros = torch.full_like(pred_bows, 1e-6)
+    pred_bows_without_zeros = pred_bows.add(torch.full_like(pred_bows, 1e-6))
         
     if loss_name != "paper-loss":
         #cross_entropy = True
@@ -104,7 +104,7 @@ class TrainETM():
         plt.title(f'losses for {len(train_losses)} epochs')
         plt.legend()
         plt.savefig(f'{figures_path}/losses_epoch_{len(train_losses)}.png')
-        plt.show()
+        #plt.show()
         plt.close()
         #------
         plt.figure()
@@ -112,7 +112,7 @@ class TrainETM():
         plt.title(f'kld-losses for {len(train_losses)} epochs')
         plt.legend()
         plt.savefig(f'{figures_path}/kld_epoch_{len(train_losses)}.png')
-        plt.show()
+        #plt.show()
         plt.close()
         return True
 
