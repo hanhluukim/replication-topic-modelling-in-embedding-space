@@ -18,6 +18,7 @@ from scipy.spatial import distance
 import os
 import numpy as np
 import random
+import torch
 seed = 42
 os.environ['PYTHONHASHSEED'] = str(seed)
 torch.manual_seed(seed)
