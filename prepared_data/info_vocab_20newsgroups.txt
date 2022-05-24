@@ -80,3 +80,4 @@ min-df: 10	 tokens-train: 1299485 	 tokens-valid: 17082 	 tokens-test: 894537 	 
 min-df: 10	 tokens-train: 1299485 	 tokens-valid: 17082 	 tokens-test: 894537 	 vocab: 18677
 min-df: 10	 tokens-train: 1299485 	 tokens-valid: 17082 	 tokens-test: 894537 	 vocab: 18677
 min-df: 10	 tokens-train: 1299485 	 tokens-valid: 17082 	 tokens-test: 894537 	 vocab: 18677
+min-df: 10	 tokens-train: 1299485 	 tokens-valid: 17082 	 tokens-test: 894537 	 vocab: 18677

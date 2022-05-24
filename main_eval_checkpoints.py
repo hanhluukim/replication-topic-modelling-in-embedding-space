@@ -67,7 +67,8 @@ Path(save_topics_path).mkdir(parents=True, exist_ok=True)
 
 topics_f = open(f'{save_topics_path}/{num_topics}_topics.txt', 'w')
 for tp in tqdm(topics): 
-    topics_f.write(" ".join(tp[:10]) + "\n")
+    tp_words = [e[0] for e in tp]
+    topics_f.write(" ".join(tp_words[:10]) + "\n")
 topics_f.close()
 
 # topic coherence and topic diversity and quality

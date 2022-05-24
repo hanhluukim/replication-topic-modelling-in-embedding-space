@@ -1,0 +1,2 @@
+name 	 epochs	 topic-coherrence 	 topic-diversity 	 quality
+train 	 100 	 -1.0 	 1.0 	 -1.0
