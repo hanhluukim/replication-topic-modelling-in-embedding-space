@@ -39,11 +39,11 @@ for min_df in [2,5,10,30,100]:
     #gensim_corpus_train_set = train_set
     #print(f'test: {gensim_corpus_train_set[0]}')
     docs_tr, docs_t, docs_v = textsloader.get_docs_in_words_for_each_set()
-    
+    del textsloader
     for num_topics in [10, 50]:
         ldamodel = lda(train_set, num_topics, id2word)
         #lda(train_set, num_topics ,id2word)
-        del textsloader
+        #del textsloader
         lda_topics = ldamodel.show_topics(num_topics=50, num_words=25)
         
         # topics
