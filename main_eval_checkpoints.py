@@ -1,6 +1,7 @@
 from src.evaluierung import topicCoherence2, topicDiversity
 from src.prepare_dataset import TextDataLoader
 from src.etm import ETM
+from src.embedding import WordEmbeddingCreator, read_prefitted_embedding
 
 from tqdm import tqdm
 from pathlib import Path
@@ -16,12 +17,15 @@ parser.add_argument('--model-path', type=str, default="LDA", help='which topic m
 
 parser.add_argument('--min-df', type=int, default=10, help='minimal document frequency for vocab size')
 parser.add_argument('--num-topics', type=int, default=10, help='number of topics')
+parser.add_argument('--wordvec-model', type=str, default="skipgram", help='method for training word embedding')
+
 args = parser.parse_args()
 
 model_path = args.model_path
 min_df = args.min_df
 num_topics = args.num_topics
 epochs = 100
+word2vec_model = args.wordvec_model
 
 #--Data----------------------------------
 textsloader = TextDataLoader(source="20newsgroups", train_size=None, test_size=None)
@@ -35,6 +39,12 @@ textsloader.write_info_vocab_to_text()
 docs_tr, docs_t, docs_v = textsloader.get_docs_in_words_for_each_set()
 del textsloader
 
+vocab = list(word2id.keys())
+save_path = Path.joinpath(Path.cwd(), f'prepared_data/min_df_{min_df}')
+embedding_vocab, embedding_data = read_prefitted_embedding(word2vec_model, vocab, save_path)
+del embedding_vocab
+
+
 #-LOADING checkpoint----------------------------------------
 th = torch.load(model_path, map_location=device)
 vocab_size = len(list(id2word.keys()))
@@ -42,7 +52,7 @@ t_hidden_size = 800
 rho_size = 300
 emb_size = 300
 theta_act = "ReLu"
-embedding_data = None
+embedding_data = embedding_data
 
 etm_model = ETM(
   num_topics, vocab_size, t_hidden_size, rho_size, emb_size, theta_act, 

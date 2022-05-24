@@ -15,6 +15,18 @@ from pathlib import Path
 from numpy import dot, argmax, indices
 import pickle
 from scipy.spatial import distance
+import os
+import numpy as np
+import random
+seed = 42
+os.environ['PYTHONHASHSEED'] = str(seed)
+torch.manual_seed(seed)
+torch.cuda.manual_seed(seed)
+torch.cuda.manual_seed_all(seed)
+torch.backends.cudnn.deterministic = True
+torch.backends.cudnn.benchmark = False
+np.random.seed(seed)
+random.seed(seed)
 
 def normalize(v):
       norm=np.linalg.norm(v)
@@ -149,7 +161,7 @@ def read_prefitted_embedding(model_name, vocab, save_path):
 
 class WordEmbeddingCreator:
       def __init__(self, model_name="cbow", documents = None, save_path = ""):
-            """
+            """save_path = 
             Input: documents in List of words, train-settings
             Output: word-embedding for the vocabulary
 
