@@ -43,8 +43,10 @@ print(len(preprocessed_docs))
 print("transform to sentences:...")
 sentences = transform_to_sentences(preprocessed_docs)
 print("split sentences to 128 tokens:...")
-shorted_sentences =  handle_long_sentences(sentences, 128)
+print(f'total sentences: {len(sentences)}')
+shorted_sentences =  handle_long_sentences(sentences, 128, 10)
 marked_shorted_sentences = create_marked_senteces(shorted_sentences)
+save_sents_to_txt(marked_shorted_sentences)
 #-------------------------------Creating Vocab-Embeddings-----------------------------------------------
 
 
@@ -57,7 +59,7 @@ for marked_sent in tqdm(marked_shorted_sentences, desc="creating bert embeddings
         outputs = model(tokens_tensor, segments_tensors)
         reformed = reform_token_embeddings_of_sentence(outputs)
         sent_tokens_embeddings = get_token_embeddings(reformed)
-        print(f'number of found embeddings: {len(sent_tokens_embeddings)}')
+        #print(f'number of found embeddings: {len(sent_tokens_embeddings)}')
         words_embeddings_in_sent_dict = get_final_words_embeddings_in_sent(marked_sent, tokens_ids_with_belonging_information, sent_tokens_embeddings)
         #save_embeddings_to_text(words_embeddings_in_sent_dict)
         for word, vector in words_embeddings_in_sent_dict.items():
@@ -81,10 +83,8 @@ for marked_sent in tqdm(marked_shorted_sentences, desc="creating bert embeddings
     #print("---------------------------------------------------------------------------------------")
 
 #update vocab over all sentences
-"""
 updated_vocab = {}
 for word, (count, sum_vector) in vocab.items():
     updated_vocab[word] = (sum_vector/count)
 vocabulary_embeddings_to_text(updated_vocab)
-"""
 

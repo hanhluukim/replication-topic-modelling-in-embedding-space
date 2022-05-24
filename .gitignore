@@ -131,6 +131,10 @@ dmypy.json
 # Directories
 prepared_data/min_df*
 prepared_data/bert_vocab_embedding.txt
+prepared_data/bert_*
+prepared_data/bert_embeddings.npy
+prepared_data/bert_vocab.pkl
+prepared_data/bert_vocab.txt
 prpared_data/topics/
 #etm_in_julia/
 #checkpoints/
