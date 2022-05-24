@@ -19,7 +19,7 @@ parser.add_argument('--num-topics', type=int, default=10, help='number of topics
 args = parser.parse_args()
 
 model_path = args.model_path
-min_df = args.model_path
+min_df = args.min_df
 num_topics = args.num_topics
 epochs = 100
 
