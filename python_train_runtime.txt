@@ -3,3 +3,5 @@ min_df: 10 	 vocab-size 18677 	 epochs: 20 	 run time: 0:05:43.401493
 min_df: 10 	 vocab-size 18677 	 epochs: 200 	 run time: 0:57:08.085112
 min_df: 2 	 vocab-size 54318 	 epochs: 10 	 run time: 0:08:26.383187
 min_df: 2 	 vocab-size 54318 	 epochs: 20 	 run time: 0:16:37.311350
+min_df: 2 	 vocab-size 54318 	 epochs: 20 	 run time: 0:16:50.131853
+min_df: 2 	 vocab-size 54318 	 epochs: 100 	 run time: 1:23:44.041697

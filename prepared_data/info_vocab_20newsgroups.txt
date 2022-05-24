@@ -86,3 +86,6 @@ min-df: 10	 tokens-train: 1299485 	 tokens-valid: 17082 	 tokens-test: 894537 	 
 min-df: 2	 tokens-train: 1420825 	 tokens-valid: 18928 	 tokens-test: 967193 	 vocab: 54318
 min-df: 2	 tokens-train: 1420825 	 tokens-valid: 18928 	 tokens-test: 967193 	 vocab: 54318
 min-df: 2	 tokens-train: 1420825 	 tokens-valid: 18928 	 tokens-test: 967193 	 vocab: 54318
+min-df: 2	 tokens-train: 1420825 	 tokens-valid: 18928 	 tokens-test: 967193 	 vocab: 54318
+min-df: 2	 tokens-train: 1420825 	 tokens-valid: 18928 	 tokens-test: 967193 	 vocab: 54318
+min-df: 2	 tokens-train: 1420825 	 tokens-valid: 18928 	 tokens-test: 967193 	 vocab: 54318

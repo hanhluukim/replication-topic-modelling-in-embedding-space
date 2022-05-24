@@ -1,0 +1,4 @@
+name 	 epochs	 topic-coherrence 	 topic-diversity 	 quality
+train 	 20 	 0.07536865137737259 	 0.064 	 0.0048235936881518456
+name 	 epochs	 topic-coherrence 	 topic-diversity 	 quality
+train 	 100 	 0.08457830324888665 	 0.2944 	 0.02489985247647223

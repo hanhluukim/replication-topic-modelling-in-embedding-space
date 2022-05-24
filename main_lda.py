@@ -16,7 +16,7 @@ num_topics = 50
     
 f = open(f'prepared_data/info_vocab_20newsgroups.txt', "a")
 
-for min_df in [2,5,10,30,100]:
+for min_df in [2,10]:
     # data 
     textsloader = None
     textsloader = TextDataLoader(source="20newsgroups", 
@@ -40,7 +40,7 @@ for min_df in [2,5,10,30,100]:
     #print(f'test: {gensim_corpus_train_set[0]}')
     docs_tr, docs_t, docs_v = textsloader.get_docs_in_words_for_each_set()
     del textsloader
-    for num_topics in [10, 50]:
+    for num_topics in [20]:
         ldamodel = lda(train_set, num_topics, id2word)
         #lda(train_set, num_topics ,id2word)
         #del textsloader
