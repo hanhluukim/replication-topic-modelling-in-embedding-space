@@ -22,7 +22,7 @@ def read_raw_documents():
     test_data = fetch_20newsgroups(subset='test')
     def filter_special_character(docs):
         # remove ., needed for bert
-        filter_patter = r'''[\w']+|[!?;-~{}`´_<=>:/@*()&'$%#"]'''
+        filter_patter = r'''[\w']+|[!?.,;-~{}`´_<=>:/@*()&'$%#"]'''
         return [re.findall(filter_patter, docs[doc_idx]) for doc_idx in range(len(docs))]
     init_docs_tr = filter_special_character(train_data.data)
     init_docs_ts = filter_special_character(test_data.data)
@@ -33,6 +33,36 @@ def read_raw_documents():
     return raw_documents, None
 
 def simple_preprocess(raw_documents):
+    
+    def contains_numeric(w):
+        return any(char.isdigit() for char in w)
+    
+    def only_letters(tested_string):
+        for letter in tested_string:
+            if letter not in "abcdefghijklmnopqrstuvwxyz":
+                return False
+        return True
+    
+    def clean_doc_for_bert(doc): 
+        #word_list = doc.split(" ") #doc.replace(">","").lower()
+        word_list = word_tokenize(doc.lower()) #only using empty space and punctation for tokenization
+        cleaned = []
+        for w in word_list:
+            #if w not in stop_words:
+              #if w in string.punctuation or only_letters(w): #using only character from punctation and alpha characters
+            if not contains_numeric(w):
+                if w in ['.', ','] or only_letters(w):
+                    if w in string.punctuation or len( set(w) ) > 1: #punctation with len 1 allowed but alpha word must be longer then 1
+                        cleaned.append(w)
+        return " ".join(cleaned), cleaned  #save doc in string and in token-list         
+       
+    cleaned_documents = []
+    for doc in raw_documents:
+        doc_in_string, doc_in_token_list = clean_doc_for_bert(doc)
+        cleaned_documents.append(doc_in_string)
+    return cleaned_documents
+
+def simple_preprocess_old(raw_documents):
     
     def contains_numeric(w):
         return any(char.isdigit() for char in w)
@@ -74,6 +104,20 @@ def fine_tune_bert():
     return True
 
 def transform_to_sentences(docs): #no labels
+    data_as_sentences = []
+    for doc in docs:
+      for sent in doc.split("."): #make sentences
+        #print(f'after split: {sent}')
+        updated_sent = " ".join([t for t in sent.strip().split(" ") if len(t) > 1])
+        #print(f'update: {updated_sent}')
+        if len(updated_sent.split(" ")) > 1:
+            data_as_sentences.append(updated_sent)
+        else:
+            if updated_sent not in data_as_sentences:
+                data_as_sentences.append(updated_sent)
+    return data_as_sentences
+
+def transform_to_sentences_old(docs): #no labels
     data_as_sentences = []
     for doc in docs:
       for sent in doc.split("."): #make sentences
@@ -148,8 +192,8 @@ def create_marked_senteces(sentences):
     return ['[CLS] ' + sent + ' [SEP]' for sent in sentences]
 def save_sents_to_txt(shorted_sentences):
     with open(r'prepared_data/bert_sentences.txt', 'w') as fp:
-      for sent in shorted_sentences:
+      for i, sent in enumerate(shorted_sentences):
           # write each item on a new line
-          fp.write(f'{sent}\n')
+          fp.write(f'{i+1}: \t {sent}\n')
       print('saving sentences from bert-processing')
     return True

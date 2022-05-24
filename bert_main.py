@@ -45,6 +45,7 @@ sentences = transform_to_sentences(preprocessed_docs)
 print("split sentences to 128 tokens:...")
 print(f'total sentences: {len(sentences)}')
 shorted_sentences =  handle_long_sentences(sentences, 128, 10)
+print(f'total shorted sentences: {len(shorted_sentences)}')
 marked_shorted_sentences = create_marked_senteces(shorted_sentences)
 save_sents_to_txt(marked_shorted_sentences)
 #-------------------------------Creating Vocab-Embeddings-----------------------------------------------
