@@ -1,0 +1,1 @@
+min_df: 10 	 vocab-size 18677 	 epochs: 100 	 run time: 0:29:07.291586

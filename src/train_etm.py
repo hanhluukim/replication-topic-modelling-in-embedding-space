@@ -89,8 +89,10 @@ class TrainETM():
         if path==None:
           #print(state.keys())
           Path('checkpoints').mkdir(parents=True, exist_ok=True)
+          cp_by_n_topics = f'checkpoints/num_topics_{state["num_topics"]}'
+          Path(cp_by_n_topics ).mkdir(parents=True, exist_ok=True)
           #print(path)
-          torch.save(state, f'checkpoints/etm_epoch_{state["epoch"]}.pth.tar')
+          torch.save(state, f'{cp_by_n_topics}/etm_epoch_{state["epoch"]}.pth.tar')
           print(f'Checkpoint saved at checkpoints/etm_epoch_{state["epoch"]}.pth.tar')
           
     def visualize_losses(self, train_losses, neg_rec_losses, neg_kld_losses, figures_path):
@@ -122,7 +124,8 @@ class TrainETM():
               vocab_size, 
               train_args, optimizer_args, training_set,
               normalize_data = True,
-              figures_path = None
+              figures_path = None,
+              num_topics = 10
               ):
         
         # training setting
@@ -190,6 +193,7 @@ class TrainETM():
         self.save_checkpoint(
               {
                   'epoch': epochs, 
+                  'num_topics': num_topics,
                   'params': {
                     'lr': optimizer_args.lr, 
                     'wdecay': optimizer_args.wdecay,
