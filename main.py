@@ -12,6 +12,9 @@ from datetime import datetime
 import subprocess
 import numpy as np
 import random
+from src.evaluierung import topicCoherence2, topicDiversity
+from tqdm import tqdm
+
 
 #--------------------deterministic------------------------------------
 import os
@@ -149,10 +152,6 @@ print(word2id_df_100)
 #------------------------Die Dokumenten sind in Wörtern und werden für Word-Embedding Training benutzt
 
 docs_tr, docs_t, docs_v = textsloader.get_docs_in_words_for_each_set()
-#train_docs_df = pd.DataFrame()
-#train_docs_df['text-after-preprocessing'] = [' '.join(doc) for doc in docs_tr[:10]]
-#print(train_docs_df)
-
 del textsloader
 
 #------------------paths
@@ -268,7 +267,7 @@ train_class = TrainETM().train(
     
 
 #--------------------------------RUN TIME------------------------------------------------
-f = open("python_train_runtime.txt", "a")
+f = open('info_run_time/python_train_runtime.txt', 'a')
 f.write(f'min_df: {min_df} \t vocab-size {len(vocab)} \t epochs: {epochs} \t run time: {datetime.now()-start}\n')
 f.close()
 
@@ -278,9 +277,6 @@ topics = etm_model.show_topics(id2word, 25)
 topics = [[e[0] for e in tp] for tp in topics] #get only top words
 
 #------------------save topics and evaluation-----------------------
-from src.evaluierung import topicCoherence2, topicDiversity
-from tqdm import tqdm
-
 save_topics_path = f'topics/min_df_{min_df}/etm'
 Path(save_topics_path).mkdir(parents=True, exist_ok=True)
 topics_f = open(f'{save_topics_path}/{num_topics}_topics.txt', 'w')
