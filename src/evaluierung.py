@@ -60,28 +60,28 @@ def topicCoherence2(topicsWords,anzahlTopics,documents,anzDoc):
 	c=c/(45*anzahlTopics)
 	return c
 def topicPerplexityteil2(thetatest1,tests2anzahl_perword,anzahlVocabulary,betatest1):
-	erwartung=[]
-	h=0
-	anzahlwords=0
-	for i in range(anzahlVocabulary):
-		p=0
-		for j in range(len(thetatest1)):
-			p=p+thetatest1[j][i]*betatest1[j]
-		if p>0:
-			erwartung.append(log(p))
-		else:
-			erwartung.append(0)
-	for m in range(anzahlVocabulary):
-		h=h+tests2anzahl_perword[m]*erwartung[m]
-		anzahlwords=anzahlwords+tests2anzahl_perword[m]
-	if anzahlwords==0:
-		return 500
-	return math.exp(-h/anzahlwords)
+    erwartung=[]
+    h=0
+    anzahlwords=0
+    for i in range(anzahlVocabulary):
+        p=0
+        for j in range(len(thetatest1)):
+            p=p+thetatest1[j]*betatest1[j][i]
+        if p>0:
+            erwartung.append(math.log(p))
+        else:
+            erwartung.append(0)
+    for m in range(anzahlVocabulary):
+        h=h+tests2anzahl_perword[m]*erwartung[m]
+        anzahlwords=anzahlwords+tests2anzahl_perword[m]
+    if anzahlwords==0:
+        return 500
+    return math.exp(-h/anzahlwords)
 def topicPerplexityTeil1(thetastest1,tests2anzahl_perword,anzahlVocabulary,betatest1):
-	mean=0
-	for thetatest1 in thetastest1:
-		mean=mean+topicPerplexityteil2(thetatest1,tests2anzahl_perword,anzahlVocabulary,betatest1)
-	return	mean/len(thetastest1)
+    mean=0
+    for t in range(len(thetastest1)):
+        mean=mean+topicPerplexityteil2(thetastest1[t],tests2anzahl_perword[t],anzahlVocabulary,betatest1)
+    return mean/len(thetastest1)
 def topicDiversity(topicsTopk):
 	unique=[]
 	gesamt=len(topicsTopk)*len(topicsTopk[0])
