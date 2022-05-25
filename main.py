@@ -165,20 +165,20 @@ Path(figures_path).mkdir(parents=True, exist_ok=True)
 vocab = list(word2id.keys())
 #-------------------------embedding training------------------------------------------
 if word2vec_model!="bert":
-  wb_creator = WordEmbeddingCreator(model_name=word2vec_model, documents = docs_tr, save_path= save_path)
-  wb_creator.train(min_count=0, embedding_size= 300)
-  wb_creator.create_and_save_vocab_embedding(vocab, save_path)
-  #wb_creator.cluster_words(save_path, figures_path , 2)
-  # show embedding of some words
-  print("neighbor words of some sample selected words")
-  print(f'word: {vocab[0]}')
-  print(f'vector: {list(wb_creator.model.wv.__getitem__(vocab[0]))[:5]} ')
-  """
-  for i in range(0,1):
-        print(f'neighbor of word {vocab[i]}')
-        print([r[0] for r in wb_creator.find_most_similar_words(n_neighbor=5, word=vocab[i])])
-        print([r[1] for r in wb_creator.find_most_similar_words(n_neighbor=5, word=vocab[i])])
-  """
+      wb_creator = WordEmbeddingCreator(model_name=word2vec_model, documents = docs_tr, save_path= save_path)
+      wb_creator.train(min_count=0, embedding_size= 300)
+      wb_creator.create_and_save_vocab_embedding(vocab, save_path)
+      #wb_creator.cluster_words(save_path, figures_path , 2)
+      # show embedding of some words
+      print("neighbor words of some sample selected words")
+      print(f'word: {vocab[0]}')
+      print(f'vector: {list(wb_creator.model.wv.__getitem__(vocab[0]))[:5]} ')
+      """
+      for i in range(0,1):
+            print(f'neighbor of word {vocab[i]}')
+            print([r[0] for r in wb_creator.find_most_similar_words(n_neighbor=5, word=vocab[i])])
+            print([r[1] for r in wb_creator.find_most_similar_words(n_neighbor=5, word=vocab[i])])
+      """
 else:
       #todo run subprocess
       print("using prepared_data/bert_vocab_embedding.txt")

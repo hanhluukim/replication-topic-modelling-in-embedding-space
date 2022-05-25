@@ -10,3 +10,4 @@ plotly==5.7.0
 pathlib
 pyyaml==5.4.1
 kaleido
+torchvision
