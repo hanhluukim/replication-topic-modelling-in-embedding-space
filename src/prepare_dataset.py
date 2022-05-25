@@ -170,7 +170,7 @@ class TextDataLoader:
         # get dataset-docs-indices for each set
         val_dataset_size = 100
         docs_tr, docs_ts, docs_tr_indices, docs_ts_indices = train_test_split(self.complete_docs, range(0,len(self.complete_docs)), test_size=self.test_size, random_state=42)
-        print(f'validation-size ist: {round(val_dataset_size/len(docs_tr),2)}')
+        #print(f'validation-size ist: {round(val_dataset_size/len(docs_tr),2)}')
         docs_tr, docs_va, docs_tr_indices, docs_va_indices = train_test_split(docs_tr, docs_tr_indices, test_size=100, random_state=42)
         
         self.train_indices = docs_tr_indices
@@ -200,7 +200,7 @@ class TextDataLoader:
         del vocabulary  
         #self.vocabulary = list(set(vocabulary))
         print(f'length of the vocabulary: {len(self.vocabulary)}')
-        print(f'sample ten words of the vocabulary: {self.vocabulary[:10]}')
+        #print(f'sample ten words of the vocabulary: {self.vocabulary[:10]}')
 
         self.word2id = {}
         self.id2word = {} 
@@ -475,15 +475,12 @@ class TextDataLoader:
                 # because 100, not all words like vocabulary, 
                 # so sparse2corpus create dataset with not exact number of words
                 train_dataset = bow_tr#create_lda_corpus(bow_tr)
-                print("end-train") 
                 test_dataset = bow_ts#create_lda_corpus(bow_ts) 
-                print("end-test")
                 val_dataset = bow_va#create_lda_corpus(bow_va) 
-                print("end-val")
             else:
                 train_dataset = gensim.matutils.Sparse2Corpus(bow_tr,documents_columns=False) #create_lda_corpus(bow_tr)
-                test_dataset = gensim.matutils.Sparse2Corpus(bow_ts) #create_lda_corpus(bow_ts)
-                val_dataset = gensim.matutils.Sparse2Corpus(bow_va) #create_lda_corpus(bow_va)
+                test_dataset = gensim.matutils.Sparse2Corpus(bow_ts, documents_columns=False) #create_lda_corpus(bow_ts)
+                val_dataset = gensim.matutils.Sparse2Corpus(bow_va, documents_columns=False) #create_lda_corpus(bow_va)
         
         else: #other models 
             bow_train_tokens, bow_train_counts = split_bow(bow_tr, n_docs_tr)
