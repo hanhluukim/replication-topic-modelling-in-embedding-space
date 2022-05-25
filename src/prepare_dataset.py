@@ -481,7 +481,7 @@ class TextDataLoader:
                 val_dataset = bow_va#create_lda_corpus(bow_va) 
                 print("end-val")
             else:
-                train_dataset = gensim.matutils.Sparse2Corpus(bow_tr) #create_lda_corpus(bow_tr)
+                train_dataset = gensim.matutils.Sparse2Corpus(bow_tr,documents_columns=False) #create_lda_corpus(bow_tr)
                 test_dataset = gensim.matutils.Sparse2Corpus(bow_ts) #create_lda_corpus(bow_ts)
                 val_dataset = gensim.matutils.Sparse2Corpus(bow_va) #create_lda_corpus(bow_va)
         
