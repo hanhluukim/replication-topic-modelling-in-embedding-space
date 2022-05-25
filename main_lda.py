@@ -5,10 +5,20 @@ from src.evaluierung import topicCoherence2, topicDiversity
 from gensim.parsing.preprocessing import preprocess_string, strip_punctuation, strip_numeric
 from pathlib import Path
 from tqdm import tqdm
+from gensim.models import LdaModel
 
-# parameters
-stopwords_filter = True
+import argparse
+parser = argparse.ArgumentParser(description='main.py')
+parser.add_argument('--filter-stopwords', type=bool, default=True, help='do not filter oder filter stopwords')
+args = parser.parse_args()
+
+stopwords_filter = args.filter_stopwords
 num_topics = 20
+
+if stopwords_filter:
+  under_dir = "no_stopwords"
+else:
+  under_dir = "with_stopwords"
 
 f = open(f'prepared_data/info_vocab_20newsgroups.txt', "a")
 for min_df in [2, 5, 10, 30, 100]:
@@ -30,11 +40,17 @@ for min_df in [2, 5, 10, 30, 100]:
                                                                                                      normalize = True)
     textsloader.write_info_vocab_to_text()
     docs_tr, docs_t, docs_v = textsloader.get_docs_in_words_for_each_set()
+    del test_set
+    del val_set
+    del docs_t
+    del docs_v
     
     # lda model
     del textsloader
     for num_topics in [20]:
-        ldamodel = lda(train_set, num_topics, id2word)
+        ldamodel = LdaModel(train_set, num_topics= num_topics, id2word = id2word, passes = 50, random_state = 42)
+        #lda(train_set, num_topics, id2word)
+
         lda_topics = ldamodel.show_topics(num_topics=50, num_words=25)
         
         # topics
@@ -44,14 +60,19 @@ for min_df in [2, 5, 10, 30, 100]:
             topics.append(preprocess_string(topic[1], filters))
         print(f'number of topics: {len(topics)}')    
         # save topics
-        Path('topics').mkdir(parents=True, exist_ok=True)
-        Path(f'topics/min_df_{min_df}').mkdir(parents=True, exist_ok=True)
-        Path(f'topics/min_df_{min_df}/lda').mkdir(parents=True, exist_ok=True)
+        save_dir = f'topics/{under_dir}'
+        Path(save_dir).mkdir(parents=True, exist_ok=True)
+        Path(f'{save_dir}/min_df_{min_df}').mkdir(parents=True, exist_ok=True)
+        Path(f'{save_dir}/min_df_{min_df}/lda').mkdir(parents=True, exist_ok=True)
         
-        save_topics_path = f'topics/min_df_{min_df}/lda'
+        save_topics_path = f'{save_dir}/min_df_{min_df}/lda'
         topics_f = open(f'{save_topics_path}/{num_topics}_topics.txt', 'w')
+        i = 0
         for tp in tqdm(topics): 
-            topics_f.write(" ".join(tp[:10]) + "\n")
+            tp_as_str = " ".join(tp[:10])
+            row = f'topic: {i+1} - {tp_as_str} \n'
+            topics_f.write(row)
+            i += 1
         topics_f.close()
         
         # topic coherence and topic diversity and quality
@@ -70,5 +91,6 @@ for min_df in [2, 5, 10, 30, 100]:
             eval_f.write(f'{name} \t {tc} \t {td} \t {tc*td}\n')
             eval_f.close()
         del dataset
+        del ldamodel
     f.write(100*"-" + "\n")
 f.close()   
