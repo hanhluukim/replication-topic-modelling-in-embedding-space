@@ -36,7 +36,9 @@ for min_df in [2, 5, 10, 30, 100]:
     textsloader.load_tokenize_texts("20newsgroups")
     textsloader.preprocess_texts(length_one_remove=True, 
                                  punctuation_lower = True, 
-                                 stopwords_filter = stopwords_filter)
+                                 stopwords_filter = stopwords_filter,
+                                 use_bert_embedding = False)
+    
     textsloader.split_and_create_voca_from_trainset(
         max_df=0.7, min_df=min_df, 
         stopwords_remove_from_voca=stopwords_filter)

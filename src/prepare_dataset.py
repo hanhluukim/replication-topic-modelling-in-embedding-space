@@ -32,7 +32,7 @@ with open('src/stops.txt', 'r') as f:
     # list stopwords from the original paper
     stops = f.read().split('\n')
 
-with open('src/add_to_stopwords.txt', 'r') as f:
+with open('src/not_in_bert_vocab.txt', 'r') as f:
     # list stopwords from the original paper
     not_in_bert = f.read().split('\n')
     
@@ -92,7 +92,8 @@ class TextDataLoader:
     def preprocess_texts(self, 
                          length_one_remove=True, 
                          punctuation_lower = True, 
-                         stopwords_filter = True):
+                         stopwords_filter = True,
+                         use_bert_embedding = False):
         
         def contains_punctuation(w):
             return any(char in string.punctuation for char in w)
@@ -109,7 +110,9 @@ class TextDataLoader:
             self.complete_docs = [[w for w in self.complete_docs[doc] if w not in stops] for doc in range(len(self.complete_docs))]
         
         # remove words, they are not in bert-vocabulary
-        self.complete_docs = [[w for w in self.complete_docs[doc] if w not in not_in_bert] for doc in range(len(self.complete_docs))]
+        if use_bert_embedding:
+            print('will use bert embedding, so delete words from not_in_bert_vocab.txt')
+            self.complete_docs = [[w for w in self.complete_docs[doc] if w not in not_in_bert] for doc in range(len(self.complete_docs))]
         self.complete_docs = [" ".join(self.complete_docs[doc]) for doc in range(len(self.complete_docs))]   
         print("finised: preprocessing!")
     
