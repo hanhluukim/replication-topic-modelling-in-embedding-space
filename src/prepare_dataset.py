@@ -451,42 +451,10 @@ class TextDataLoader:
         
         if for_lda_model == True:
             print("compact representation for LDA")
-            def create_lda_corpus(bow_set):
-                as_array = list(bow_set.toarray())
-                del bow_set
-                print(f'len set in lda_corpus: {len(as_array)}')
-                print(f'len a doc: {len(as_array[0])}')
-                lda_corpus = []
-                
-                #df = pd.DataFrame(bow_set.toarray())
-                #lda_corpus = []
-                for i in range(0,len(as_array)):
-                    #doc_corpus = [ (j,e) for j, e in enumerate(df.iloc[i])]
-                    doc_corpus = []
-                    j = 0
-                    #print("test")
-                    doc = as_array[i]
-                    
-                    for e in doc:
-                        doc_corpus.append((j,e))
-                        j += 1
-                    lda_corpus.append(doc_corpus)
-                    del doc_corpus
-                    del doc
-                del as_array
-                return lda_corpus
-
-            if self.min_df == 200:
-                # because 100, not all words like vocabulary, 
-                # so sparse2corpus create dataset with not exact number of words
-                train_dataset = bow_tr#create_lda_corpus(bow_tr)
-                test_dataset = bow_ts#create_lda_corpus(bow_ts) 
-                val_dataset = bow_va#create_lda_corpus(bow_va) 
-            else:
-                train_dataset = gensim.matutils.Sparse2Corpus(bow_tr,documents_columns=False) #create_lda_corpus(bow_tr)
-                test_dataset = gensim.matutils.Sparse2Corpus(bow_ts, documents_columns=False) #create_lda_corpus(bow_ts)
-                val_dataset = gensim.matutils.Sparse2Corpus(bow_va, documents_columns=False) #create_lda_corpus(bow_va)
-        
+            train_dataset = gensim.matutils.Sparse2Corpus(bow_tr,documents_columns=False) #create_lda_corpus(bow_tr)
+            test_dataset = gensim.matutils.Sparse2Corpus(bow_ts, documents_columns=False) #create_lda_corpus(bow_ts)
+            val_dataset = gensim.matutils.Sparse2Corpus(bow_va, documents_columns=False) #create_lda_corpus(bow_va)
+    
         else: #other models 
             bow_train_tokens, bow_train_counts = split_bow(bow_tr, n_docs_tr)
             bow_test_tokens, bow_test_counts = split_bow(bow_ts, n_docs_ts)
