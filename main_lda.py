@@ -9,10 +9,17 @@ from gensim.models import LdaModel
 
 import argparse
 parser = argparse.ArgumentParser(description='main.py')
-parser.add_argument('--filter-stopwords', type=bool, default=True, help='do not filter oder filter stopwords')
+parser.add_argument('--filter-stopwords', type=str, default="true", help='do not filter oder filter stopwords')
 args = parser.parse_args()
 
 stopwords_filter = args.filter_stopwords
+print(f'filter stopwords: {stopwords_filter}')
+if stopwords_filter == "True":
+  stopwords_filter = True
+else:
+  stopwords_filter = False
+
+print(f'filter stopwords: {stopwords_filter}')
 num_topics = 20
 
 if stopwords_filter:
@@ -44,14 +51,15 @@ for min_df in [2, 5, 10, 30, 100]:
     del val_set
     del docs_t
     del docs_v
-    
+
     # lda model
     del textsloader
     for num_topics in [20]:
+        print('run LDA training...')
         ldamodel = LdaModel(train_set, num_topics= num_topics, id2word = id2word, passes = 50, random_state = 42)
         #lda(train_set, num_topics, id2word)
 
-        lda_topics = ldamodel.show_topics(num_topics=50, num_words=25)
+        lda_topics = ldamodel.show_topics(num_topics= num_topics, num_words=25)
         
         # topics
         topics = []
