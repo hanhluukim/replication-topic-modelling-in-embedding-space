@@ -31,6 +31,10 @@ random.seed(42)
 with open('src/stops.txt', 'r') as f:
     # list stopwords from the original paper
     stops = f.read().split('\n')
+
+with open('src/add_to_stopwords.txt', 'r') as f:
+    # list stopwords from the original paper
+    not_in_bert = f.read().split('\n')
     
 class TextDataLoader:
     def __init__(self, source="20newsgroups", train_size=None, test_size=None):
@@ -103,8 +107,9 @@ class TextDataLoader:
         if stopwords_filter:
             self.complete_docs = [[w for w in self.complete_docs[doc] if w not in stops] for doc in range(len(self.complete_docs))]
         
+        # remove words, they are not in bert-vocabulary
+        self.complete_docs = [[w for w in self.complete_docs[doc] if w not in not_in_bert] for doc in range(len(self.complete_docs))]
         self.complete_docs = [" ".join(self.complete_docs[doc]) for doc in range(len(self.complete_docs))]   
-        #return True
         print("finised: preprocessing!")
     
     def show_example_raw_texts(self, n_docs=2):
@@ -170,7 +175,7 @@ class TextDataLoader:
         # get dataset-docs-indices for each set
         val_dataset_size = 100
         docs_tr, docs_ts, docs_tr_indices, docs_ts_indices = train_test_split(self.complete_docs, range(0,len(self.complete_docs)), test_size=self.test_size, random_state=42)
-        print(f'validation-size ist: {round(val_dataset_size/len(docs_tr),2)}')
+        #print(f'validation-size ist: {round(val_dataset_size/len(docs_tr),2)}')
         docs_tr, docs_va, docs_tr_indices, docs_va_indices = train_test_split(docs_tr, docs_tr_indices, test_size=100, random_state=42)
         
         self.train_indices = docs_tr_indices
@@ -200,7 +205,7 @@ class TextDataLoader:
         del vocabulary  
         #self.vocabulary = list(set(vocabulary))
         print(f'length of the vocabulary: {len(self.vocabulary)}')
-        print(f'sample ten words of the vocabulary: {self.vocabulary[:10]}')
+        #print(f'sample ten words of the vocabulary: {self.vocabulary[:10]}')
 
         self.word2id = {}
         self.id2word = {} 
@@ -446,45 +451,10 @@ class TextDataLoader:
         
         if for_lda_model == True:
             print("compact representation for LDA")
-            def create_lda_corpus(bow_set):
-                as_array = list(bow_set.toarray())
-                del bow_set
-                print(f'len set in lda_corpus: {len(as_array)}')
-                print(f'len a doc: {len(as_array[0])}')
-                lda_corpus = []
-                
-                #df = pd.DataFrame(bow_set.toarray())
-                #lda_corpus = []
-                for i in range(0,len(as_array)):
-                    #doc_corpus = [ (j,e) for j, e in enumerate(df.iloc[i])]
-                    doc_corpus = []
-                    j = 0
-                    #print("test")
-                    doc = as_array[i]
-                    
-                    for e in doc:
-                        doc_corpus.append((j,e))
-                        j += 1
-                    lda_corpus.append(doc_corpus)
-                    del doc_corpus
-                    del doc
-                del as_array
-                return lda_corpus
-
-            if self.min_df == 200:
-                # because 100, not all words like vocabulary, 
-                # so sparse2corpus create dataset with not exact number of words
-                train_dataset = bow_tr#create_lda_corpus(bow_tr)
-                print("end-train") 
-                test_dataset = bow_ts#create_lda_corpus(bow_ts) 
-                print("end-test")
-                val_dataset = bow_va#create_lda_corpus(bow_va) 
-                print("end-val")
-            else:
-                train_dataset = gensim.matutils.Sparse2Corpus(bow_tr,documents_columns=False) #create_lda_corpus(bow_tr)
-                test_dataset = gensim.matutils.Sparse2Corpus(bow_ts) #create_lda_corpus(bow_ts)
-                val_dataset = gensim.matutils.Sparse2Corpus(bow_va) #create_lda_corpus(bow_va)
-        
+            train_dataset = gensim.matutils.Sparse2Corpus(bow_tr,documents_columns=False) #create_lda_corpus(bow_tr)
+            test_dataset = gensim.matutils.Sparse2Corpus(bow_ts, documents_columns=False) #create_lda_corpus(bow_ts)
+            val_dataset = gensim.matutils.Sparse2Corpus(bow_va, documents_columns=False) #create_lda_corpus(bow_va)
+    
         else: #other models 
             bow_train_tokens, bow_train_counts = split_bow(bow_tr, n_docs_tr)
             bow_test_tokens, bow_test_counts = split_bow(bow_ts, n_docs_ts)

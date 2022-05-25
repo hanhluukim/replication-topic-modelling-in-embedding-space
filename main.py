@@ -12,6 +12,9 @@ from datetime import datetime
 import subprocess
 import numpy as np
 import random
+from src.evaluierung import topicCoherence2, topicDiversity
+from tqdm import tqdm
+
 
 #--------------------deterministic------------------------------------
 import os
@@ -149,10 +152,6 @@ print(word2id_df_100)
 #------------------------Die Dokumenten sind in Wörtern und werden für Word-Embedding Training benutzt
 
 docs_tr, docs_t, docs_v = textsloader.get_docs_in_words_for_each_set()
-#train_docs_df = pd.DataFrame()
-#train_docs_df['text-after-preprocessing'] = [' '.join(doc) for doc in docs_tr[:10]]
-#print(train_docs_df)
-
 del textsloader
 
 #------------------paths
@@ -165,20 +164,20 @@ Path(figures_path).mkdir(parents=True, exist_ok=True)
 vocab = list(word2id.keys())
 #-------------------------embedding training------------------------------------------
 if word2vec_model!="bert":
-  wb_creator = WordEmbeddingCreator(model_name=word2vec_model, documents = docs_tr, save_path= save_path)
-  wb_creator.train(min_count=0, embedding_size= 300)
-  wb_creator.create_and_save_vocab_embedding(vocab, save_path)
-  #wb_creator.cluster_words(save_path, figures_path , 2)
-  # show embedding of some words
-  print("neighbor words of some sample selected words")
-  print(f'word: {vocab[0]}')
-  print(f'vector: {list(wb_creator.model.wv.__getitem__(vocab[0]))[:5]} ')
-  """
-  for i in range(0,1):
-        print(f'neighbor of word {vocab[i]}')
-        print([r[0] for r in wb_creator.find_most_similar_words(n_neighbor=5, word=vocab[i])])
-        print([r[1] for r in wb_creator.find_most_similar_words(n_neighbor=5, word=vocab[i])])
-  """
+      wb_creator = WordEmbeddingCreator(model_name=word2vec_model, documents = docs_tr, save_path= save_path)
+      wb_creator.train(min_count=0, embedding_size= 300)
+      wb_creator.create_and_save_vocab_embedding(vocab, save_path)
+      #wb_creator.cluster_words(save_path, figures_path , 2)
+      # show embedding of some words
+      print("neighbor words of some sample selected words")
+      print(f'word: {vocab[0]}')
+      print(f'vector: {list(wb_creator.model.wv.__getitem__(vocab[0]))[:5]} ')
+      """
+      for i in range(0,1):
+            print(f'neighbor of word {vocab[i]}')
+            print([r[0] for r in wb_creator.find_most_similar_words(n_neighbor=5, word=vocab[i])])
+            print([r[1] for r in wb_creator.find_most_similar_words(n_neighbor=5, word=vocab[i])])
+      """
 else:
       #todo run subprocess
       print("using prepared_data/bert_vocab_embedding.txt")
@@ -268,7 +267,7 @@ train_class = TrainETM().train(
     
 
 #--------------------------------RUN TIME------------------------------------------------
-f = open("python_train_runtime.txt", "a")
+f = open('info_run_time/python_train_runtime.txt', 'a')
 f.write(f'min_df: {min_df} \t vocab-size {len(vocab)} \t epochs: {epochs} \t run time: {datetime.now()-start}\n')
 f.close()
 
@@ -278,9 +277,6 @@ topics = etm_model.show_topics(id2word, 25)
 topics = [[e[0] for e in tp] for tp in topics] #get only top words
 
 #------------------save topics and evaluation-----------------------
-from src.evaluierung import topicCoherence2, topicDiversity
-from tqdm import tqdm
-
 save_topics_path = f'topics/min_df_{min_df}/etm'
 Path(save_topics_path).mkdir(parents=True, exist_ok=True)
 topics_f = open(f'{save_topics_path}/{num_topics}_topics.txt', 'w')

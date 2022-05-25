@@ -31,6 +31,6 @@ with open('prepared_data/bert_vocab.pkl', 'wb') as f:
 del bert_vocab
 del bert_embeddings
 
-f = open("python_covert_embeddings_runtime.txt", "a")
+f = open("info_run_time/python_covert_embeddings_runtime.txt", "a")
 f.write(f'run time: {datetime.now()-start}\n')
 f.close()

@@ -37,47 +37,31 @@ def normalize(v):
 
 def unit_vec(vector):
       veclen = np.sqrt(np.sum(vector ** 2))
-      #other_veclen = normalize(vector)
-      #print(f'veclen: {veclen}')
-      #print(f'other-veclen: {other_veclen}')
       return vector/veclen
-def get_consine_similarity_2(vector1, vector2):
-      #vector unit length so that just use dot product
-      #print(np.array(vector1).shape)
-      vector1 = unit_vec(np.array(vector1))
-      vector2 = unit_vec(np.array(vector2))
-      #print(f'veclen after normalization: {normalize(vector1)}')
-      return dot(vector1, vector2)
 
 def get_consine_similarity(vector1, vector2):
-      #print("using distance.cosine")
-      #vector unit length so that just use dot product
-      #print(np.array(vector1).shape)
       vector1 = unit_vec(np.array(vector1))
       vector2 = unit_vec(np.array(vector2))
-      #print(f'veclen after normalization: {normalize(vector1)}')
+      return dot(vector1, vector2)
+
+def get_consine_similarity_2(vector1, vector2):
+      vector1 = unit_vec(np.array(vector1))
+      vector2 = unit_vec(np.array(vector2))
       return 1-distance.cosine(vector1, vector2) #1-dot()/norm
 
-def get_similar_vectors_to_given_vector(topn, vocab, give_vector, all_vectors):
-      #print(vocab[2539])
+def get_similar_vectors_to_given_vector(topn, used_vocab, give_vector, all_vectors):
       dists = []
       for vector2 in all_vectors:
-            dists.append(get_consine_similarity_2(give_vector, vector2))
-      #dists = np.array(dists)
-      #print(sorted(dists, reverse=True)[:10])
+            dists.append(get_consine_similarity(give_vector, vector2))
       top_dists = sorted(dists, reverse=True)[1:topn+1]
-      #print(top_dists)
       top_indices = [dists.index(d) for d in top_dists]
-      #[i for i in range(0, sorted(dists, reverse_))][1:topn+1]
-      #list(argsort(dists, reverse=False)[1:topn+1]) #do not use dist = 0 of same vectors
-      #print(top_indices)
-      top_words = {} #np.array(vocab)[indices]
+      top_words = {}
       for idx in top_indices:
-            top_words[vocab[idx]] = dists[idx]
+            top_words[used_vocab[idx]] = dists[idx]
       return top_words
- 
       
 def read_prefitted_embedding_from_npy_and_txt(model_name, etm_vocab, save_path):
+      # read format .npy and .txt
       eb_path =  Path.joinpath(save_path, f'{model_name}_embeddings.npy')
       model_vocab_path = Path.joinpath(save_path, f'{model_name}_vocab.txt')
       # loading
@@ -87,7 +71,6 @@ def read_prefitted_embedding_from_npy_and_txt(model_name, etm_vocab, save_path):
             lines = f.readlines()
       for w in lines:
             words_in_vocab.append(w)
-            
       embeddings = []
       for w in etm_vocab:
             idx = model_vocab.index(w)
@@ -101,11 +84,9 @@ def read_prefitted_embedding_from_npy_and_txt(model_name, etm_vocab, save_path):
             print("something wrong with reading files")
             return False
       
-      
 def read_prefitted_embedding_from_npy_pkl(model_name, etm_vocab, save_path):
       eb_path =  Path.joinpath(save_path, f'{model_name}_embeddings.npy')
       model_vocab_path = Path.joinpath(save_path, f'{model_name}_vocab.pkl')
-
       all_embeddings = np.load(eb_path)
       with open(model_vocab_path, 'rb') as f:
             model_vocab = pickle.load(f)
@@ -117,61 +98,51 @@ def read_prefitted_embedding_from_npy_pkl(model_name, etm_vocab, save_path):
             embeddings.append(eb)
       del all_embeddings
       del model_vocab
-      if words_in_vocab == etm_vocab:
+      if len(words_in_vocab) == len(etm_vocab):
             return words_in_vocab, embeddings
       else:
             print("something wrong with reading files")
-            return False
+            return words_in_vocab, embeddings
 
 def read_prefitted_embedding(model_name, vocab, save_path):
-      try:
+      if model_name!="bert":
             save_path = str(save_path) + "/" + f'{model_name}_vocab_embedding.txt'
-            #Path.joinpath(save_path, f'{model_name}_vocab_embedding.txt')
-      except:
-            save_path = str(save_path) + "/vocab_embedding.txt"
-            #Path.joinpath(save_path, f'vocab_embedding.txt')
-
+      else: # model bert
+            try:
+                  save_path = str(save_path) + "/" + f'{model_name}_vocab_embedding.txt'
+            except:
+                  save_path = str(save_path) + "/vocab_embedding.txt"
+                   
       with open(save_path) as f:
             lines = f.readlines()
       embedding_data = {}
       for t in lines:
             w = t.split("\t")[0]
-            v = [float(e) for e in t.split("\t")[1].split(" ")]
-            # check again only word in the etm-vocabulary
+            v = [float(e) for e in t.split("\t")[1].split(" ")[:-1]] #remove \n
+            # check again only word in the vocabulary, which was created at bow-creating
             if w in vocab:
                   embedding_data[w] = v
-      
-      # sort embedding_data again by the ordner of the vocabulary from bow
+                  
       words_embeddings = []
       words = []
       for k, v in embedding_data.items():
-            #words_embeddings = np.array(list(embedding_data.values()))
-            #words = np.array(list(embedding_data.keys()))
             words.append(k)
             words_embeddings.append(v)
-
-      if len(words) == len(list(np.array(vocab))):
+            
+      # sort embedding_data again by the ordner of the vocabulary from bow creating
+      if len(words) == len(vocab):
+            # sort list
             indices = [vocab.index(words[i]) for i in range(0,len(words))]
             words_in_vocab = [vocab[i] for i in range(0,len(words))]
             words_embeddings = [e for _, e in sorted(zip(indices, words_embeddings))]
-            return words_in_vocab, words_embeddings #list(embedding_data.values())
+            return words_in_vocab, words_embeddings
       else:
             print("something wrong at the embedding.py/read_prefitted_embeddings")
             print("use for testing bert")
-            return words, words_embeddings #list(embedding_data.values())
+            return words, words_embeddings
 
 class WordEmbeddingCreator:
       def __init__(self, model_name="cbow", documents = None, save_path = ""):
-            """save_path = 
-            Input: documents in List of words, train-settings
-            Output: word-embedding for the vocabulary
-
-            Args:
-                model_name (str, optional): _description_. Defaults to "cbow".
-                documents (_type_, optional): _description_. Defaults to None.
-                vocab (_type_, optional): _description_. Defaults to None.
-                save_path (str, optional): _description_. Defaults to "".
-            """
             self.model_name = model_name
             self.save_path = save_path
             self.documents = documents
@@ -180,7 +151,7 @@ class WordEmbeddingCreator:
             
       def train(self, min_count = 0, embedding_size = 300):
             if self.model_name=="cbow":
-                  print("word-embedding train begins")
+                  print("train word-embedding with cbow")
                   self.model = gensim.models.Word2Vec(self.documents, 
                                                       seed = 42,
                                                       min_count=min_count, 
@@ -189,7 +160,7 @@ class WordEmbeddingCreator:
                                                       size=embedding_size,
                                                       iter=5)
             elif self.model_name=="skipgram":
-                  print("train begin:word-embedding with skipgram")
+                  print("train word-embedding with skipgram")
                   self.model = gensim.models.Word2Vec(self.documents, 
                                                       seed = 42,
                                                       min_count=min_count, 
@@ -201,32 +172,22 @@ class WordEmbeddingCreator:
             else:
                   print("word-embedding with BERT")
                   print("!!!! please run src/bert_main.py to get prepared_data/bert_vocab_embeddings.txt")
-            print("word-embedding train finished")
-            # todo: save the trained-model
-            #return self.model
-          
+            #print(f'train word-embedding with {self.model_name} finished')
+            
       def create_and_save_vocab_embedding(self, train_vocab = None, embedding_path = None):
-            """_summary_
-
-            Args:
-                train_vocab (_type_): vocabulary from the prepare_dataset.py
-                embedding_path (_type_): path to save the trained-embedding
-
-            Returns:
-                _type_: _description_
-            """
             model_vocab = []
             if self.model_name=="bert":
-                  model_vocab = [] #bert in other processing, ignore here
+                  print('bert-embedding is on other processing. Please see file src/bert_*.py')
             else:
                   model_vocab = list(self.model.wv.vocab)
-            print(f'length of vocabulary from word-embedding model {len(model_vocab)}')
-            print(f'length of the vocabulary of prepraring-dataset-vocabulary: {len(train_vocab)}')
+            print(f'length of vocabulary from word-embedding with {self.model_name}: {len(model_vocab)}')
+            print(f'length of vocabulary after creating BOW: {len(train_vocab)}')
             del self.documents
             
             f = open(Path.joinpath(embedding_path, f'{self.model_name}_vocab_embedding.txt'), 'w') #add to prepared_data
             # sort words in embedding matrix by the ordner from vocabulary
-            for v in tqdm(train_vocab): # sort the list embeddings by words in vocabulary
+            # sort the list embeddings: self.all_embeddings by words in vocabulary
+            for v in tqdm(train_vocab): 
                 if v in model_vocab:
                     vec = list(self.model.wv.__getitem__(v))
                     self.all_embeddings.append(vec)
@@ -244,8 +205,9 @@ class WordEmbeddingCreator:
             # save embeddings
             np.save(str(Path.joinpath(embedding_path, f'{self.model_name}_embeddings.npy')),self.all_embeddings)
             return True
-      
+      """
       def other_save_embeddings(self, train_vocab):
+            # save in other format than txt
             all_embeddings = []
             model_vocab = list(self.model.wv.vocab)
             for v in tqdm(train_vocab): # sort the list embeddings by words in vocabulary
@@ -254,8 +216,9 @@ class WordEmbeddingCreator:
                        all_embeddings.append(vec)
             np.save(f'{self.model_name}_other_embedding.npy', all_embeddings)
             return all_embeddings
-
+      """
       def find_most_similar_words(self, n_neighbor=20, word = None):
+            # using directly function of gensim
             if word!=None:
                   return self.model.wv.most_similar(word, topn=n_neighbor)
             else:
@@ -264,11 +227,12 @@ class WordEmbeddingCreator:
       def find_similar_words_self_implemented(self, topn, train_vocab, word):
             top_words = {}
             model_vocab = list(self.model.wv.vocab)
-            #all_embeddings = self.other_save_embeddings(train_vocab)
             if word in train_vocab:
                   if word in model_vocab:
                         considered_vector = list(self.model.wv.__getitem__(word))
+                        # find the neighbor words with train_vocab
                         top_words = get_similar_vectors_to_given_vector(topn, train_vocab, considered_vector, self.all_embeddings)
+            del model_vocab
             return top_words
 
       def cluster_words(self, embedding_save_path = None, fig_path = None, n_components=3, text = False):
@@ -293,10 +257,7 @@ class WordEmbeddingCreator:
             kmeans.fit(embedding_data)
             labels = kmeans.labels_
             centroids = kmeans.cluster_centers_
-            #print("Cluster id labels for inputted data")
-            #print(labels)
-            #print("Centroids data")
-            #print(centroids)
+            
             # dimension reduction with umap
             reducer = umap.UMAP(random_state=42,n_components=n_components)
             embedding = reducer.fit_transform(embedding_data)
@@ -326,7 +287,15 @@ class WordEmbeddingCreator:
             fig.show()
             return True
 
-  
+#---------------------------------------------------
+"""
+- Bert is not a word-embedding, Bert ist sentence- and subwords-embeddings
+- To create vector for each word in the vocabulary, which we use for ETM, we must do some complicated steps
+- All steps are  implemented in files: bert_embedding.py, bert_preparing.py and bert_main.py
+- Embeddings for each word were created and saved in prepared_data/bert_vocab_embedding.txt
+- Class BertEmbedding will be used to read this file and find similar words from them
+"""
+
 class BertEmbedding:
     def __init__(self, saved_embeddings_text_file):
           self.file_path = saved_embeddings_text_file
@@ -335,16 +304,19 @@ class BertEmbedding:
           self.bert_norms = None
     def get_bert_embeddings(self, etm_vocab):
           # filtering words by etm_vocab
+          print('read word-embeddings with bert from file...')
           words_in_vocab, vocab_embeddings = read_prefitted_embedding("bert", etm_vocab, self.file_path)
           self.bert_embeddings = np.array(vocab_embeddings)
           self.bert_vocab = words_in_vocab
-          self.bert_norms = np.array()
           print("bert-embedding ready!")
-          return True
-
-    def find_similar_words(self, word, top_neighbors):
+          
+    def find_similar_words(self, word, top_neighbors, train_vocab):
           word_idx_in_vocab = self.bert_vocab.index(word)
           considered_vector = self.bert_embeddings[word_idx_in_vocab]
-          top_words = get_similar_vectors_to_given_vector(top_neighbors, self.bert_vocab, considered_vector, self.bert_embeddings)
+          top_words = get_similar_vectors_to_given_vector(
+                top_neighbors, 
+                train_vocab, 
+                considered_vector, 
+                self.bert_embeddings)
           return top_words
 

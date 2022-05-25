@@ -1,5 +1,8 @@
 import torch
 
+"""
+These functions will be used to creating the word-embeddings with BERT
+"""
 def tokenizerfast_for_a_sent(sent, tokenizer):
     this_sent_tokenizer = tokenizer(sent)
     # index of token in the vocabulary
@@ -12,13 +15,10 @@ def tokenizerfast_for_a_sent(sent, tokenizer):
     return tokens_tensor, segments_tensors, tokens_ids_with_belonging_information
   
 def reform_token_embeddings_of_sentence(full_outputs):
-    hidden_states = full_outputs[2]
+    hidden_states = full_outputs[2] # get only the hidden-states
     token_embeddings = torch.stack(hidden_states, dim=0)
-    #print(token_embeddings.shape)
     token_embeddings = torch.squeeze(token_embeddings, dim=1) # size= (n_hidden_layers, n_tokens, 768)
-    #print(token_embeddings.shape)
     token_embeddings = token_embeddings.permute(1,0,2) # size= (n_tokens, n_hidden_layers, 768)
-    #print(token_embeddings.shape)
     return token_embeddings 
 
 def get_token_embeddings(reformed_token_embeddings):
