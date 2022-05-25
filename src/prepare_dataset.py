@@ -31,6 +31,10 @@ random.seed(42)
 with open('src/stops.txt', 'r') as f:
     # list stopwords from the original paper
     stops = f.read().split('\n')
+
+with open('src/add_to_stopwords.txt', 'r') as f:
+    # list stopwords from the original paper
+    not_in_bert = f.read().split('\n')
     
 class TextDataLoader:
     def __init__(self, source="20newsgroups", train_size=None, test_size=None):
@@ -103,8 +107,9 @@ class TextDataLoader:
         if stopwords_filter:
             self.complete_docs = [[w for w in self.complete_docs[doc] if w not in stops] for doc in range(len(self.complete_docs))]
         
+        # remove words, they are not in bert-vocabulary
+        self.complete_docs = [[w for w in self.complete_docs[doc] if w not in not_in_bert] for doc in range(len(self.complete_docs))]
         self.complete_docs = [" ".join(self.complete_docs[doc]) for doc in range(len(self.complete_docs))]   
-        #return True
         print("finised: preprocessing!")
     
     def show_example_raw_texts(self, n_docs=2):
