@@ -95,3 +95,6 @@ min-df: 10	 tokens-train: 1299485 	 tokens-valid: 17082 	 tokens-test: 894537 	 
 ----------------------------------------------------------------------------------------------------
 min-df: 2	 tokens-train: 1420825 	 tokens-valid: 18928 	 tokens-test: 967193 	 vocab: 54318
 min-df: 10	 tokens-train: 1299485 	 tokens-valid: 17082 	 tokens-test: 894537 	 vocab: 18677
+min-df: 10	 tokens-train: 1299485 	 tokens-valid: 17082 	 tokens-test: 894537 	 vocab: 18677
+min-df: 100	 tokens-train: 896087 	 tokens-valid: 11959 	 tokens-test: 621988 	 vocab: 3102
+min-df: 100	 tokens-train: 896087 	 tokens-valid: 11959 	 tokens-test: 621988 	 vocab: 3102
