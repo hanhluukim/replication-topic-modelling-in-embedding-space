@@ -234,7 +234,7 @@ class TextDataLoader:
         print("save docs in txt...")
         with open('prepared_data/train_docs_from_complete_docs.txt', 'w') as f:
             #print(self.train_indices)
-            sorted_indices = sorted(self.train_indices)
+            sorted_indices = self.train_indices #sorted(self.train_indices)
             for train_doc_idx in sorted_indices:
                 f.write(f'{train_doc_idx}: {self.complete_docs[train_doc_idx]}')
                 f.write("\n")
@@ -266,13 +266,13 @@ class TextDataLoader:
           docs_df.to_csv(f'{path}/{name}.csv',index=False)
           del docs_df
           return True
-        #"""REMOVE_SAVING
+        """REMOVE_SAVING
         save_path = 'prepared_data/min_df_'+str(self.min_df)
         Path(save_path).mkdir(parents=True, exist_ok=True)
         save_preprocessed_docs(path = save_path, name="preprocessed_docs_train", docs = docs_tr, docs_indices= self.train_indices)
         save_preprocessed_docs(path = save_path, name="preprocessed_docs_test", docs = docs_ts, docs_indices= self.test_indices)
         save_preprocessed_docs(path = save_path, name="preprocessed_docs_val", docs = docs_va, docs_indices= self.val_indices)
-        #"""
+        """
         
         return docs_tr, docs_va, docs_ts
 
