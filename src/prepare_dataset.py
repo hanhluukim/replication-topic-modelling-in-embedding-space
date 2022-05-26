@@ -106,7 +106,7 @@ class TextDataLoader:
         if length_one_remove:
             self.complete_docs = [[w for w in self.complete_docs[doc] if len(w)>1] for doc in range(len(self.complete_docs))]
         if stopwords_filter:
-            print('preprocssing step: remove stopwords')
+            print('preprocessing step: remove stopwords')
             self.complete_docs = [[w for w in self.complete_docs[doc] if w not in stops] for doc in range(len(self.complete_docs))]
         
         # remove words, they are not in bert-vocabulary

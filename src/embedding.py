@@ -60,9 +60,14 @@ def read_prefitted_embedding(model_name, vocab, save_path):
             except:
                   # old save path
                   save_path = str(save_path) + "/vocab_embedding.txt"
-                   
-      with open(save_path) as f:
-            lines = f.readlines()
+      try:             
+            with open(save_path) as f:
+                  lines = f.readlines()
+      except:
+            print("falls das Modell Bert benutzt wird: ")
+            print("musst bert_main.py lokal durchgeführt werden, um die Bert-Embedding für Vocabular zu erstellen. \n")
+            print("die Embedding wird erst danach durch bert_main.py in dem Ordner prepared_data\bert_vocab_embedding.txt' gespeichert")
+      
       embedding_data = {}
       for t in lines:
             w = t.split("\t")[0]

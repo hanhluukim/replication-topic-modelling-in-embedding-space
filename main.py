@@ -111,7 +111,8 @@ print("\n")
 
 #-------------------------------test data for ETM--------------------------------------
 for_lda_model = False
-word2id, id2word, train_set, test_set, val_set = textsloader.create_bow_and_savebow_for_each_set(for_lda_model=for_lda_model, normalize = True)
+word2id, id2word, train_set, test_set, val_set = textsloader.create_bow_and_savebow_for_each_set(for_lda_model=for_lda_model, 
+                                                                                                 normalize = True)
 print("train-bow-representation for ETM: \n")
 print(f'example ids of dict-id2word for ETM: {list(id2word.keys())[:5]}')
 print(f'example words of dict-id2word for ETM: {list(id2word.values())[:5]}')
