@@ -71,7 +71,10 @@ def read_prefitted_embedding(model_name, vocab, save_path):
       embedding_data = {}
       for t in lines:
             w = t.split("\t")[0]
-            v = [float(e) for e in t.split("\t")[1].split(" ")[:-1]] #remove \n
+            if model_name == "bert":
+                v = [float(e) for e in t.split("\t")[1].split(" ")[:-1]] #remove \n
+            else:
+                v = [float(e) for e in t.split("\t")[1].split(" ")] #remove \n
             # check again only word in the vocabulary, which was created at bow-creating
             if w in vocab:
                   embedding_data[w] = v

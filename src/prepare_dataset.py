@@ -59,18 +59,23 @@ class TextDataLoader:
         self.n_tokens_test = 0
         self.n_tokens_val = 0
         
-    def load_tokenize_texts(self, source="20newsgroups"):
+    def load_tokenize_texts(self, source="20newsgroups", control_mode = False):
         print("loading texts: ...")
         if source == "20newsgroups":
             # download data from package sklearn
-            train_data = fetch_20newsgroups(subset='train')#[:100]
-            test_data = fetch_20newsgroups(subset='test')#[:50]
+            train_data = fetch_20newsgroups(subset='train')
+            test_data = fetch_20newsgroups(subset='test')
             # filter special character from texts
             def filter_special_character(docs):
                 filter_patter = r'''[\w']+|[.,!?;-~{}`´_<=>:/@*()&'$%#"]'''
                 return [re.findall(filter_patter, docs[doc_idx]) for doc_idx in range(len(docs))]
-            init_docs_tr = filter_special_character(train_data.data)
-            init_docs_ts = filter_special_character(test_data.data)
+            if control_mode == True:
+                init_docs_tr = filter_special_character(train_data.data[:200])
+                init_docs_ts = filter_special_character(test_data.data[:5])
+            else:
+                init_docs_tr = filter_special_character(train_data.data)
+                init_docs_ts = filter_special_character(test_data.data)
+                
             #[re.findall(filter_patter, test_data.data[doc]) for doc in range(len(test_data.data[:50]))]
             self.complete_docs = init_docs_tr + init_docs_ts
             self.train_size = len(init_docs_tr) #round(len(init_docs_tr)/len(self.complete_docs),1)
@@ -225,14 +230,15 @@ class TextDataLoader:
     
     def get_docs_in_word_ids_for_each_set(self):
         #using the self.train_indices, self.test_indices, self.val_indices to get the documents
-        """REMOVE_SAVING
+        #"""REMOVE_SAVING
+        print("save docs in txt...")
         with open('prepared_data/train_docs_from_complete_docs.txt', 'w') as f:
             #print(self.train_indices)
             sorted_indices = sorted(self.train_indices)
             for train_doc_idx in sorted_indices:
                 f.write(f'{train_doc_idx}: {self.complete_docs[train_doc_idx]}')
                 f.write("\n")
-        """
+        print("save docs finished")
         docs_tr = [[self.word2id[w] for w in self.complete_docs[train_doc_idx].split() if w in self.word2id] for train_doc_idx in self.train_indices]
         docs_va = [[self.word2id[w] for w in self.complete_docs[val_doc_idx].split() if w in self.word2id] for val_doc_idx in self.val_indices]
         docs_ts = [[self.word2id[w] for w in self.complete_docs[test_doc_idx].split() if w in self.word2id] for test_doc_idx in self.test_indices]
@@ -260,12 +266,13 @@ class TextDataLoader:
           docs_df.to_csv(f'{path}/{name}.csv',index=False)
           del docs_df
           return True
-        """REMOVE_SAVING
+        #"""REMOVE_SAVING
         save_path = 'prepared_data/min_df_'+str(self.min_df)
+        Path(save_path).mkdir(parents=True, exist_ok=True)
         save_preprocessed_docs(path = save_path, name="preprocessed_docs_train", docs = docs_tr, docs_indices= self.train_indices)
         save_preprocessed_docs(path = save_path, name="preprocessed_docs_test", docs = docs_ts, docs_indices= self.test_indices)
         save_preprocessed_docs(path = save_path, name="preprocessed_docs_val", docs = docs_va, docs_indices= self.val_indices)
-        """
+        #"""
         
         return docs_tr, docs_va, docs_ts
 
@@ -293,22 +300,25 @@ class TextDataLoader:
             if name == "train":
                 for i, doc in enumerate(in_docs):
                     if doc==[]:
+                        print('remove empty doc')
                         e = None
-                        #self.train_indices.pop(i)
+                        self.train_indices.pop(i)
                     else:
                         update_docs.append(doc)
             elif name == "test":
                 for i, doc in enumerate(in_docs):
                     if doc==[]:
                         e = None
-                        #self.test_indices.pop(i)
+                        print('remove empty doc')
+                        self.test_indices.pop(i)
                     else:
                         update_docs.append(doc)
             else: #validation
                 for i, doc in enumerate(in_docs):
                     if doc==[]:
                         e = None
-                        #self.val_indices.pop(i)
+                        print('remove empty doc')
+                        self.val_indices.pop(i)
                     else:
                         e = None
                         update_docs.append(doc)
@@ -321,7 +331,8 @@ class TextDataLoader:
                     update_docs.append(doc)
                 else:
                     e = None
-                    #self.test_indices.pop(i)
+                    print('remove test doc len 1')
+                    self.test_indices.pop(i)
             return update_docs
         
         docs_tr = remove_empty('train', docs_tr)
@@ -347,6 +358,8 @@ class TextDataLoader:
         
         print(f'test-size-after-all: {len(docs_ts)}')
         print(f'test-indices-length: {len(self.test_indices)}')
+        
+        # creating the two set of test set
         docs_ts_h1, docs_ts_h2,_,_ = train_test_split(docs_ts, self.test_indices, test_size=0.5, random_state=42)
 
         def create_list_words(in_docs):
