@@ -42,6 +42,7 @@ parser.add_argument('--wordvec-model', type=str, default="skipgram", help='metho
 parser.add_argument('--loss-name', type=str, default="cross-entropy", help='loss-name')
 parser.add_argument('--min-df', type=int, default=10, help='minimal document frequency for vocab size')
 parser.add_argument('--num-topics', type=int, default=10, help='number of topics')
+parser.add_argument('--filter-stopwords', type=str, default="True", help='filter or not filter stopwords')
 
 args = parser.parse_args()
 
@@ -50,8 +51,20 @@ args = parser.parse_args()
 model_name = args.model
 epochs = args.epochs
 word2vec_model = args.wordvec_model
+if word2vec_model=="bert":
+  use_bert_embedding = True
+else:
+  use_bert_embedding = False
+
 min_df = args.min_df
 num_topics = args.num_topics
+filter_stopwords = args.filter_stopwords
+if filter_stopwords == "True":
+  topics_under_dir = "with_stopwords"
+  stopwords_filter = False
+else:
+  topics_under_dir = "no_stopwords"
+  stopwords_filter = True
 
 
 #-----------------------check statistic--------------------------------
@@ -77,35 +90,12 @@ textsloader.load_tokenize_texts("20newsgroups")
 
 #-------------------------preprocessing-------------------------------
 
-textsloader.preprocess_texts(length_one_remove=True, punctuation_lower = True, stopwords_filter = True)
-textsloader.show_example_raw_texts(n_docs=2)
+textsloader.preprocess_texts(length_one_remove=True, punctuation_lower = True, stopwords_filter = stopwords_filter)
+#textsloader.show_example_raw_texts(n_docs=2)
 print("\ntotal documents {}".format(len(textsloader.complete_docs)))
 
 textsloader.split_and_create_voca_from_trainset(max_df=0.7, min_df=min_df, stopwords_remove_from_voca=True)
 print("\n")
-
-#------------------------save information about vocabulary-------------------
-
-#-------------------------test data for LDA---------------------------
-"""
-for_lda_model = True
-word2id, id2word, train_set, test_set, val_set = textsloader.create_bow_and_savebow_for_each_set(for_lda_model=for_lda_model)
-
-print("\n")
-# BOW-Representation: train['tokens] is the set of unique-word-ids, train['count'] is the token-frequency of each unique-word-id in the document
-lda_token_ids = []
-lda_counts = []
-if for_lda_model == True:
-  print("train representation for LDA")
-  print(f'id2word for LDA: {id2word}')
-  print(f'example bow-representation for lda: ')
-  for e in train_set[0]:
-    if e[1]!=0:
-      lda_token_ids.append(e[0])
-      lda_counts.append(e[1])
-  print(lda_token_ids)
-  print(lda_counts)
-"""
 
 #-------------------------------test data for ETM--------------------------------------
 for_lda_model = False
@@ -116,18 +106,6 @@ print(f'example words of dict-id2word for ETM: {list(id2word.values())[:5]}')
 print(100*"=")
 textsloader.write_info_vocab_to_text()
 
-
-"""
-print("compare lda and etm representation: \n")
-print(lda_token_ids)
-print(lda_counts)
-print(train_set['tokens'][0])
-print(train_set['counts'][0])
-
-print(len(lda_token_ids))
-print(len(train_set['tokens'][0]))
-"""
-
 #------------------------------short summary information-------------------------------
 print(f'Size of the vocabulary after prprocessing ist: {len(textsloader.vocabulary)}')
 print(f'Size of train set: {len(train_set["tokens"])}')
@@ -136,15 +114,6 @@ print(f'Size of test set: {len(test_set["test"]["tokens"])}')
 
 del test_set
 del val_set
-
-"""
-# example word2id
-# show for samples: 100 word2id and id2 word
-word2id_df_100 = pd.DataFrame()
-word2id_df_100['word'] = list(word2id.keys())[:100]
-word2id_df_100['id'] = list(word2id.values())[:100]
-print(word2id_df_100)
-"""
 
 #------------------------get docs in words to use for training embedding---------------
 #------------------------doc in words for embedding training---------------------------
@@ -172,12 +141,7 @@ if word2vec_model!="bert":
       print("neighbor words of some sample selected words")
       print(f'word: {vocab[0]}')
       print(f'vector: {list(wb_creator.model.wv.__getitem__(vocab[0]))[:5]} ')
-      """
-      for i in range(0,1):
-            print(f'neighbor of word {vocab[i]}')
-            print([r[0] for r in wb_creator.find_most_similar_words(n_neighbor=5, word=vocab[i])])
-            print([r[1] for r in wb_creator.find_most_similar_words(n_neighbor=5, word=vocab[i])])
-      """
+
 else:
       #todo run subprocess
       print("using prepared_data/bert_vocab_embedding.txt")
@@ -224,7 +188,7 @@ print(f'length of vector: {torch.norm(tr_set.__getitem__(0))}')
 embedding_vocab, embedding_data = read_prefitted_embedding(word2vec_model, vocab, save_path)
 w = vocab[0]
 idx = embedding_vocab.index(w)
-print(embedding_data[idx][:5])
+print(f'example 5 element of word-vector: {embedding_data[idx][:5]}')
 del embedding_vocab
 
 #---------------------------etm-model setting parameters--------------------------------
