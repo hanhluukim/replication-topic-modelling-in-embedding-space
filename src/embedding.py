@@ -29,12 +29,7 @@ torch.backends.cudnn.benchmark = False
 np.random.seed(seed)
 random.seed(seed)
 
-def normalize(v):
-      norm=np.linalg.norm(v)
-      if norm==0:
-            norm=np.finfo(v.dtype).eps
-      return norm
-
+#----------------------------------------------------------------
 def unit_vec(vector):
       veclen = np.sqrt(np.sum(vector ** 2))
       return vector/veclen
@@ -44,12 +39,8 @@ def get_consine_similarity(vector1, vector2):
       vector2 = unit_vec(np.array(vector2))
       return dot(vector1, vector2)
 
-def get_consine_similarity_2(vector1, vector2):
-      vector1 = unit_vec(np.array(vector1))
-      vector2 = unit_vec(np.array(vector2))
-      return 1-distance.cosine(vector1, vector2) #1-dot()/norm
-
-def get_similar_vectors_to_given_vector(topn, used_vocab, give_vector, all_vectors):
+def get_similar_vectors_to_given_vector(topn, used_vocab, 
+                                        give_vector, all_vectors):
       dists = []
       for vector2 in all_vectors:
             dists.append(get_consine_similarity(give_vector, vector2))
@@ -60,50 +51,6 @@ def get_similar_vectors_to_given_vector(topn, used_vocab, give_vector, all_vecto
             top_words[used_vocab[idx]] = dists[idx]
       return top_words
       
-def read_prefitted_embedding_from_npy_and_txt(model_name, etm_vocab, save_path):
-      # read format .npy and .txt
-      eb_path =  Path.joinpath(save_path, f'{model_name}_embeddings.npy')
-      model_vocab_path = Path.joinpath(save_path, f'{model_name}_vocab.txt')
-      # loading
-      all_embeddings = np.load(eb_path)
-      words_in_vocab = []
-      with open(model_vocab_path) as f:
-            lines = f.readlines()
-      for w in lines:
-            words_in_vocab.append(w)
-      embeddings = []
-      for w in etm_vocab:
-            idx = model_vocab.index(w)
-            eb = all_embeddings[idx]
-            embeddings.append(eb)
-      del all_embeddings
-      del model_vocab
-      if words_in_vocab == etm_vocab:
-            return words_in_vocab, embeddings
-      else:
-            print("something wrong with reading files")
-            return False
-      
-def read_prefitted_embedding_from_npy_pkl(model_name, etm_vocab, save_path):
-      eb_path =  Path.joinpath(save_path, f'{model_name}_embeddings.npy')
-      model_vocab_path = Path.joinpath(save_path, f'{model_name}_vocab.pkl')
-      all_embeddings = np.load(eb_path)
-      with open(model_vocab_path, 'rb') as f:
-            model_vocab = pickle.load(f)
-      words_in_vocab = []
-      embeddings = []
-      for w in etm_vocab:
-            idx = model_vocab.index(w)
-            eb = all_embeddings[idx]
-            embeddings.append(eb)
-      del all_embeddings
-      del model_vocab
-      if len(words_in_vocab) == len(etm_vocab):
-            return words_in_vocab, embeddings
-      else:
-            print("something wrong with reading files")
-            return words_in_vocab, embeddings
-
 def read_prefitted_embedding(model_name, vocab, save_path):
       if model_name!="bert":
             save_path = str(save_path) + "/" + f'{model_name}_vocab_embedding.txt'
@@ -111,6 +58,7 @@ def read_prefitted_embedding(model_name, vocab, save_path):
             try:
                   save_path = str(save_path) + "/" + f'{model_name}_vocab_embedding.txt'
             except:
+                  # old save path
                   save_path = str(save_path) + "/vocab_embedding.txt"
                    
       with open(save_path) as f:
@@ -141,6 +89,7 @@ def read_prefitted_embedding(model_name, vocab, save_path):
             print("use for testing bert")
             return words, words_embeddings
 
+#----------------------------------------------------------------------------------
 class WordEmbeddingCreator:
       def __init__(self, model_name="cbow", documents = None, save_path = ""):
             self.model_name = model_name
@@ -287,7 +236,7 @@ class WordEmbeddingCreator:
             fig.show()
             return True
 
-#---------------------------------------------------
+#-------------------------------------------------------------------------------------------------
 """
 - Bert is not a word-embedding, Bert ist sentence- and subwords-embeddings
 - To create vector for each word in the vocabulary, which we use for ETM, we must do some complicated steps
@@ -319,4 +268,59 @@ class BertEmbedding:
                 considered_vector, 
                 self.bert_embeddings)
           return top_words
+
+#-----old-functions--------------------------------------------------------------------------
+def normalize(v):
+      norm=np.linalg.norm(v)
+      if norm==0:
+            norm=np.finfo(v.dtype).eps
+      return norm
+def get_consine_similarity_2(vector1, vector2):
+      vector1 = unit_vec(np.array(vector1))
+      vector2 = unit_vec(np.array(vector2))
+      return 1-distance.cosine(vector1, vector2) #1-dot()/norm
+
+def read_prefitted_embedding_from_npy_and_txt(model_name, etm_vocab, save_path):
+      # read format .npy and .txt
+      eb_path =  Path.joinpath(save_path, f'{model_name}_embeddings.npy')
+      model_vocab_path = Path.joinpath(save_path, f'{model_name}_vocab.txt')
+      # loading
+      all_embeddings = np.load(eb_path)
+      words_in_vocab = []
+      with open(model_vocab_path) as f:
+            lines = f.readlines()
+      for w in lines:
+            words_in_vocab.append(w)
+      embeddings = []
+      for w in etm_vocab:
+            idx = model_vocab.index(w)
+            eb = all_embeddings[idx]
+            embeddings.append(eb)
+      del all_embeddings
+      del model_vocab
+      if words_in_vocab == etm_vocab:
+            return words_in_vocab, embeddings
+      else:
+            print("something wrong with reading files")
+            return False
+      
+def read_prefitted_embedding_from_npy_pkl(model_name, etm_vocab, save_path):
+      eb_path =  Path.joinpath(save_path, f'{model_name}_embeddings.npy')
+      model_vocab_path = Path.joinpath(save_path, f'{model_name}_vocab.pkl')
+      all_embeddings = np.load(eb_path)
+      with open(model_vocab_path, 'rb') as f:
+            model_vocab = pickle.load(f)
+      words_in_vocab = []
+      embeddings = []
+      for w in etm_vocab:
+            idx = model_vocab.index(w)
+            eb = all_embeddings[idx]
+            embeddings.append(eb)
+      del all_embeddings
+      del model_vocab
+      if len(words_in_vocab) == len(etm_vocab):
+            return words_in_vocab, embeddings
+      else:
+            print("something wrong with reading files")
+            return words_in_vocab, embeddings
 

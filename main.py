@@ -90,11 +90,16 @@ textsloader.load_tokenize_texts("20newsgroups")
 
 #-------------------------preprocessing-------------------------------
 
-textsloader.preprocess_texts(length_one_remove=True, punctuation_lower = True, stopwords_filter = stopwords_filter)
+textsloader.preprocess_texts(length_one_remove=True, 
+                             punctuation_lower = True, 
+                             stopwords_filter = stopwords_filter,
+                             use_bert_embedding = use_bert_embedding)
 #textsloader.show_example_raw_texts(n_docs=2)
 print("\ntotal documents {}".format(len(textsloader.complete_docs)))
 
-textsloader.split_and_create_voca_from_trainset(max_df=0.7, min_df=min_df, stopwords_remove_from_voca=True)
+textsloader.split_and_create_voca_from_trainset(max_df=0.7, 
+                                                min_df=min_df, 
+                                                stopwords_remove_from_voca= stopwords_filter)
 print("\n")
 
 #-------------------------------test data for ETM--------------------------------------
@@ -123,7 +128,7 @@ del val_set
 docs_tr, docs_t, docs_v = textsloader.get_docs_in_words_for_each_set()
 del textsloader
 
-#------------------paths
+#------------------------paths-------------------------------------------------
 
 save_path = Path.joinpath(Path.cwd(), f'prepared_data/min_df_{min_df}')
 figures_path = Path.joinpath(Path.cwd(), f'figures/min_df_{min_df}')
@@ -170,8 +175,13 @@ class OptimizerArguments:
             self.lr = lr
             self.wdecay = wdecay
 
-train_args = TrainArguments(epochs=epochs, batch_size=1000, log_interval=None)
-optimizer_args = OptimizerArguments(optimizer_name="adam", lr=0.002, wdecay=0.0000012)
+train_args = TrainArguments(epochs=epochs, 
+                            batch_size=1000, 
+                            log_interval=None)
+optimizer_args = OptimizerArguments(optimizer_name="adam", 
+                                    lr=0.002, 
+                                    wdecay=0.0000012)
+
 print(f'using epochs: {train_args.epochs}')
 print(f'using optimizer: {optimizer_args.optimizer}')
 
@@ -235,17 +245,20 @@ f = open('info_run_time/python_train_runtime.txt', 'a')
 f.write(f'min_df: {min_df} \t vocab-size {len(vocab)} \t epochs: {epochs} \t run time: {datetime.now()-start}\n')
 f.close()
 
-#-------------------show topics
+#-----------------------------------show topics---------------------------------
 etm_model.eval()
 topics = etm_model.show_topics(id2word, 25)
 topics = [[e[0] for e in tp] for tp in topics] #get only top words
 
-#------------------save topics and evaluation-----------------------
-save_topics_path = f'topics/min_df_{min_df}/etm'
+#-------------------------------save topics and evaluation-----------------------
+save_topics_path = f'topics/{topics_under_dir}/min_df_{min_df}/etm'
 Path(save_topics_path).mkdir(parents=True, exist_ok=True)
 topics_f = open(f'{save_topics_path}/{num_topics}_topics.txt', 'w')
+topic_idx = 0
 for tp in tqdm(topics): 
-    topics_f.write(" ".join(tp[:10]) + "\n")
+    tp_as_str = " ".join(tp[:10])
+    topics_f.write(f'topic: {topic_idx + 1} {tp_as_str}\n')
+    topic_idx += 1
 topics_f.close()
 
 # topic coherence and topic diversity and quality
