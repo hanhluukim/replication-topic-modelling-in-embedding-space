@@ -18,3 +18,11 @@ name 	 epochs	 topic-coherrence 	 topic-diversity 	 quality
 train 	 150 	 0.0745864000757003 	 0.464 	 0.03460808963512494
 epochs 	 n-hidden-size 	 activate-func 	 optimizer 	 coherrence 	 diversity 	 quality
 150 	500 	 ReLU 	 adam 	 0.07256118616823937 	 0.472 	 0.03424887987140898
+epochs 	 n-hidden-size 	 activate-func 	 optimizer 	 coherrence 	 diversity 	 quality
+150 	600 	 ReLU 	 adam 	 0.0742685778554868 	 0.442 	 0.03282671141212516
+epochs 	 n-hidden-size 	 activate-func 	 optimizer 	 coherrence 	 diversity 	 quality
+150 	700 	 ReLU 	 adam 	 0.0722360015520655 	 0.426 	 0.030772536661179902
+epochs 	 n-hidden-size 	 activate-func 	 optimizer 	 coherrence 	 diversity 	 quality
+150 	800 	 ReLU 	 adam 	 0.07084543159401463 	 0.46 	 0.03258889853324673
+epochs 	 n-hidden-size 	 activate-func 	 optimizer 	 coherrence 	 diversity 	 quality
+150 	600 	 tanh 	 adam 	 0.06903421146551479 	 0.446 	 0.0307892583136196
