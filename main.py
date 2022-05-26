@@ -43,7 +43,9 @@ parser.add_argument('--loss-name', type=str, default="cross-entropy", help='loss
 parser.add_argument('--min-df', type=int, default=10, help='minimal document frequency for vocab size')
 parser.add_argument('--num-topics', type=int, default=10, help='number of topics')
 parser.add_argument('--filter-stopwords', type=str, default="True", help='filter or not filter stopwords')
-
+parser.add_argument('--hidden-size', type=int, default=100, help='linear transformation')
+parser.add_argument('--activate-func', type=str, default="tanh", help='tanh oder ReLU activate function')
+parser.add_argument('--optimizer-name', type=str, default="adam", help='adam or sgd')
 args = parser.parse_args()
 
 
@@ -58,13 +60,18 @@ else:
 
 min_df = args.min_df
 num_topics = args.num_topics
+n_hidden_size = args.hidden_size
+activate_func = args.activate_func
+optimizer_name = args.optimizer_name
+
 filter_stopwords = args.filter_stopwords
 if filter_stopwords == "True":
-  topics_under_dir = "with_stopwords"
-  stopwords_filter = False
-else:
   topics_under_dir = "no_stopwords"
   stopwords_filter = True
+else:
+  topics_under_dir = "with_stopwords"
+  stopwords_filter = False
+print(f'filter-stopwords: {stopwords_filter}')
 
 
 #-----------------------check statistic--------------------------------
@@ -178,7 +185,7 @@ class OptimizerArguments:
 train_args = TrainArguments(epochs=epochs, 
                             batch_size=1000, 
                             log_interval=None)
-optimizer_args = OptimizerArguments(optimizer_name="adam", 
+optimizer_args = OptimizerArguments(optimizer_name= optimizer_name, 
                                     lr=0.002, 
                                     wdecay=0.0000012)
 
@@ -203,10 +210,10 @@ del embedding_vocab
 
 #---------------------------etm-model setting parameters--------------------------------
 #num_topics = 50
-t_hidden_size = 800
+t_hidden_size = n_hidden_size #args.hidden_size
 rho_size = len(embedding_data[0])
 emb_size = len(embedding_data[0])
-theta_act = "ReLU"
+theta_act = activate_func #args.activate_func #"ReLU"
 
 #--------------------------etm model setting-------------------------------------------
 etm_model = ETM(
@@ -269,14 +276,17 @@ for name, bow_documents in dataset.items():
     if name == 'train':
         tc = topicCoherence2(topics,len(topics),docs_tr,len(docs_tr))
         td = topicDiversity(topics)
+        print(f'topic-coherrence: {tc}')
+        print(f'topic-diversity: {td}')
+
     else:
         # test dataset - test_topics
         # continue
         print("no coherrence")
     
     eval_f = open(f'{save_topics_path}/{num_topics}_evaluation.txt', 'a')
-    eval_f.write(f'name \t epochs\t topic-coherrence \t topic-diversity \t quality\n')
-    eval_f.write(f'{name} \t {epochs} \t {tc} \t {td} \t {tc*td}\n')
+    eval_f.write(f'epochs \t n-hidden-size \t activate-func \t optimizer \t coherrence \t diversity \t quality\n')
+    eval_f.write(f'{epochs} \t{t_hidden_size} \t {activate_func} \t {optimizer_name} \t {tc} \t {td} \t {tc*td}\n')
     eval_f.close()
 del dataset
 

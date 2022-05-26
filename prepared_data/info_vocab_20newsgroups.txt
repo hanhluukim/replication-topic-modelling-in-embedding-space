@@ -173,3 +173,16 @@ min-df: 100	 tokens-train: 1857413 	 tokens-valid: 22418 	 tokens-test: 1292175 
 ----------------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------------
+min-df: 100	 tokens-train: 1857413 	 tokens-valid: 22418 	 tokens-test: 1292175 	 vocab: 3524
+min-df: 100	 tokens-train: 896087 	 tokens-valid: 11959 	 tokens-test: 621988 	 vocab: 3102
+min-df: 100	 tokens-train: 1857413 	 tokens-valid: 22418 	 tokens-test: 1292175 	 vocab: 3524
+min-df: 100	 tokens-train: 896087 	 tokens-valid: 11959 	 tokens-test: 621988 	 vocab: 3102
+min-df: 100	 tokens-train: 896087 	 tokens-valid: 11959 	 tokens-test: 621988 	 vocab: 3102
+min-df: 100	 tokens-train: 896087 	 tokens-valid: 11959 	 tokens-test: 621988 	 vocab: 3102
+min-df: 100	 tokens-train: 896087 	 tokens-valid: 11959 	 tokens-test: 621988 	 vocab: 3102
+min-df: 100	 tokens-train: 896087 	 tokens-valid: 11959 	 tokens-test: 621988 	 vocab: 3102
+min-df: 100	 tokens-train: 896087 	 tokens-valid: 11959 	 tokens-test: 621988 	 vocab: 3102
+min-df: 100	 tokens-train: 896087 	 tokens-valid: 11959 	 tokens-test: 621988 	 vocab: 3102
+min-df: 100	 tokens-train: 896087 	 tokens-valid: 11959 	 tokens-test: 621988 	 vocab: 3102
+min-df: 100	 tokens-train: 896087 	 tokens-valid: 11959 	 tokens-test: 621988 	 vocab: 3102
+min-df: 100	 tokens-train: 896087 	 tokens-valid: 11959 	 tokens-test: 621988 	 vocab: 3102

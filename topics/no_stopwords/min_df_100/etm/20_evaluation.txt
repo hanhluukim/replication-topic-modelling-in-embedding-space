@@ -1,0 +1,20 @@
+name 	 epochs	 topic-coherrence 	 topic-diversity 	 quality
+train 	 150 	 0.07432636004817547 	 0.432 	 0.032108987540811804
+name 	 epochs	 topic-coherrence 	 topic-diversity 	 quality
+train 	 150 	 0.07363484987722906 	 0.458 	 0.03372476124377091
+name 	 epochs	 topic-coherrence 	 topic-diversity 	 quality
+train 	 150 	 0.07099517719364642 	 0.442 	 0.03137986831959172
+name 	 epochs	 topic-coherrence 	 topic-diversity 	 quality
+train 	 150 	 0.07223515174759108 	 0.458 	 0.03308369950039672
+name 	 epochs	 topic-coherrence 	 topic-diversity 	 quality
+train 	 150 	 0.08061944433297147 	 0.446 	 0.03595627217250528
+name 	 epochs	 topic-coherrence 	 topic-diversity 	 quality
+train 	 150 	 0.07155871810476715 	 0.452 	 0.03234454058335475
+name 	 epochs	 topic-coherrence 	 topic-diversity 	 quality
+train 	 150 	 0.07647317512305954 	 0.454 	 0.03471882150586903
+name 	 epochs	 topic-coherrence 	 topic-diversity 	 quality
+train 	 150 	 0.06795066769131929 	 0.454 	 0.030849603131858958
+name 	 epochs	 topic-coherrence 	 topic-diversity 	 quality
+train 	 150 	 0.0745864000757003 	 0.464 	 0.03460808963512494
+epochs 	 n-hidden-size 	 activate-func 	 optimizer 	 coherrence 	 diversity 	 quality
+150 	500 	 ReLU 	 adam 	 0.07256118616823937 	 0.472 	 0.03424887987140898
