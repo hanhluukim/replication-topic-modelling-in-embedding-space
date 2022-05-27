@@ -100,6 +100,7 @@ class TrainETM():
           print(f'Checkpoint saved at checkpoints/etm_epoch_{state["epoch"]}.pth.tar')
           
     def visualize_losses(self, 
+                         visualization,
                          train_losses, neg_rec_losses, 
                          neg_kld_losses, kld_losses_for_plot,
                          figures_path):
@@ -113,7 +114,8 @@ class TrainETM():
         plt.title(f'losses for {len(train_losses)} epochs')
         plt.legend()
         plt.savefig(f'{figures_path}/losses_epoch_{len(train_losses)}.png')
-        #plt.show()
+        if visualization:
+            plt.show()
         plt.close()
         #------
         plt.figure()
@@ -121,7 +123,8 @@ class TrainETM():
         plt.title(f'kld-losses for {len(train_losses)} epochs')
         plt.legend()
         plt.savefig(f'{figures_path}/kld_epoch_{len(train_losses)}.png')
-        #plt.show()
+        if visualization:
+            plt.show()
         plt.close()
         #
         plt.figure()
@@ -141,7 +144,8 @@ class TrainETM():
               train_args, optimizer_args, training_set,
               normalize_data = True,
               figures_path = None,
-              num_topics = 10
+              num_topics = 10,
+              visualization = False
               ):
         
         # training setting
@@ -231,7 +235,7 @@ class TrainETM():
                   }
               , path = None)
         # visualize the losses during training
-        self.visualize_losses(epoch_losses, neg_rec_losses, neg_kld_losses, kld_losses_for_plot, figures_path)
+        self.visualize_losses(visualization, epoch_losses, neg_rec_losses, neg_kld_losses, kld_losses_for_plot, figures_path)
       
 
         

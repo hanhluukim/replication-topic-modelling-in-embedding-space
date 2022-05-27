@@ -268,7 +268,8 @@ train_class = TrainETM().train(
     train_args, optimizer_args, train_set,
     normalize_data = True,
     figures_path = figures_path,
-    num_topics = num_topics)
+    num_topics = num_topics,
+    visualization=True)
     
 
 #--------------------------------RUN TIME------------------------------------------------
