@@ -57,9 +57,11 @@ def read_prefitted_embedding(model_name, vocab, save_path):
       else: # model bert
             try:
                   save_path = str(save_path) + "/" + f'{model_name}_vocab_embedding.txt'
+                  print(save_path)
             except:
                   # old save path
                   save_path = str(save_path) + "/vocab_embedding.txt"
+      lines = []
       try:             
             with open(save_path) as f:
                   lines = f.readlines()

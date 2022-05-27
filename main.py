@@ -90,7 +90,7 @@ for min_df in [2, 5, 10, 30, 100]:
       del textsloader 
 """ 
 #------------------------prepare data---------------------------------
-
+print(100*"-")
 textsloader = TextDataLoader(source="20newsgroups", train_size=None, test_size=None)
 print("\n")
 textsloader.load_tokenize_texts("20newsgroups")
@@ -116,8 +116,8 @@ word2id, id2word, train_set, test_set, val_set = textsloader.create_bow_and_save
 print("train-bow-representation for ETM: \n")
 print(f'example ids of dict-id2word for ETM: {list(id2word.keys())[:5]}')
 print(f'example words of dict-id2word for ETM: {list(id2word.values())[:5]}')
-print(100*"=")
 textsloader.write_info_vocab_to_text()
+
 
 #------------------------------short summary information-------------------------------
 print(f'Size of the vocabulary after prprocessing ist: {len(textsloader.vocabulary)}')
@@ -135,17 +135,23 @@ del val_set
 
 docs_tr, docs_t, docs_v = textsloader.get_docs_in_words_for_each_set()
 del textsloader
+print('prepare data finished')
+print(100*"-")
 
 #------------------------paths-------------------------------------------------
-
+print('word-embedding training begin')
 save_path = Path.joinpath(Path.cwd(), f'prepared_data/min_df_{min_df}')
-figures_path = Path.joinpath(Path.cwd(), f'figures/min_df_{min_df}')
+if word2vec_model == "bert":
+  figures_path = Path.joinpath(Path.cwd(), f'figures/bert_min_df_{min_df}')
+else:
+  figures_path = Path.joinpath(Path.cwd(), f'figures/min_df_{min_df}')
+
 Path(save_path).mkdir(parents=True, exist_ok=True)
 Path(figures_path).mkdir(parents=True, exist_ok=True)
 
 vocab = list(word2id.keys())
 #-------------------------embedding training------------------------------------------
-if word2vec_model!="bert":
+if word2vec_model!="bert" and use_bert_embedding == False:
       wb_creator = WordEmbeddingCreator(model_name=word2vec_model, documents = docs_tr, save_path= save_path)
       wb_creator.train(min_count=0, embedding_size= 300)
       wb_creator.create_and_save_vocab_embedding(vocab, save_path)
@@ -160,11 +166,13 @@ if word2vec_model!="bert":
 else:
       #todo run subprocess
       print("using prepared_data/bert_vocab_embedding.txt")
+      print("bert-embeddings were already builded")
       """
       subprocess.run(
             ["python", "bert_main.py"])
       """     
-
+print("word-embedding finised")
+print(100*"-")
 #--------------------------topic embedding training-----------------------------------
 
 #embedding word-vectors visualize
@@ -172,7 +180,7 @@ else:
 #fig_path = Path.joinpath(Path.cwd(), "figures")
 #wb_creator.cluster_words(embedding_path, fig_path, 2)
 
-
+print('training parameter setting...')
 # setting parameters for training ETM
 class TrainArguments:
       def __init__(self, epochs, batch_size, log_interval):
@@ -205,7 +213,12 @@ print(f'length of vector: {torch.norm(tr_set.__getitem__(0)["normalized"])}')
 
 
 #---------------------------reading embedding data from file----------------------------
-embedding_vocab, embedding_data = read_prefitted_embedding(word2vec_model, vocab, save_path)
+print(f'reading {word2vec_model} prefitted-embedding...')
+if word2vec_model == "bert" and use_bert_embedding == True:
+  embedding_vocab, embedding_data = read_prefitted_embedding(word2vec_model, vocab, "prepared_data/")
+else:
+  embedding_vocab, embedding_data = read_prefitted_embedding(word2vec_model, vocab, save_path)
+
 w = vocab[0]
 idx = embedding_vocab.index(w)
 print(f'example 5 element of word-vector: {embedding_data[idx][:5]}')
@@ -219,6 +232,7 @@ emb_size = len(embedding_data[0])
 theta_act = activate_func #args.activate_func #"ReLU"
 
 #--------------------------etm model setting-------------------------------------------
+print("ETM initilize...")
 etm_model = ETM(
   num_topics, vocab_size, t_hidden_size, rho_size, emb_size, theta_act, 
   embedding_data, enc_drop=0.5).to(device)
@@ -252,7 +266,7 @@ train_class = TrainETM().train(
 
 #--------------------------------RUN TIME------------------------------------------------
 f = open('info_run_time/python_train_runtime.txt', 'a')
-f.write(f'min_df: {min_df} \t vocab-size {len(vocab)} \t epochs: {epochs} \t run time: {datetime.now()-start}\n')
+f.write(f'train with prefitted-{word2vec_model} min_df: {min_df} \t vocab-size {len(vocab)} \t epochs: {epochs} \t run time: {datetime.now()-start}\n')
 f.close()
 
 #-----------------------------------show topics---------------------------------
@@ -261,7 +275,11 @@ topics = etm_model.show_topics(id2word, 25)
 topics = [[e[0] for e in tp] for tp in topics] #get only top words
 
 #-------------------------------save topics and evaluation-----------------------
-save_topics_path = f'topics/{topics_under_dir}/min_df_{min_df}/etm'
+if word2vec_model == "bert":
+  save_topics_path = f'topics/{topics_under_dir}/min_df_{min_df}/bert_etm'
+else:
+  save_topics_path = f'topics/{topics_under_dir}/min_df_{min_df}/etm'
+#-------------------------------------------------------------------------------
 Path(save_topics_path).mkdir(parents=True, exist_ok=True)
 topics_f = open(f'{save_topics_path}/{num_topics}_topics.txt', 'w')
 topic_idx = 0
