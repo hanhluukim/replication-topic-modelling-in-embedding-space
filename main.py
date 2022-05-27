@@ -207,6 +207,8 @@ optimizer_args = OptimizerArguments(optimizer_name= optimizer_name,
 
 print(f'using epochs: {train_args.epochs}')
 print(f'using optimizer: {optimizer_args.optimizer}')
+print(f'using learning rate: {optimizer_args.lr}')
+print(f'using wdecay: {optimizer_args.wdecay}')
 
 #--------------------------using Dataset Modul to create DocSet-------------------------
 

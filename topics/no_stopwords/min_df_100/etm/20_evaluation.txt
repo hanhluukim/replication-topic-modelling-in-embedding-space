@@ -36,3 +36,5 @@ epochs 	 n-hidden-size 	 activate-func 	 optimizer 	 coherrence 	 diversity 	 qu
 9 	800 	 ReLU 	 adam 	 0.11258301328293127 	 0.364 	 0.04098021683498698
 epochs 	 n-hidden-size 	 activate-func 	 optimizer 	 coherrence 	 diversity 	 quality
 9 	800 	 ReLU 	 adam 	 0.1472412983459591 	 0.414 	 0.06095789751522706
+epochs 	 n-hidden-size 	 activate-func 	 optimizer 	 coherrence 	 diversity 	 quality
+9 	800 	 ReLU 	 adam 	 0.12203946020083868 	 0.366 	 0.04466644243350695

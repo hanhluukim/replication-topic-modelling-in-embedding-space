@@ -99,7 +99,10 @@ class TrainETM():
           torch.save(state, f'{cp_by_n_topics}/etm_epoch_{state["epoch"]}.pth.tar')
           print(f'Checkpoint saved at checkpoints/etm_epoch_{state["epoch"]}.pth.tar')
           
-    def visualize_losses(self, train_losses, neg_rec_losses, neg_kld_losses, figures_path):
+    def visualize_losses(self, 
+                         train_losses, neg_rec_losses, 
+                         neg_kld_losses, kld_losses_for_plot,
+                         figures_path):
         import matplotlib.pyplot as plt
         #------reconstruction-loss
         plt.figure()
@@ -120,6 +123,15 @@ class TrainETM():
         plt.savefig(f'{figures_path}/kld_epoch_{len(train_losses)}.png')
         #plt.show()
         plt.close()
+        #
+        plt.figure()
+        plt.plot(kld_losses_for_plot, label = 'kld')
+        plt.title(f'neg-kld-losses for {len(train_losses)} epochs')
+        plt.legend()
+        plt.savefig(f'{figures_path}/neg_kld_epoch_{len(train_losses)}.png')
+        #plt.show()
+        plt.close()
+        
         return True
 
     def train(self, 
@@ -159,6 +171,7 @@ class TrainETM():
         epoch_losses = []
         neg_rec_losses = []
         neg_kld_losses = []
+        kld_losses_for_plot = []
         for epoch in range(0, epochs):
             #print('Epoch {}/{}:'.format(epoch, epochs))
             # mode-train
@@ -166,6 +179,7 @@ class TrainETM():
             epoch_loss = 0
             neg_rec = 0
             neg_kld = 0
+            kld_for_plot = 0
             for j, batch_doc_as_bows in enumerate(train_loader, 1):
                 # data already normalized
                 #print(f'batch-shape: {batch_doc_as_bows.shape}')
@@ -173,7 +187,7 @@ class TrainETM():
                 etm_model.zero_grad()
                 
                 # get the output from net
-                pred_bows, kl_theta, kl_theta_plot = etm_model.forward(batch_doc_as_bows['normalized'].to(device))
+                pred_bows, kl_theta, kld_theta_plot = etm_model.forward(batch_doc_as_bows['normalized'].to(device))
                 pred_bows = pred_bows.to(device)
                 # compute the individual losses
                 reconstruction_loss, kld_loss = loss_function(loss_name, pred_bows, batch_doc_as_bows['bow'].to(device), kl_theta)
@@ -186,16 +200,20 @@ class TrainETM():
                 # sum(total_loss_batch)/size(batch)
                 epoch_loss += avg_batch_loss
                 neg_rec += reconstruction_loss
-                neg_kld += kl_theta_plot.mean()
+                neg_kld += kld_loss #kl_theta_plot.mean()
+                kld_for_plot += kld_theta_plot.mean()
 
             epoch_loss = (epoch_loss/len(train_loader)).item()
             neg_rec = (neg_rec/len(train_loader)).item()
             neg_kld = (neg_kld/len(train_loader)).item()
+            kld_for_plot = (kld_for_plot/len(train_loader)).item()
 
             print(f'Epoch: {epoch+1}/{epochs}  -  Loss: {round(epoch_loss,5)} \t Rec: {round(neg_rec,5)} \t KL: {round(neg_kld,5)}')
             epoch_losses.append(epoch_loss)
             neg_rec_losses.append(neg_rec)
             neg_kld_losses.append(neg_kld)
+            kld_losses_for_plot.append(kld_for_plot)
+            
         # save checkpoints
         self.save_checkpoint(
               {
@@ -213,7 +231,7 @@ class TrainETM():
                   }
               , path = None)
         # visualize the losses during training
-        self.visualize_losses(epoch_losses, neg_rec_losses, neg_kld_losses, figures_path)
+        self.visualize_losses(epoch_losses, neg_rec_losses, neg_kld_losses, kld_losses_for_plot, figures_path)
       
 
         
