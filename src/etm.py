@@ -111,7 +111,11 @@ class ETM(nn.Module):
           1 - logsigma_theta.exp()  - mu_theta.pow(2)  + logsigma_theta, 
           dim=-1
           )
-        return mu_theta, logsigma_theta, kl_theta
+        kl_theta_plot = 0.5 * torch.sum(
+          1 - logsigma_theta.exp()  - mu_theta.pow(2)  + logsigma_theta, 
+          dim=-1
+          )
+        return mu_theta, logsigma_theta, kl_theta, kl_theta_plot
     
     def get_theta_document_distribution_over_topics(self, mu_theta, logsigma_theta):
         # get the sampling reprensentation of inputted data from latent space
@@ -137,13 +141,13 @@ class ETM(nn.Module):
     def forward(self,normalized_bows):
         # recieve the input (normalized bows, so that we use softmax at decoder to make sum=1)
         # get sampling for representation (theta)
-        mu_theta, logsigma_theta, kl_theta = self.encode(normalized_bows)
+        mu_theta, logsigma_theta, kl_theta, kl_theta_plot = self.encode(normalized_bows)
         theta = self.get_theta_document_distribution_over_topics(mu_theta, logsigma_theta)
         # get topic-embeddings. they will be used like context-embedding by cbows
         beta = self.get_beta_topic_distribution_over_vocab()
         # make the prediction about the per-document distribuation over words
         preds = self.decode(theta, beta)
-        return preds, kl_theta
+        return preds, kl_theta, kl_theta_plot
 
     def show_topics(self, id2word, num_top_words):
         """

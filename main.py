@@ -46,6 +46,9 @@ parser.add_argument('--filter-stopwords', type=str, default="True", help='filter
 parser.add_argument('--hidden-size', type=int, default=100, help='linear transformation')
 parser.add_argument('--activate-func', type=str, default="tanh", help='tanh oder ReLU activate function')
 parser.add_argument('--optimizer-name', type=str, default="adam", help='adam or sgd')
+parser.add_argument('--lr', type=float, default=0.002, help='learning rate')
+parser.add_argument('--wdecay', type=float, default=0.0000012, help='weights decay')
+
 args = parser.parse_args()
 
 
@@ -63,6 +66,8 @@ num_topics = args.num_topics
 n_hidden_size = args.hidden_size
 activate_func = args.activate_func
 optimizer_name = args.optimizer_name
+learning_rate = args.lr
+wdecay = args.wdecay
 
 filter_stopwords = args.filter_stopwords
 if filter_stopwords == "True":
@@ -197,8 +202,8 @@ train_args = TrainArguments(epochs=epochs,
                             batch_size=1000, 
                             log_interval=None)
 optimizer_args = OptimizerArguments(optimizer_name= optimizer_name, 
-                                    lr=0.002, 
-                                    wdecay=0.0000012)
+                                    lr=learning_rate, 
+                                    wdecay=wdecay)
 
 print(f'using epochs: {train_args.epochs}')
 print(f'using optimizer: {optimizer_args.optimizer}')

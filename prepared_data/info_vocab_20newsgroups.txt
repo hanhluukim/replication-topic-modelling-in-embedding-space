@@ -210,3 +210,8 @@ min-df: 5	 tokens-train: 1362298 	 tokens-valid: 17998 	 tokens-test: 935802 	 v
 min-df: 2	 tokens-train: 2380356 	 tokens-valid: 29343 	 tokens-test: 1636307 	 vocab: 54778
 min-df: 2	 tokens-train: 2380356 	 tokens-valid: 29343 	 tokens-test: 1636307 	 vocab: 54778
 min-df: 100	 tokens-train: 893379 	 tokens-valid: 11910 	 tokens-test: 620207 	 vocab: 3095
+min-df: 100	 tokens-train: 896087 	 tokens-valid: 11959 	 tokens-test: 621988 	 vocab: 3102
+min-df: 100	 tokens-train: 896087 	 tokens-valid: 11959 	 tokens-test: 621988 	 vocab: 3102
+min-df: 100	 tokens-train: 896087 	 tokens-valid: 11959 	 tokens-test: 621988 	 vocab: 3102
+min-df: 100	 tokens-train: 896087 	 tokens-valid: 11959 	 tokens-test: 621988 	 vocab: 3102
+min-df: 100	 tokens-train: 896087 	 tokens-valid: 11959 	 tokens-test: 621988 	 vocab: 3102

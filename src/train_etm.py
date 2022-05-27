@@ -173,7 +173,7 @@ class TrainETM():
                 etm_model.zero_grad()
                 
                 # get the output from net
-                pred_bows, kl_theta = etm_model.forward(batch_doc_as_bows['normalized'].to(device))
+                pred_bows, kl_theta, kl_theta_plot = etm_model.forward(batch_doc_as_bows['normalized'].to(device))
                 pred_bows = pred_bows.to(device)
                 # compute the individual losses
                 reconstruction_loss, kld_loss = loss_function(loss_name, pred_bows, batch_doc_as_bows['bow'].to(device), kl_theta)
@@ -186,7 +186,7 @@ class TrainETM():
                 # sum(total_loss_batch)/size(batch)
                 epoch_loss += avg_batch_loss
                 neg_rec += reconstruction_loss
-                neg_kld += kld_loss
+                neg_kld += kl_theta_plot.mean()
 
             epoch_loss = (epoch_loss/len(train_loader)).item()
             neg_rec = (neg_rec/len(train_loader)).item()
