@@ -157,8 +157,8 @@ class ETM(nn.Module):
           #print("show topics: ")
           #beta: topic-distribution over the vocabulary: beta K*V
           betas = self.get_beta_topic_distribution_over_vocab()
-          print(betas[0])
-          print(torch.sum(betas[0]))
+          #print(betas[0])
+          #print(torch.sum(betas[0]))
           #print(f'shape of beta: {betas.shape}')
           for beta in betas:
             # get the index of words, which idx haven the most probabilities
