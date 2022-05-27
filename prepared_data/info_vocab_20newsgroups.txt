@@ -191,3 +191,5 @@ min-df: 100	 tokens-train: 896087 	 tokens-valid: 11959 	 tokens-test: 621988 	 
 min-df: 100	 tokens-train: 896087 	 tokens-valid: 11959 	 tokens-test: 621988 	 vocab: 3102
 min-df: 100	 tokens-train: 896087 	 tokens-valid: 11959 	 tokens-test: 621988 	 vocab: 3102
 min-df: 100	 tokens-train: 896087 	 tokens-valid: 11959 	 tokens-test: 621988 	 vocab: 3102
+min-df: 100	 tokens-train: 896087 	 tokens-valid: 11959 	 tokens-test: 621988 	 vocab: 3102
+min-df: 100	 tokens-train: 896087 	 tokens-valid: 11959 	 tokens-test: 621988 	 vocab: 3102

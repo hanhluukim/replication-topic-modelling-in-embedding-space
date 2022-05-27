@@ -34,15 +34,19 @@ class DocSet(Dataset):
     def __getitem__(self, idx):
         with torch.no_grad():
             # create saving-place for input-vector
+            doc_input = {}
             item = np.zeros((self.vocab_size))
             for j, word_id in enumerate(self.data['tokens'][idx]):
                 # replace the cell of 0 with the tf-value
                 item[word_id] = self.data['counts'][idx][j]
             if self.normalize_data == True:
-                item = item/sum(item)
+                temp = item
+                temp = temp/sum(temp)
+                doc_input['normalized'] = torch.from_numpy(temp).float()
             item = torch.from_numpy(item).float()
+            doc_input['bow'] = item
             # normalize the item?
-            return item
+            return doc_input
 
 def loss_function(loss_name, pred_bows, normalized_bows, kl_theta):
     # reconstruction-loss between pred-normalized-bows and normalized-bows??
@@ -142,7 +146,7 @@ class TrainETM():
         train_loader = DataLoader(
             DocSet("train_set", vocab_size, training_set, normalize_data), 
             batch_size, 
-            shuffle=True, drop_last = True, 
+            shuffle=True, drop_last = False, 
             num_workers = 0, worker_init_fn = np.random.seed(seed))
         print(f'number of batches: {len(train_loader)}')
         val_loader = DataLoader(
@@ -163,13 +167,16 @@ class TrainETM():
             neg_rec = 0
             neg_kld = 0
             for j, batch_doc_as_bows in enumerate(train_loader, 1):
+                # data already normalized
                 #print(f'batch-shape: {batch_doc_as_bows.shape}')
                 opt.zero_grad()
+                etm_model.zero_grad()
+                
                 # get the output from net
-                pred_bows, kl_theta = etm_model.forward(batch_doc_as_bows.to(device))
+                pred_bows, kl_theta = etm_model.forward(batch_doc_as_bows['normalized'].to(device))
                 pred_bows = pred_bows.to(device)
                 # compute the individual losses
-                reconstruction_loss, kld_loss = loss_function(loss_name, pred_bows, batch_doc_as_bows.to(device), kl_theta)
+                reconstruction_loss, kld_loss = loss_function(loss_name, pred_bows, batch_doc_as_bows['bow'].to(device), kl_theta)
                 #print(f'reconstruction loss: {reconstruction_loss}')
                 #print(f'KL-divergence loss: {kld_loss}')
                 avg_batch_loss = reconstruction_loss + kld_loss

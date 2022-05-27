@@ -39,8 +39,12 @@ ETM:
 
 class ETM(nn.Module):
     def __init__(self, 
-                 num_topics, vocab_size, t_hidden_size, rho_size, emsize, 
-                 theta_act, 
+                 num_topics = 20, 
+                 vocab_size = None, 
+                 t_hidden_size = 800, 
+                 rho_size = 300, 
+                 emsize = 300, 
+                 theta_act = "ReLU", 
                  embeddings=None, 
                  enc_drop=0.5):
         
@@ -53,7 +57,7 @@ class ETM(nn.Module):
         self.rho_size = rho_size
         self.enc_drop = enc_drop
         self.emsize = emsize
-        self.t_drop = nn.Dropout(enc_drop)
+        #self.t_drop = nn.Dropout(enc_drop)
         # define the activation function
         if theta_act == 'tanh':
             self.theta_act = nn.Tanh()
@@ -83,9 +87,12 @@ class ETM(nn.Module):
         # trick to get the sample from Gaussian-Distribuation for update gradient-updating
         # using log-var-trik to allowed positive and negative values
         # see the tutorial: https://www.youtube.com/watch?v=pmvo0S3-G-I
-        std = torch.exp(0.5 * logvar) 
-        eps = torch.randn_like(std)
-        return eps.mul_(std).add_(mu) # e*stad + \mu
+        if self.training:
+            std = torch.exp(0.5 * logvar) 
+            eps = torch.randn_like(std)
+            return eps.mul_(std).add_(mu) # e*stad + \mu
+        else:
+            return mu
     
     def encode(self, normalized_bows):
         # return latent variables

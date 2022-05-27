@@ -154,6 +154,8 @@ if word2vec_model!="bert":
       print("neighbor words of some sample selected words")
       print(f'word: {vocab[0]}')
       print(f'vector: {list(wb_creator.model.wv.__getitem__(vocab[0]))[:5]} ')
+      print(wb_creator.find_most_similar_words(n_neighbor=5, 
+                                               word=vocab[0]))
 
 else:
       #todo run subprocess
@@ -197,9 +199,9 @@ print(f'using optimizer: {optimizer_args.optimizer}')
 
 vocab_size = len(list(word2id.keys()))
 tr_set = DocSet("train", vocab_size, train_set, normalize_data=True)
-print(len(tr_set))
-print(f'sum of vector: {sum(tr_set.__getitem__(0))}')
-print(f'length of vector: {torch.norm(tr_set.__getitem__(0))}')
+print(f'total train docs: {len(tr_set)}')
+print(f'sum of vector: {sum(tr_set.__getitem__(0)["normalized"])}')
+print(f'length of vector: {torch.norm(tr_set.__getitem__(0)["normalized"])}')
 
 
 #---------------------------reading embedding data from file----------------------------

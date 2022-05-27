@@ -25,3 +25,4 @@ min_df: 100 	 vocab-size 3102 	 epochs: 150 	 run time: 0:08:04.101547
 min_df: 100 	 vocab-size 3102 	 epochs: 150 	 run time: 0:08:03.760683
 min_df: 100 	 vocab-size 3102 	 epochs: 150 	 run time: 0:08:03.293109
 min_df: 100 	 vocab-size 3102 	 epochs: 150 	 run time: 0:08:04.592220
+min_df: 100 	 vocab-size 3102 	 epochs: 10 	 run time: 0:02:55.671807
