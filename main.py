@@ -14,6 +14,8 @@ import numpy as np
 import random
 from src.evaluierung import topicCoherence2, topicDiversity
 from tqdm import tqdm
+import math
+from torch.utils.data import DataLoader
 
 
 #--------------------deterministic------------------------------------
@@ -130,7 +132,7 @@ print(f'Size of train set: {len(train_set["tokens"])}')
 print(f'Size of val set: {len(val_set["tokens"])}')
 print(f'Size of test set: {len(test_set["test"]["tokens"])}')
 
-del test_set
+#del test_set
 del val_set
 
 #------------------------get docs in words to use for training embedding---------------
@@ -318,9 +320,66 @@ for name, bow_documents in dataset.items():
     eval_f.write(f'{epochs} \t{t_hidden_size} \t {activate_func} \t {optimizer_name} \t {tc} \t {td} \t {tc*td}\n')
     eval_f.close()
 del dataset
+#-----------------------------PERPLEXITY------------------------------------
+def get_test_for_completion_task(test_set, 
+                                 train_vocab_size,
+                                 batch_size=1000, 
+                                 normalize_data=True):
+    test_loader = DataLoader(
+        DocSet("test_set", train_vocab_size, test_set, normalize_data), 
+        batch_size, 
+        shuffle=True, drop_last = True, 
+        num_workers = 0, worker_init_fn = np.random.seed(seed))
+    return test_loader
 
+def get_perplexity(etm_model, test_set, vocab_size):
+    test_set_1 = test_set['test1']
+    test_set_2 = test_set['test2']
+    test_loader_1 = get_test_for_completion_task(test_set_1, 
+                                                 vocab_size,
+                                                 batch_size=100, 
+                                                 normalize_data=True)
+    test_loader_2 = get_test_for_completion_task(test_set_2, 
+                                                vocab_size,
+                                                batch_size=100, 
+                                                normalize_data=True)
+    test_ppl = 0
+    print(f'test-1-loader: {len(test_loader_1)}')
+    print(f'test-1-loader: {len(test_loader_2)}')
+    
+    if len(test_loader_1)==len(test_loader_2):
+        etm_model.eval()
+        total_perplexity = 0
+        with torch.no_grad():
+            beta = etm_model.get_beta_topic_distribution_over_vocab()
+            #for j, batch_doc_as_bows in enumerate(test_loader, 1):
+            for i in range(1, len(test_loader_1)+1):
+                batch_test_1 = test_loader_1[i]
+                batch_test_2 = test_loader_2[i]
+                # get theta from the first batch_test_1
+                mu_theta, logsigma_theta, kl_theta, _ = etm_model.encode(batch_test_1['normalized'])
+                theta_1 = etm_model.get_theta_document_distribution_over_topics(mu_theta, logsigma_theta)
+                # using theta of 1 and beta to make prediction for batch_test_2
+                pred = etm_model.decode(theta_1, beta)
+                log_pred = torch.log(pred)
+                recon_loss_batch_test_2 = -(log_pred * batch_test_2['bow']).sum(1) #for each document in batch
+                print(f'loss-batch-shape: {recon_loss_batch_test_2.shape}')
+                sum_batch_2 = batch_test_2['bow'].sum(1).unsqueeze(1)
+                print(sum_batch_2.shape)
+                print(sum_batch_2.squeeze().shape)
+                loss_new = recon_loss_batch_test_2/sum_batch_2.squeeze()
+                
+                total_perplexity += loss_new
+                
+        avg_loss = total_perplexity/len(test_loader_1)
+        test_ppl = round(math.exp(avg_loss),1)
+    else:
+        print("ERROR: loader works incorrectly")
+        
+    return test_ppl
 
-#get_topic_coherence(list(train_set['tokens']), topics, word2id)
+print(f'calculate perplexitiy: ...')  
+print(get_perplexity(etm_model, test_set, vocab_size))
 
 del etm_model
 del train_class 

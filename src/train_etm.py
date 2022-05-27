@@ -10,6 +10,8 @@ from torch import nn
 import os
 import numpy as np
 import random
+import math
+
 seed = 42
 os.environ['PYTHONHASHSEED'] = str(seed)
 torch.manual_seed(seed)
@@ -86,35 +88,7 @@ def get_optimizer(model, opt_args):
     else:
         optimizer = optim.SGD(model.parameters(), lr=opt_args.lr)
     return optimizer
-"""
-def get_test_for_completion_task(test_set, 
-                                 train_vocab_size,
-                                 batch_size=1000, 
-                                 normalize_data=True):
-    test_loader = DataLoader(
-        DocSet("test_set", train_vocab_size, test_set, normalize_data), 
-        batch_size, 
-        shuffle=True, drop_last = True, 
-        num_workers = 0, worker_init_fn = np.random.seed(seed))
-    return test_loader
-    
-def get_perplexity(etm_model, test_set, vocab_size):
-    test_set_1 = 1
-    test_set_2
-    test_loader_1 = get_test_for_completion_task(test_set, 
-                                                 vocab_size,
-                                                 batch_size=1000, 
-                                                 normalize_data=True)
-    etm_model.eval()
-    perplexity = 0
-    with torch.no_grad():
-        beta = etm_model.get_beta_topic_distribution_over_vocab()
-        for j, batch_doc_as_bows in enumerate(test_loader, 1):
-            
-            
-        
-    return perplexity
-"""
+
 class TrainETM():
     def save_checkpoint(self, state, path=None):
         if path==None:
@@ -186,19 +160,18 @@ class TrainETM():
         opt = get_optimizer(etm_model, optimizer_args)
         
         #data loading with DataLoader, data must be transform to Dataset Object
-        train_loader = DataLoader(
-            DocSet("train_set", vocab_size, training_set, normalize_data), 
-            batch_size, 
-            shuffle=True, drop_last = False, 
-            num_workers = 0, worker_init_fn = np.random.seed(seed))
+        train_loader = DataLoader(DocSet("train_set", vocab_size, training_set, normalize_data), 
+                                  batch_size, shuffle=True, drop_last = False, 
+                                  num_workers = 0, worker_init_fn = np.random.seed(seed))
+        
         print(f'number of batches: {len(train_loader)}')
-        """
-        val_loader = DataLoader(
-            DocSet("train_set", vocab_size, training_set), 
-            batch_size, 
-            shuffle=True, drop_last = True, 
-            num_workers = 0, worker_init_fn = np.random.seed(seed))
-        """
+        
+        #val_loader = DataLoader(
+        #    DocSet("train_set", vocab_size, training_set), 
+        #    batch_size, 
+        #    shuffle=True, drop_last = True, 
+        #    num_workers = 0, worker_init_fn = np.random.seed(seed))
+        
         
         # starting training
         epoch_losses = []

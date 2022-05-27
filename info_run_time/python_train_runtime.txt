@@ -35,3 +35,4 @@ min_df: 100 	 vocab-size 3095 	 epochs: 2 	 run time: 0:00:19.387932
 train with prefitted-skipgram min_df: 100 	 vocab-size 3102 	 epochs: 9 	 run time: 0:02:35.396326
 train with prefitted-skipgram min_df: 100 	 vocab-size 3102 	 epochs: 9 	 run time: 0:02:14.221195
 train with prefitted-skipgram min_df: 100 	 vocab-size 3102 	 epochs: 9 	 run time: 0:02:15.701419
+train with prefitted-skipgram min_df: 100 	 vocab-size 3102 	 epochs: 2 	 run time: 0:00:35.281585
