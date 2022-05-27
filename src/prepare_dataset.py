@@ -360,7 +360,10 @@ class TextDataLoader:
         print(f'test-indices-length: {len(self.test_indices)}')
         
         # creating the two set of test set
-        docs_ts_h1, docs_ts_h2,_,_ = train_test_split(docs_ts, self.test_indices, test_size=0.5, random_state=42)
+        # TODO
+        #docs_ts_h1, docs_ts_h2,_,_ = train_test_split(docs_ts, self.test_indices, test_size=0.5, random_state=42)
+        docs_ts_h1 = [[w for i, w in enumerate(doc) if i <= len(doc) / 2.0 - 1] for doc in docs_ts]
+        docs_ts_h2 = [[w for i, w in enumerate(doc) if i > len(doc) / 2.0 - 1] for doc in docs_ts]
 
         def create_list_words(in_docs):
             # just saving all word-ids in a one list
