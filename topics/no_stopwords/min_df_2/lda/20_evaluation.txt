@@ -1,2 +1,2 @@
 name 	 topic-coherrence 	 topic-diversity 	 quality
-train 	 0.20882104354612785 	 0.722 	 0.1507687934403043
+train 	 0.231517014852852 	 0.742 	 0.17178562502081618
