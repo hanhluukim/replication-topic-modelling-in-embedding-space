@@ -87,7 +87,7 @@ class ETM(nn.Module):
         # trick to get the sample from Gaussian-Distribuation for update gradient-updating
         # using log-var-trik to allowed positive and negative values
         # see the tutorial: https://www.youtube.com/watch?v=pmvo0S3-G-I
-        if self.training:
+        if self.train():
             std = torch.exp(0.5 * logvar) 
             eps = torch.randn_like(std)
             return eps.mul_(std).add_(mu) # e*stad + \mu
@@ -149,6 +149,9 @@ class ETM(nn.Module):
         preds = self.decode(theta, beta)
         return preds, kl_theta, kl_theta_plot
 
+    def get_all_topics_embeddings(self):
+        return self.topic_embeddings_alphas.weights
+    
     def show_topics(self, id2word, num_top_words):
         """
         beta is topic-distribution over the vocabulary
