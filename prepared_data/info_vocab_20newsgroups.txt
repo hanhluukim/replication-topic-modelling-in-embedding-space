@@ -260,3 +260,5 @@ min-df: 30	 tokens-train: 1150368 	 tokens-valid: 15179 	 tokens-test: 794105 	 
 ----------------------------------------------------------------------------------------------------
 min-df: 10	 tokens-train: 1295140 	 tokens-valid: 17023 	 tokens-test: 891784 	 vocab: 18637
 min-df: 100	 tokens-train: 896087 	 tokens-valid: 11959 	 tokens-test: 621988 	 vocab: 3102
+----------------------------------------------------------------------------------------------------
+min-df: 2	 tokens-train: 1420825 	 tokens-valid: 18928 	 tokens-test: 967193 	 vocab: 54318
