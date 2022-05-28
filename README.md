@@ -9,7 +9,7 @@
 1. List aller verwendeten Paketten ist in der Datei: requirements.txt
 2. Installieren durch: `pip install -r requirements.txt`
 
-** Durchführung von Experimenten **
+**Durchführung von Experimenten**
 1. LDA-Modelle: `python main_lda.py --filter-stopwords True` 
 2. ETM-Modelle: `python main.py --model "ETM" --epochs 160 --wordvec-model "bert" --loss-name "cross-entropy" --min-df 2 --num-topics 20 --filter-stopwords "True" --hidden-size 800 --activate-func "ReLU" --optimizer-name "adam" --lr 0.003 --wdecay 0.0000012`
 3. `--wordvec-model` kann folgende Werten haben: "cbow", "skipgram", "bert", `--optimizer-name` hat folgende Optionen "adam" und "sgd"
