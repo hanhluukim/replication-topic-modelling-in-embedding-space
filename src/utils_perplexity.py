@@ -72,6 +72,7 @@ def get_perplexity(etm_model, test_set, vocab_size, test_batch_size):
                 total_perplexity += loss_new
                 
                 # use other perplexity
+                """
                 theta_test_1_DxK, beta_KxV, count_of_each_word_in_doc_list_test_2 = covert_to_list(theta_1,
                                                                                                    beta, 
                                                                                                    batch_test_2)
@@ -80,18 +81,18 @@ def get_perplexity(etm_model, test_set, vocab_size, test_batch_size):
                                                            vocab_size,
                                                            beta_KxV)                   
                 total_perplexity_2 += mean_over_batch_ppl
-                
+                """
                 print(f'batch {i} finished')
                 
         avg_loss = total_perplexity/len(test_loader_1)
-        other_ppl = total_perplexity_2/len(test_loader_1)
+        #other_ppl = total_perplexity_2/len(test_loader_1)
         test_ppl = round(math.exp(avg_loss),1)
         #print(f'own-ppl: {test_ppl}')
         #print(f'elisabeth-perplexitiy: {avg_loss_2}')
     else:
         print("ERROR: loader works incorrectly")
         
-    return test_ppl/vocab_size, other_ppl/vocab_size
+    return test_ppl/vocab_size, test_ppl/vocab_size
 
 #---------------------FOR LDA---------------------------------
 
