@@ -16,6 +16,7 @@ from src.evaluierung import topicCoherence2, topicDiversity
 from tqdm import tqdm
 import math
 from torch.utils.data import DataLoader
+from src.utils_perplexity import get_perplexity
 
 
 #--------------------deterministic------------------------------------
@@ -300,27 +301,19 @@ for tp in tqdm(topics):
 topics_f.close()
 
 # topic coherence and topic diversity and quality
-dataset = {'train': None}
-for name, bow_documents in dataset.items():
-    tc = 0
-    td = 0
-    if name == 'train':
-        tc = topicCoherence2(topics,len(topics),docs_tr,len(docs_tr))
-        td = topicDiversity(topics)
-        print(f'topic-coherrence: {tc}')
-        print(f'topic-diversity: {td}')
+tc = topicCoherence2(topics,len(topics),docs_tr,len(docs_tr))
+td = topicDiversity(topics)
+print(f'topic-coherrence: {tc}')
+print(f'topic-diversity: {td}')
 
-    else:
-        # test dataset - test_topics
-        # continue
-        print("no coherrence")
-    
-    eval_f = open(f'{save_topics_path}/{num_topics}_evaluation.txt', 'a')
-    eval_f.write(f'epochs \t n-hidden-size \t activate-func \t optimizer \t coherrence \t diversity \t quality\n')
-    eval_f.write(f'{epochs} \t{t_hidden_size} \t {activate_func} \t {optimizer_name} \t {tc} \t {td} \t {tc*td}\n')
-    eval_f.close()
-del dataset
-#-----------------------------PERPLEXITY------------------------------------
+
+_, e_ppl = get_perplexity(etm_model, test_set, vocab_size, 1000)
+print(f'e-perplexity: {e_ppl}')
+
+eval_f = open(f'{save_topics_path}/{num_topics}_evaluation.txt', 'a')
+eval_f.write(f'epochs \t n-hidden-size \t activate-func \t optimizer \t coherrence \t diversity \t quality \t perplexity\n')
+eval_f.write(f'{epochs} \t{t_hidden_size} \t {activate_func} \t {optimizer_name} \t {tc} \t {td} \t {tc*td} \t {e_ppl}\n')
+eval_f.close()
 
 del etm_model
 del train_class 

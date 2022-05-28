@@ -1,8 +1,10 @@
 from src.train_etm import DocSet
 from torch.utils.data import Dataset, DataLoader
 import numpy as np
+import math
 seed=42
 import torch
+
 from src.evaluierung import topicPerplexityTeil1
 from src.utils_covert_batch_list import covert_to_list
 
@@ -18,7 +20,7 @@ def get_test_for_completion_task(test_set,
     return test_loader
 
 def get_perplexity(etm_model, test_set, vocab_size, test_batch_size):
-    print(f'calculate perplexitiy: ...')  
+    print(f'calculate perplexitiy of test dataset: ...')  
     test_set_1 = test_set['test1']
     test_set_2 = test_set['test2']
     test_loader_1 = get_test_for_completion_task(test_set_1, 
@@ -91,10 +93,7 @@ def get_perplexity(etm_model, test_set, vocab_size, test_batch_size):
         
     return test_ppl, other_ppl
 
-
-#from src.evaluierung import topicPerplexityteil2, topicPerplexityteil1
-#from src.utils_covert_batch_list import covert_to_list
-
+#---------------------FOR LDA---------------------------------
 def get_theta_beta_from_lda(ldamodel, batch_test_1, vocab_size):
     theta_batch = []
     for doc in batch_test_1['bow']:

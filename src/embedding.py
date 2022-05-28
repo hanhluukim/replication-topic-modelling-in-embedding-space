@@ -19,6 +19,8 @@ import os
 import numpy as np
 import random
 import torch
+import re
+
 seed = 42
 os.environ['PYTHONHASHSEED'] = str(seed)
 torch.manual_seed(seed)
@@ -61,32 +63,58 @@ def read_prefitted_embedding(model_name, vocab, save_path):
             except:
                   # old save path
                   save_path = str(save_path) + "/vocab_embedding.txt"
-      lines = []
-      try:             
-            with open(save_path) as f:
-                  lines = f.readlines()
-      except:
-            print("falls das Modell Bert benutzt wird: ")
-            print("musst bert_main.py lokal durchgeführt werden, um die Bert-Embedding für Vocabular zu erstellen. \n")
-            print("die Embedding wird erst danach durch bert_main.py in dem Ordner prepared_data\bert_vocab_embedding.txt' gespeichert")
-      
-      embedding_data = {}
-      for t in lines:
-            row = t.split("\t")
-            w = row[0]
-            if w in vocab:
-                if model_name == "bert":
-                    v = [float(e) for e in row[1].split(" ")[:-1]] #remove \n
-                else:
-                    v = [float(e) for e in row[1].split(" ")] #remove \n
-                # check again only word in the vocabulary, which was created at bow-creating
-                embedding_data[w] = v
                   
+      embedding_data = {}
       words_embeddings = []
       words = []
-      for k, v in embedding_data.items():
-            words.append(k)
-            words_embeddings.append(v)
+      
+      if model_name == "bert":
+            print('loading bert from npy and pkl')
+            npy_embedding_file = "prepared_data/bert_embeddings.npy"
+            pkl_vocab_file = "prepared_data/bert_vocab.pkl"
+           
+            bert_embeddings = np.load(npy_embedding_file)
+            bert_vocab = None
+            with open(pkl_vocab_file, 'rb') as f:
+                  bert_vocab = pickle.load(f)
+            print('bert-reading finished')
+            print('update bert by given vocab')
+            for w, eb in tqdm(zip(bert_vocab, bert_embeddings), total = len(bert_vocab), desc="iter over bert-vocab"):
+                 if w in vocab:
+                       words.append(w)
+                       words_embeddings.append(eb)
+            del bert_embeddings
+            del bert_vocab
+                  
+      else:
+            lines = []
+            try:             
+                  with open(save_path) as f:
+                        lines = f.readlines()
+            except:
+                  print("falls das Modell Bert benutzt wird: ")
+                  print("musst bert_main.py lokal durchgeführt werden, um die Bert-Embedding für Vocabular zu erstellen. \n")
+                  print("die Embedding wird erst danach durch bert_main.py in dem Ordner prepared_data\bert_vocab_embedding.txt' gespeichert")
+            
+            print('start reading lines embeddings file:...')
+            for t in tqdm(lines, desc="reading word-embedding..."):
+                  row = t.split("\t")
+                  w = row[0]
+                  if w in vocab:
+                        """
+                        if model_name == "bert":
+                              v = [round(float(e),9) for e in row[1].split(" ")[:-1]] #remove \n
+                        
+                        else:
+                        """
+                        v = [float(e) for e in row[1].split(" ")]
+                        # check again only word in the vocabulary, which was created at bow-creating
+                        embedding_data[w] = v
+            print('end reading lines embeddings file!')
+                        
+            for k, v in embedding_data.items():
+                  words.append(k)
+                  words_embeddings.append(v)
             
       # sort embedding_data again by the ordner of the vocabulary from bow creating
       if len(words) == len(vocab):
@@ -261,13 +289,17 @@ class BertEmbedding:
           self.file_path = saved_embeddings_text_file
           self.bert_vocab = None
           self.bert_embeddings = None
-          self.bert_norms = None
+          #self.bert_norms = None
     def get_bert_embeddings(self, etm_vocab):
-          # filtering words by etm_vocab
+          # filtering words by etm_vocabwith open(model_vocab_path, 'rb') as f:
           print('read word-embeddings with bert from file...')
-          words_in_vocab, vocab_embeddings = read_prefitted_embedding("bert", etm_vocab, self.file_path)
-          self.bert_embeddings = np.array(vocab_embeddings)
-          self.bert_vocab = words_in_vocab
+          #words_in_vocab, vocab_embeddings = read_prefitted_embedding("bert", etm_vocab, self.file_path)
+          self.bert_vocab, self.bert_embeddings = read_prefitted_embedding("bert", etm_vocab, self.file_path)
+          print('covert to np.array')
+          self.bert_embeddings = np.array(self.bert_embeddings)
+          #self.bert_vocab = words_in_vocab
+          #del words_in_vocab
+          #del vocab_embeddings
           print("bert-embedding ready!")
           
     def find_similar_words(self, word, top_neighbors, train_vocab):
@@ -281,6 +313,7 @@ class BertEmbedding:
           return top_words
 
 #-----old-functions--------------------------------------------------------------------------
+"""
 def normalize(v):
       norm=np.linalg.norm(v)
       if norm==0:
@@ -334,4 +367,4 @@ def read_prefitted_embedding_from_npy_pkl(model_name, etm_vocab, save_path):
       else:
             print("something wrong with reading files")
             return words_in_vocab, embeddings
-
+"""

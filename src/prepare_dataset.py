@@ -34,7 +34,8 @@ with open('src/stops.txt', 'r') as f:
 
 with open('src/not_in_bert_vocab.txt', 'r') as f:
     # list stopwords from the original paper
-    not_in_bert = f.read().split('\n')
+    not_in_bert = list(set(f.read().split('\n')))
+    not_in_bert = [e for e in not_in_bert if e!=""]
     
 class TextDataLoader:
     def __init__(self, source="20newsgroups", train_size=None, test_size=None):
@@ -476,6 +477,9 @@ class TextDataLoader:
             train_dataset = gensim.matutils.Sparse2Corpus(bow_tr,documents_columns=False) #create_lda_corpus(bow_tr)
             test_dataset = gensim.matutils.Sparse2Corpus(bow_ts, documents_columns=False) #create_lda_corpus(bow_ts)
             val_dataset = gensim.matutils.Sparse2Corpus(bow_va, documents_columns=False) #create_lda_corpus(bow_va)
+            test_h1_dataset = gensim.matutils.Sparse2Corpus(bow_ts_h1, documents_columns=False)
+            test_h2_dataset = gensim.matutils.Sparse2Corpus(bow_ts_h2, documents_columns=False)
+            return self.word2id, self.id2word, train_dataset, test_dataset, val_dataset, test_h1_dataset, test_h2_dataset
     
         else: #other models 
             bow_train_tokens, bow_train_counts = split_bow(bow_tr, n_docs_tr)
@@ -534,7 +538,7 @@ class TextDataLoader:
             del bow_test_h2_tokens
             del bow_test_h2_counts
         
-        return self.word2id, self.id2word, train_dataset, test_dataset, val_dataset
+            return self.word2id, self.id2word, train_dataset, test_dataset, val_dataset
 
     def create_train_test_val_data_for_topic_model(self,
                                     for_lda_model = True,  
