@@ -1,11 +1,13 @@
 from src.prepare_dataset import TextDataLoader
 from src.lda import lda
-from src.evaluierung import topicCoherence2, topicDiversity
+from src.evaluierung import topicCoherence2, topicDiversity, topicPerplexityTeil1
+from src.utils_perplexity import get_beta_from_lda, get_theta_from_lda
 
 from gensim.parsing.preprocessing import preprocess_string, strip_punctuation, strip_numeric
 from pathlib import Path
 from tqdm import tqdm
 from gensim.models import LdaModel
+import gensim
 
 import argparse
 parser = argparse.ArgumentParser(description='main.py')
@@ -28,6 +30,8 @@ else:
   under_dir = "with_stopwords"
 
 f = open(f'prepared_data/info_vocab_20newsgroups.txt', "a")
+#---------------------------------------------------------------------------------
+
 for min_df in [2, 5, 10, 30, 100]:
     # data 
     textsloader = None
@@ -84,7 +88,50 @@ for min_df in [2, 5, 10, 30, 100]:
             topics_f.write(row)
             i += 1
         topics_f.close()
+        # topic perplexity
+        print('calculate perplexity:....')
+        vocab_size =  len(list(id2word.values()))
+        beta_KV = get_beta_from_lda(ldamodel, num_topics, list(id2word.values()),vocab_size)
+        theta_test_1_DK = get_theta_from_lda(ldamodel, num_topics, test_h1_set)
         
+        n_test_docs = len(test_h2_set)
+        test_set_h2_in_bow_sparse_matrix = gensim.matutils.corpus2csc(test_h2_set).transpose()
+        
+        ppl_over_batches = []
+        batch_test_size = 100
+        
+        print(f'end perplexity')
+        del test_h2_set
+        del test_h1_set
+        ldamodel.clear()
+
+        i = 0
+        while i <= n_test_docs:
+            if (i+batch_test_size) <= n_test_docs:
+                print(f'test-docs: from {i} to {i+batch_test_size}')
+                theta_test_1_batch = theta_test_1_DK[i:i+batch_test_size]
+                bows_test_2_batch = test_set_h2_in_bow_sparse_matrix[i:i+batch_test_size].toarray().tolist()
+            else:
+                print(f'test-docs: from {i} to { len(test_set_h2_in_bow)}')
+                theta_test_1_batch = theta_test_1_DK[i:]
+                bows_test_2_batch = test_set_h2_in_bow_sparse_matrix[i:].toarray().tolist()
+              
+            avg_ppl = topicPerplexityTeil1(theta_test_1_batch, 
+                                          bows_test_2_batch, 
+                                          vocab_size, 
+                                          beta_KV) 
+            print(f'ppl of batch {i+1}: {avg_ppl}')
+            ppl_over_batches.append(avg_ppl)
+            i = i + batch_test_size
+        normalized_ppl = (sum(ppl_over_batches)/len(ppl_over_batches))/vocab_size
+        del ppl_over_batches
+        del test_set_h2_in_bow_sparse_matrix
+        del theta_test_1_DK
+        del beta_KV
+        del ppl_over_batches
+        
+        print(f'e-normalized-perplexity-lda: {normalized_ppl}')
+
         # topic coherence and topic diversity and quality
         dataset = {'train': None}
         for name, bow_documents in dataset.items():
@@ -97,8 +144,8 @@ for min_df in [2, 5, 10, 30, 100]:
                 print("no coherrence, using perplexity for test")
             
             eval_f = open(f'{save_topics_path}/{num_topics}_evaluation.txt', 'w')
-            eval_f.write(f'name \t topic-coherrence \t topic-diversity \t quality\n')
-            eval_f.write(f'{name} \t {tc} \t {td} \t {tc*td}\n')
+            eval_f.write(f'name \t topic-coherrence \t topic-diversity \t quality \t perplexity\n')
+            eval_f.write(f'{name} \t {tc} \t {td} \t {tc*td} \t {normalized_ppl}\n')
             eval_f.close()
         del dataset
         del ldamodel

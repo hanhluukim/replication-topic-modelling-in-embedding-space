@@ -94,6 +94,37 @@ def get_perplexity(etm_model, test_set, vocab_size, test_batch_size):
     return test_ppl/vocab_size, other_ppl/vocab_size
 
 #---------------------FOR LDA---------------------------------
+
+def get_beta_from_lda(ldamodel, num_topics, vocab, vocab_size):
+    beta = ldamodel.show_topics(num_topics= num_topics, 
+                                num_words= vocab_size, 
+                                log=False, formatted=False)
+    beta_KV = []
+    for tp in beta:
+        #tp_id = tp[0]
+        tp_per_words = dict((word, proba) for word, proba in tp[1])
+        proba_over_vocab = [tp_per_words[w] for w in vocab]
+        beta_KV.append(proba_over_vocab)
+    del vocab
+    del vocab_size
+    del beta
+    return beta_KV
+def get_theta_from_lda(ldamodel, num_topics, test_set_h1):
+    thetas = []
+    for doc in test_set_h1:
+        theta_doc = ldamodel.get_document_topics(doc, 
+                                                 minimum_probability=0, 
+                                                 minimum_phi_value=0, 
+                                                 per_word_topics=False)
+        theta_doc = dict((topic_id, topic_prob) for topic_id, topic_prob in theta_doc)
+        updated_theta_doc = []
+        for i in range(0,num_topics):
+            updated_theta_doc.append(theta_doc[i])
+        thetas.append(updated_theta_doc)
+    return thetas
+
+#---------------------------------------------------------------
+"""
 def get_theta_beta_from_lda(ldamodel, batch_test_1, vocab_size):
     theta_batch = []
     for doc in batch_test_1['bow']:
@@ -134,3 +165,4 @@ def get_perplexity_lda(ldamodel, test_set, vocab_size, test_batch_size = 1000):
     total_ppl = total_ppl/len(test_loader_1)
     print(f'normalized-ppl: {total_ppl/vocab_size}')
     return total_ppl/vocab_size
+"""

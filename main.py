@@ -308,7 +308,7 @@ print(f'topic-diversity: {td}')
 
 
 _, e_ppl = get_perplexity(etm_model, test_set, vocab_size, 1000)
-print(f'e-perplexity: {e_ppl}')
+print(f'topic-normalized-perplexity: {e_ppl}')
 
 eval_f = open(f'{save_topics_path}/{num_topics}_evaluation.txt', 'a')
 eval_f.write(f'epochs \t n-hidden-size \t activate-func \t optimizer \t coherrence \t diversity \t quality \t perplexity\n')
