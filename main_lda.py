@@ -144,7 +144,7 @@ for min_df in min_dfs:
                     theta_test_1_batch = torch.tensor(theta_test_1_DK[i:])
                     bows_test_2_batch = torch.from_numpy(test_set_h2_in_bow_sparse_matrix[i:].toarray())#.tolist()
                     
-            if using_tensor == False: 
+            if using_tensor == False:
                 avg_ppl = topicPerplexityTeil1(theta_test_1_batch, 
                                               bows_test_2_batch, 
                                               vocab_size, 
@@ -152,6 +152,9 @@ for min_df in min_dfs:
             else:
                 # covert to tensors
                 # perplexity
+                print(f'shape of theta-batch: {theta_test_1_batch.shape}')
+                print(f'shape of beta-KV-batch: {beta_KV.shape}')
+                print(f'shape of bows-test-2-batch: {bows_test_2_batch.shape}') 
                 avg_ppl = topicPerplexityNew(theta_test_1_batch, bows_test_2_batch, vocab_size, beta_KV)
 
             
