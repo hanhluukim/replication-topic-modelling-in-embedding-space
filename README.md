@@ -7,7 +7,7 @@
 **Verwandte Pakette**
 1. List aller verwendeten Paketten ist in der Datei: requirements.txt
 2. Installieren durch: `pip install -r requirements.txt`
-3. Wichtig sind: gensim für LDA, torch für variationale Inference, sklearn für Datensatz
+3. Wichtig sind: [gensim](https://radimrehurek.com/gensim/) für LDA, [torch](https://pytorch.org/docs/stable/torch.html) für variationale Inference, [sklearn](https://scikit-learn.org/stable/) für Datensatz
 
 **Notwendige Dateien für BERT-prefitted-ETM**
 1. Herunterladen die Bert-Embeddings from [Google-Drive-Link](https://drive.google.com/file/d/1aLLQCDFncdaedOS4pnB0-T6y0T7dHIck/view?usp=sharing): 
