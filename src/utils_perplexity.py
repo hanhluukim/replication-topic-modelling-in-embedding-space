@@ -91,7 +91,7 @@ def get_perplexity(etm_model, test_set, vocab_size, test_batch_size):
     else:
         print("ERROR: loader works incorrectly")
         
-    return test_ppl, other_ppl
+    return test_ppl/vocab_size, other_ppl/vocab_size
 
 #---------------------FOR LDA---------------------------------
 def get_theta_beta_from_lda(ldamodel, batch_test_1, vocab_size):
@@ -131,4 +131,6 @@ def get_perplexity_lda(ldamodel, test_set, vocab_size, test_batch_size = 1000):
                                     vocab_size, beta_KxV)     
         total_ppl += avg_ppl
     print(f'average perplexity over batches: {total_ppl/len(test_loader_1)}')
-    return total_ppl/len(test_loader_1)
+    total_ppl = total_ppl/len(test_loader_1)
+    print(f'normalized-ppl: {total_ppl/vocab_size}')
+    return total_ppl/vocab_size

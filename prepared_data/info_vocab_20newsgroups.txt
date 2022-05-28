@@ -228,3 +228,4 @@ min-df: 100	 tokens-train: 893379 	 tokens-valid: 11910 	 tokens-test: 620207 	 
 min-df: 100	 tokens-train: 1854705 	 tokens-valid: 22369 	 tokens-test: 1290394 	 vocab: 3517
 min-df: 10	 tokens-train: 1295140 	 tokens-valid: 17023 	 tokens-test: 891784 	 vocab: 18637
 min-df: 10	 tokens-train: 2257559 	 tokens-valid: 27485 	 tokens-test: 1562726 	 vocab: 19107
+min-df: 10	 tokens-train: 2257559 	 tokens-valid: 27485 	 tokens-test: 1562726 	 vocab: 19107

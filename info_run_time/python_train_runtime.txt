@@ -42,3 +42,4 @@ train with prefitted-skipgram min_df: 100 	 vocab-size 3102 	 epochs: 5 	 run ti
 train with prefitted-bert min_df: 100 	 vocab-size 3095 	 epochs: 2 	 run time: 0:00:36.303292
 train with prefitted-bert min_df: 10 	 vocab-size 18637 	 epochs: 2 	 run time: 0:02:45.202979
 train with prefitted-bert min_df: 10 	 vocab-size 19107 	 epochs: 2 	 run time: 0:02:49.214057
+train with prefitted-bert min_df: 10 	 vocab-size 19107 	 epochs: 2 	 run time: 0:03:24.434106

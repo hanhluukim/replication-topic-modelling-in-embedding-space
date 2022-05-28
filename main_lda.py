@@ -45,7 +45,7 @@ for min_df in [2, 5, 10, 30, 100]:
     
     for_lda_model = True
     # bow must be first and can get the get_docs_in_words_for_each_set()
-    word2id, id2word, train_set, test_set, val_set = textsloader.create_bow_and_savebow_for_each_set(for_lda_model=for_lda_model, 
+    word2id, id2word, train_set, test_set, val_set, test_h1_set, test_h2_set = textsloader.create_bow_and_savebow_for_each_set(for_lda_model=for_lda_model, 
                                                                                                      normalize = True)
     textsloader.write_info_vocab_to_text()
     docs_tr, docs_t, docs_v = textsloader.get_docs_in_words_for_each_set()
