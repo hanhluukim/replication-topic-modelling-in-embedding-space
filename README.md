@@ -4,6 +4,13 @@
 1. Replizieren des Artikels: [Topic Modelling in embedding space](https://arxiv.org/abs/1907.04907) von Adji B. Dieng, Francisco J. R. Ruiz, David M. Blei. Die [originale Implementierung](https://github.com/adjidieng/ETM) von Autoren. 
 2. Neues Experiment: Kombination von pre-fitted BERT-Embeddings mit ETM
 
+**Durchgeführte Experimenten**
+- [x] Laufzeit des ETM Modells in der Abhängigkeit von der Vokabulargrößen
+- [x] Vergleich zwischen LDA und ETM auf dem Datensatz: 20NewsGroups (Maß: Topic Quality = Topic Coherence * Topic Diversity, normalisierte-Perplexity)
+- [x] Vergleich Ergebnisse von ETM auf 20NewsGroups mit Stopwords und ohne-Stopwords
+- [x] Vergleich der Embedding zwischen Skipgramm und BERT-Wortembedding
+- [x] Vergleich zwischen prefitted-Skipramm-ETM und prefitted-BERT-ETM
+
 **Verwandte Pakette**
 1. List aller verwendeten Paketten ist in der Datei: requirements.txt
 2. Installieren durch: `pip install -r requirements.txt`
@@ -49,11 +56,3 @@
 - Topic Embedding ist numersiche Repränstation für ein Topic in dem Embedding-Space, in dem Wort-Embeddings sich auch befinden
 
 2. Das Modell ETM wird in `src/etm.py` implementiert.
-
-**Durchgeführte Experimenten**
-
-- [ ] Vergleich Top-5-Wörter von den top 7 meisten genutzen Topics (Datensatz: 1.8M Documents von NYT, Corpus V=212237, K=300) zwischen LDA und ETM
-- [ ] Vergleich zwischen LDA und ETM auf dem Datensatz: 20NewsGroups (Maß: Topic Quality = Topic Coherence * Topic Diversity, normalisierte-Perplexity)
-- [ ] Vergleich Ergebnisse von 20NewsGroup auf Stopwords und ohne-Stopwords
-- [ ] Vergleich der Embedding zwischen Skipgramm und BERT-Wortembedding
-- [ ] Vergleich zwischen prefitted-Skipramm-ETM und prefitted-BERT-ETM
