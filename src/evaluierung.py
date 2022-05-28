@@ -62,25 +62,18 @@ def topicCoherence2(topicsWords,anzahlTopics,documents,anzDoc):
 	return c
 
 def topicPerplexityNew(theta_test_1, test2_bows, vocab_size, beta_test_1):
-    #covert to torch.tensor
-    theta_test_1 = torch.tensor(theta_test_1)
-    beta_test_1 = torch.tensor(beta_test_1)
-    test2_bows = torch.tensor(test2_bows)
-    
-    print(theta_test_1.shape)
-    print(beta_test_1.shape)
-    print(test2_bows.shape)
-    
     log_pred_test_1 = torch.log(torch.mm(theta_test_1, beta_test_1))
-    
     # true bows h= (doc_i, h_over_vocabulary)
     h = -(log_pred_test_1 * test2_bows).sum(1) #sum over the vocabulary
     n_words_in_each_doc = test2_bows.sum(1).unsqueeze(1).squeeze()
     # perplexity for each document: h(doc)/len(doc)
     ppl_each_doc_in_batch = h/n_words_in_each_doc
-    print(ppl_each_in_batch.shape)
-    ppl_each_doc_in_batch_exp = torch.exp(ppl_each_doc_in_batch)
-    return round(ppl_each_doc_in_batch.mean().item(),2)
+    #sum over doc, and mean and exp
+    sum_ppl_all_docs = torch.sum(ppl_each_doc_in_batch)
+    avg_ppl_docs_in_batch = sum_ppl_all_docs/ppl_each_doc_in_batch.shape[0] #.mean().item()
+    #exponential
+    #return round(math.exp(avg_ppl_docs_in_batch),2)
+    return avg_ppl_docs_in_batch
 
 def topicPerplexityteil2(thetatest1,tests2anzahl_perword,anzahlVocabulary,betatest1):
     erwartung=[]
@@ -105,7 +98,7 @@ def topicPerplexityteil2(thetatest1,tests2anzahl_perword,anzahlVocabulary,betate
 
 def topicPerplexityTeil1(thetastest1,tests2anzahl_perword,anzahlVocabulary,betatest1):
     mean=0
-    for t in range(len(thetastest1)):
+    for t in range(len(thetastest1)): #over all documents
         # for a document
         mean=mean+topicPerplexityteil2(thetastest1[t],tests2anzahl_perword[t],anzahlVocabulary,betatest1)
     return mean/len(thetastest1) #over all documents

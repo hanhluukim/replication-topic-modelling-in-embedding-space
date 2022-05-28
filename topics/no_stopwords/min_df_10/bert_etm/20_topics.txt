@@ -1,8 +1,8 @@
-topic: 1 distribution version max system ca division computer windows microsoft systems
+topic: 1 distribution version max system ca computer division windows microsoft systems
 topic: 2 article file max note lot pc good message information big
 topic: 3 usa university canada ca berkeley mit college harvard massachusetts toronto
-topic: 4 work good truth hard true thing windows power file bad
-topic: 5 time years year life windows big long season thing world
+topic: 4 work good hard truth thing windows true power file bad
+topic: 5 time years year life big windows long season thing ago
 topic: 6 article writes gov university nasa dos windows computer os file
 topic: 7 posting nntp reply host bill peter mark message david jim
 topic: 8 writes au file se drive wrote de program article uk
@@ -11,7 +11,7 @@ topic: 10 max drive software system technology hornets code computer windows pro
 topic: 11 good law religion church christ god jewish bible jesus wrong
 topic: 12 mark dan jay ca usa pat steve robert joe scott
 topic: 13 people things god time point reason thing number christ person
-topic: 14 make good people things reason point give time find thing
+topic: 14 make good things people reason point give time find thing
 topic: 15 university state science indiana california computer institute department system college
 topic: 16 ca article posting host apr post mark uk writes message
 topic: 17 good indiana yeah lot big windows needed max plenty exact

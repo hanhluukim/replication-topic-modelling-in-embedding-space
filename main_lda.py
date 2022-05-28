@@ -11,6 +11,8 @@ from tqdm import tqdm
 from gensim.models import LdaModel
 import gensim
 import torch
+import numpy as np
+import math
 
 import argparse
 parser = argparse.ArgumentParser(description='main.py')
@@ -107,6 +109,8 @@ for min_df in min_dfs:
         print('calculate perplexity:....')
         vocab_size =  len(list(id2word.values()))
         beta_KV = get_beta_from_lda(ldamodel, num_topics, list(id2word.values()),vocab_size)
+        beta_KV = torch.from_numpy(np.array(beta_KV))
+        
         theta_test_1_DK = get_theta_from_lda(ldamodel, num_topics, test_h1_set)
         
         n_test_docs_2 = len(test_h2_set)
@@ -155,17 +159,19 @@ for min_df in min_dfs:
             ppl_over_batches.append(avg_ppl)
             i = i + batch_test_size
             j += 1
-            
-        normalized_ppl = (sum(ppl_over_batches)/len(ppl_over_batches))/vocab_size
+        avg_over_batches = (sum(ppl_over_batches)/len(ppl_over_batches))
+        print('avg-ppl-over-batches: {avg_over_batches}')
+        ppl_total = round(math.exp(avg_over_batches),1)
+        normalized_ppl = ppl_total/vocab_size
         del ppl_over_batches
         del test_set_h2_in_bow_sparse_matrix
         del theta_test_1_DK
         del beta_KV
-        del ppl_over_batches
+        
         print(f'end perplexity - show perplexity: ')
         
         print(f'e-normalized-perplexity-lda: {normalized_ppl}')
-
+        print(f'calculate coherence and diversity')
         # topic coherence and topic diversity and quality
         dataset = {'train': None}
         for name, bow_documents in dataset.items():
@@ -174,6 +180,8 @@ for min_df in min_dfs:
             if name == 'train':
                 tc = topicCoherence2(topics,len(topics),docs_tr,len(docs_tr))
                 td = topicDiversity(topics)
+                print(f'topic coherence {tc}')
+                print(f'topic diversity {td}')
             else:
                 print("no coherrence, using perplexity for test")
             
@@ -181,6 +189,7 @@ for min_df in min_dfs:
             eval_f.write(f'name \t topic-coherrence \t topic-diversity \t quality \t perplexity\n')
             eval_f.write(f'{name} \t {tc} \t {td} \t {tc*td} \t {normalized_ppl}\n')
             eval_f.close()
+        print(f'ending coherence and diversity')
         del dataset
         del ldamodel
     f.write(100*"-" + "\n")

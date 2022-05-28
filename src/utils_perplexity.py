@@ -68,7 +68,7 @@ def get_perplexity(etm_model, test_set, vocab_size, test_batch_size):
                 loss_new = recon_loss_batch_test_2/n_words_in_each_doc_in_batch
                 #print(f'loss shape {loss_new.shape}')
                 # mean error over all docs
-                loss_new = loss_new.mean().item()
+                loss_new = loss_new.mean().item() #avg over all doc in batches
                 total_perplexity += loss_new
                 
                 # use other perplexity

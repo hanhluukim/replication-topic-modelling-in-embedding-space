@@ -1,2 +1,2 @@
-name 	 topic-coherrence 	 topic-diversity 	 quality
-train 	 0.19563250105968177 	 0.774 	 0.1514195558201937
+name 	 topic-coherrence 	 topic-diversity 	 quality 	 perplexity
+train 	 0.1840497563344141 	 0.722 	 0.13288392407344696 	 0.0023948047100342735
