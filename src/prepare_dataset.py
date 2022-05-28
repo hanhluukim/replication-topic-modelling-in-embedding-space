@@ -64,6 +64,7 @@ class TextDataLoader:
         if source == "20newsgroups":
             # download data from package sklearn
             train_data = fetch_20newsgroups(subset='train')
+            print(train_data.data[0])
             test_data = fetch_20newsgroups(subset='test')
             # filter special character from texts
             def filter_special_character(docs):

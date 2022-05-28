@@ -11,6 +11,10 @@ import os
 import numpy as np
 import random
 import math
+from src.evaluierung import topicPerplexityTeil1
+from src.utils_covert_batch_list import covert_to_list
+
+seed = 42
 
 seed = 42
 os.environ['PYTHONHASHSEED'] = str(seed)
@@ -240,8 +244,7 @@ class TrainETM():
         self.visualize_losses(visualization, epoch_losses, neg_rec_losses, neg_kld_losses, kld_losses_for_plot, figures_path)
       
 
-        
-            
 
- 
-        
+
+#print(f'calculate perplexitiy: ...')  
+#print(get_perplexity(etm_model, test_set, vocab_size))       
