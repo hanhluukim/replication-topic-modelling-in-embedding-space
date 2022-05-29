@@ -21,6 +21,8 @@ def get_test_for_completion_task(test_set,
     return test_loader
 
 def get_perplexity(etm_model, test_set, vocab_size, test_batch_size):
+    etm_model = etm_model.to(device)
+    
     print(f'calculate perplexitiy of test dataset: ...')  
     test_set_1 = test_set['test1']
     test_set_2 = test_set['test2']
