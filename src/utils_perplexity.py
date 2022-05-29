@@ -48,8 +48,8 @@ def get_perplexity(etm_model, test_set, vocab_size, test_batch_size):
             #for j, batch_doc_as_bows in enumerate(test_loader, 1):
             for i, data in enumerate(zip(test_loader_1, test_loader_2)):
                 
-                batch_test_1 = data[0].to(device)
-                batch_test_2 = data[1].to(device)
+                batch_test_1 = data[0]#.to(device)
+                batch_test_2 = data[1]#.to(device)
                
                 # get theta from the first batch_test_1
                 mu_theta, logsigma_theta, kl_theta, _ = etm_model.encode(batch_test_1['normalized'].to(device))
