@@ -4,6 +4,7 @@ import numpy as np
 import math
 seed=42
 import torch
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 from src.evaluierung import topicPerplexityTeil1
 from src.utils_covert_batch_list import covert_to_list
@@ -56,7 +57,7 @@ def get_perplexity(etm_model, test_set, vocab_size, test_batch_size):
                 log_pred_batch_test_1 = torch.log(pred_batch_test_1)
                 
                 # perplexity of log_pred_batch_1 with batch_test_2
-                recon_loss_batch_test_2 = -(log_pred_batch_test_1 * batch_test_2['bow']).sum(1) #for each document in batch
+                recon_loss_batch_test_2 = -(log_pred_batch_test_1 * batch_test_2['bow'].to(device)).sum(1) #for each document in batch
                 #print(f'loss shape: {recon_loss_batch_test_2.shape}') #cross_entropy for each word in doc, and for each doc in batch # (1000, 3012)
                 
                 # document-length of each document in batch_test_2 (total words in doc)
