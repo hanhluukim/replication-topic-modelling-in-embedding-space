@@ -163,7 +163,7 @@ for min_df in min_dfs:
             i = i + batch_test_size
             j += 1
         avg_over_batches = (sum(ppl_over_batches)/len(ppl_over_batches))
-        print('avg-ppl-over-batches: {avg_over_batches}')
+        print(f'avg-ppl-over-batches: {avg_over_batches}')
         ppl_total = round(math.exp(avg_over_batches),1)
         normalized_ppl = ppl_total/vocab_size
         del ppl_over_batches

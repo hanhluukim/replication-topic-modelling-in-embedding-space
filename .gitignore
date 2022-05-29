@@ -137,6 +137,8 @@ prepared_data/bert_vocab.pkl
 prepared_data/bert_vocab.txt
 prpared_data/topics/
 checkpoints/
+testing_notebooks/
+etm_in_julia/
 #etm_in_julia/
 #checkpoints/
 # Files
