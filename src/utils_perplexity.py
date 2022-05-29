@@ -50,7 +50,7 @@ def get_perplexity(etm_model, test_set, vocab_size, test_batch_size):
                 batch_test_2 = data[1]
                
                 # get theta from the first batch_test_1
-                mu_theta, logsigma_theta, kl_theta, _ = etm_model.encode(batch_test_1['normalized'])
+                mu_theta, logsigma_theta, kl_theta, _ = etm_model.encode(batch_test_1['normalized'].to(device))
                 theta_1 = etm_model.get_theta_document_distribution_over_topics(mu_theta, logsigma_theta)
                 # using theta of 1 and beta to make prediction for batch_test_2
                 pred_batch_test_1 = etm_model.decode(theta_1, beta)
