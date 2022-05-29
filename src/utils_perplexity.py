@@ -54,7 +54,7 @@ def get_perplexity(etm_model, test_set, vocab_size, test_batch_size):
                 theta_1 = etm_model.get_theta_document_distribution_over_topics(mu_theta, logsigma_theta)
                 # using theta of 1 and beta to make prediction for batch_test_2
                 pred_batch_test_1 = etm_model.decode(theta_1, beta)
-                log_pred_batch_test_1 = torch.log(pred_batch_test_1)
+                log_pred_batch_test_1 = torch.log(pred_batch_test_1).to(device)
                 
                 # perplexity of log_pred_batch_1 with batch_test_2
                 recon_loss_batch_test_2 = -(log_pred_batch_test_1 * batch_test_2['bow'].to(device)).sum(1) #for each document in batch
