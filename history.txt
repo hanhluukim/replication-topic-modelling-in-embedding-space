@@ -1,4 +1,6 @@
-* 9759c68 (HEAD -> main, origin/main, origin/HEAD) (create colab notebook for control preparing data, 2022-05-29)
+* b15fc85 (HEAD -> main, origin/main, origin/HEAD) (update completed notebook for using, 2022-05-30)
+* 6643fd8 (update READme, 2022-05-30)
+* 9759c68 (create colab notebook for control preparing data, 2022-05-29)
 * 6efaa03 (get_perplexity problem, 2022-05-29)
 * 23e02a5 (update to device get_perplexity, 2022-05-29)
 * a898d4b (update to device get_perplexity, 2022-05-29)
