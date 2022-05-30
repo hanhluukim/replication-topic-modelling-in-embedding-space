@@ -1,0 +1,2536 @@
+
+    
+
+
+
+
+    
+\documentclass[11pt]{article}
+
+    
+    \usepackage[breakable]{tcolorbox}
+    \tcbset{nobeforeafter} % prevents tcolorboxes being placing in paragraphs
+    \usepackage{float}
+    \floatplacement{figure}{H} % forces figures to be placed at the correct location
+    
+    \usepackage[T1]{fontenc}
+    % Nicer default font (+ math font) than Computer Modern for most use cases
+    \usepackage{mathpazo}
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % We will generate all images so they have a width \maxwidth. This means
+    % that they will get their normal width if they fit onto the page, but
+    % are scaled down if they would overflow the margins.
+    \makeatletter
+    \def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth
+    \else\Gin@nat@width\fi}
+    \makeatother
+    \let\Oldincludegraphics\includegraphics
+    % Set max figure width to be 80% of text width, for now hardcoded.
+    \renewcommand{\includegraphics}[1]{\Oldincludegraphics[width=.8\maxwidth]{#1}}
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionLabelFormat{nolabel}{}
+    \captionsetup{labelformat=nolabel}
+
+    \usepackage{adjustbox} % Used to constrain images to a maximum size 
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+    \usepackage[mathletters]{ucs} % Extended unicode (utf-8) support
+    \usepackage[utf8x]{inputenc} % Allow utf-8 characters in the tex document
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics 
+                         % to support a larger range 
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    \usepackage{mathrsfs}
+    
+
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+    \definecolor{ansi-default-inverse-fg}{HTML}{FFFFFF}
+    \definecolor{ansi-default-inverse-bg}{HTML}{000000}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+    
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    
+    
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatibility definitions
+    \def\gt{>}
+    \def\lt{<}
+    \let\Oldtex\TeX
+    \let\Oldlatex\LaTeX
+    \renewcommand{\TeX}{\textrm{\Oldtex}}
+    \renewcommand{\LaTeX}{\textrm{\Oldlatex}}
+    % Document parameters
+    % Document title
+    \title{notebook\_replication}
+    
+    
+    
+    
+    
+% Pygments definitions
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\expandafter\def\csname PY@tok@w\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\expandafter\def\csname PY@tok@c\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.74,0.48,0.00}{##1}}}
+\expandafter\def\csname PY@tok@k\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\expandafter\def\csname PY@tok@o\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ow\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@ne\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.82,0.25,0.23}{##1}}}
+\expandafter\def\csname PY@tok@nv\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@no\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ni\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.60,0.60,0.60}{##1}}}
+\expandafter\def\csname PY@tok@na\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.49,0.56,0.16}{##1}}}
+\expandafter\def\csname PY@tok@nt\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@s\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sd\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@si\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@se\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sr\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@ss\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sx\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@m\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@gh\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gu\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gr\endcsname{\def\PY@tc##1{\textcolor[rgb]{1.00,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ge\endcsname{\let\PY@it=\textit}
+\expandafter\def\csname PY@tok@gs\endcsname{\let\PY@bf=\textbf}
+\expandafter\def\csname PY@tok@gp\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@go\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.53,0.53}{##1}}}
+\expandafter\def\csname PY@tok@gt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\expandafter\def\csname PY@tok@err\endcsname{\def\PY@bc##1{\setlength{\fboxsep}{0pt}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}
+\expandafter\def\csname PY@tok@kc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kd\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kr\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@bp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@fm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@vc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vg\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sa\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@dl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s2\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s1\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@mb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@il\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mo\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ch\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cm\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cpf\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@c1\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cs\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % For linebreaks inside Verbatim environment from package fancyvrb. 
+    \makeatletter
+        \newbox\Wrappedcontinuationbox 
+        \newbox\Wrappedvisiblespacebox 
+        \newcommand*\Wrappedvisiblespace {\textcolor{red}{\textvisiblespace}} 
+        \newcommand*\Wrappedcontinuationsymbol {\textcolor{red}{\llap{\tiny$\m@th\hookrightarrow$}}} 
+        \newcommand*\Wrappedcontinuationindent {3ex } 
+        \newcommand*\Wrappedafterbreak {\kern\Wrappedcontinuationindent\copy\Wrappedcontinuationbox} 
+        % Take advantage of the already applied Pygments mark-up to insert 
+        % potential linebreaks for TeX processing. 
+        %        {, <, #, %, $, ' and ": go to next line. 
+        %        _, }, ^, &, >, - and ~: stay at end of broken line. 
+        % Use of \textquotesingle for straight quote. 
+        \newcommand*\Wrappedbreaksatspecials {% 
+            \def\PYGZus{\discretionary{\char`\_}{\Wrappedafterbreak}{\char`\_}}% 
+            \def\PYGZob{\discretionary{}{\Wrappedafterbreak\char`\{}{\char`\{}}% 
+            \def\PYGZcb{\discretionary{\char`\}}{\Wrappedafterbreak}{\char`\}}}% 
+            \def\PYGZca{\discretionary{\char`\^}{\Wrappedafterbreak}{\char`\^}}% 
+            \def\PYGZam{\discretionary{\char`\&}{\Wrappedafterbreak}{\char`\&}}% 
+            \def\PYGZlt{\discretionary{}{\Wrappedafterbreak\char`\<}{\char`\<}}% 
+            \def\PYGZgt{\discretionary{\char`\>}{\Wrappedafterbreak}{\char`\>}}% 
+            \def\PYGZsh{\discretionary{}{\Wrappedafterbreak\char`\#}{\char`\#}}% 
+            \def\PYGZpc{\discretionary{}{\Wrappedafterbreak\char`\%}{\char`\%}}% 
+            \def\PYGZdl{\discretionary{}{\Wrappedafterbreak\char`\$}{\char`\$}}% 
+            \def\PYGZhy{\discretionary{\char`\-}{\Wrappedafterbreak}{\char`\-}}% 
+            \def\PYGZsq{\discretionary{}{\Wrappedafterbreak\textquotesingle}{\textquotesingle}}% 
+            \def\PYGZdq{\discretionary{}{\Wrappedafterbreak\char`\"}{\char`\"}}% 
+            \def\PYGZti{\discretionary{\char`\~}{\Wrappedafterbreak}{\char`\~}}% 
+        } 
+        % Some characters . , ; ? ! / are not pygmentized. 
+        % This macro makes them "active" and they will insert potential linebreaks 
+        \newcommand*\Wrappedbreaksatpunct {% 
+            \lccode`\~`\.\lowercase{\def~}{\discretionary{\hbox{\char`\.}}{\Wrappedafterbreak}{\hbox{\char`\.}}}% 
+            \lccode`\~`\,\lowercase{\def~}{\discretionary{\hbox{\char`\,}}{\Wrappedafterbreak}{\hbox{\char`\,}}}% 
+            \lccode`\~`\;\lowercase{\def~}{\discretionary{\hbox{\char`\;}}{\Wrappedafterbreak}{\hbox{\char`\;}}}% 
+            \lccode`\~`\:\lowercase{\def~}{\discretionary{\hbox{\char`\:}}{\Wrappedafterbreak}{\hbox{\char`\:}}}% 
+            \lccode`\~`\?\lowercase{\def~}{\discretionary{\hbox{\char`\?}}{\Wrappedafterbreak}{\hbox{\char`\?}}}% 
+            \lccode`\~`\!\lowercase{\def~}{\discretionary{\hbox{\char`\!}}{\Wrappedafterbreak}{\hbox{\char`\!}}}% 
+            \lccode`\~`\/\lowercase{\def~}{\discretionary{\hbox{\char`\/}}{\Wrappedafterbreak}{\hbox{\char`\/}}}% 
+            \catcode`\.\active
+            \catcode`\,\active 
+            \catcode`\;\active
+            \catcode`\:\active
+            \catcode`\?\active
+            \catcode`\!\active
+            \catcode`\/\active 
+            \lccode`\~`\~ 	
+        }
+    \makeatother
+
+    \let\OriginalVerbatim=\Verbatim
+    \makeatletter
+    \renewcommand{\Verbatim}[1][1]{%
+        %\parskip\z@skip
+        \sbox\Wrappedcontinuationbox {\Wrappedcontinuationsymbol}%
+        \sbox\Wrappedvisiblespacebox {\FV@SetupFont\Wrappedvisiblespace}%
+        \def\FancyVerbFormatLine ##1{\hsize\linewidth
+            \vtop{\raggedright\hyphenpenalty\z@\exhyphenpenalty\z@
+                \doublehyphendemerits\z@\finalhyphendemerits\z@
+                \strut ##1\strut}%
+        }%
+        % If the linebreak is at a space, the latter will be displayed as visible
+        % space at end of first line, and a continuation symbol starts next line.
+        % Stretch/shrink are however usually zero for typewriter font.
+        \def\FV@Space {%
+            \nobreak\hskip\z@ plus\fontdimen3\font minus\fontdimen4\font
+            \discretionary{\copy\Wrappedvisiblespacebox}{\Wrappedafterbreak}
+            {\kern\fontdimen2\font}%
+        }%
+        
+        % Allow breaks at special characters using \PYG... macros.
+        \Wrappedbreaksatspecials
+        % Breaks at punctuation characters . , ; ? ! and / need catcode=\active 	
+        \OriginalVerbatim[#1,codes*=\Wrappedbreaksatpunct]%
+    }
+    \makeatother
+
+    % Exact colors from NB
+    \definecolor{incolor}{HTML}{303F9F}
+    \definecolor{outcolor}{HTML}{D84315}
+    \definecolor{cellborder}{HTML}{CFCFCF}
+    \definecolor{cellbackground}{HTML}{F7F7F7}
+    
+    % prompt
+    \newcommand{\prompt}[4]{
+        \llap{{\color{#2}[#3]: #4}}\vspace{-1.25em}
+    }
+    
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy 
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+    \begin{document}
+    
+    
+    \maketitle
+    
+    
+
+    
+    
+
+    \hypertarget{das-projekt-aus-dem-github-klonen-und-in-den-projektsordner}{%
+\section{\texorpdfstring{\textbf{Das Projekt aus dem Github klonen und
+in den
+Projektsordner}}{Das Projekt aus dem Github klonen und in den Projektsordner}}\label{das-projekt-aus-dem-github-klonen-und-in-den-projektsordner}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{1}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}wenn die Ordner noch nicht geklont ist, soll dieser Fehler zuerst durchgeführt werden.}
+\PY{o}{!}git clone https://github.com/hanhluukim/replication\PYZhy{}topic\PYZhy{}modelling\PYZhy{}in\PYZhy{}embedding\PYZhy{}space.git
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Cloning into 'replication-topic-modelling-in-embedding-space'{\ldots}
+remote: Enumerating objects: 2352, done.
+remote: Counting objects: 100\% (328/328), done.
+remote: Compressing objects: 100\% (247/247), done.
+remote: Total 2352 (delta 170), reused 218 (delta 78), pack-reused 2024
+Receiving objects: 100\% (2352/2352), 531.47 MiB | 26.39 MiB/s, done.
+Resolving deltas: 100\% (1225/1225), done.
+\end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{2}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{cd} \PY{o}{/}\PY{n}{content}\PY{o}{/}\PY{n}{replication}\PY{o}{\PYZhy{}}\PY{n}{topic}\PY{o}{\PYZhy{}}\PY{n}{modelling}\PY{o}{\PYZhy{}}\PY{o+ow}{in}\PY{o}{\PYZhy{}}\PY{n}{embedding}\PY{o}{\PYZhy{}}\PY{n}{space}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/content/replication-topic-modelling-in-embedding-space
+\end{Verbatim}
+
+    \hypertarget{das-trainieren-uxfcber-gpu-in-dem-colab-runtime-wuxe4hlen-gpu}{%
+\section{\texorpdfstring{\textbf{Das Trainieren über GPU: in dem
+Colab-runtime, wählen
+GPU}}{Das Trainieren über GPU: in dem Colab-runtime, wählen GPU}}\label{das-trainieren-uxfcber-gpu-in-dem-colab-runtime-wuxe4hlen-gpu}}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  runtime/Laufzeit
+\item
+  change runtime type/Laufzeittyppen ändern
+\item
+  choose GPU and save/GPU auswählen und speichern
+\end{enumerate}
+
+    \hypertarget{die-benuxf6tige-paketen-fuxfcr-das-projekt-mittels-requirements.txt-installieren}{%
+\section{\texorpdfstring{\textbf{Die benötige Paketen für das Projekt
+mittels requirements.txt
+installieren}}{Die benötige Paketen für das Projekt mittels requirements.txt installieren}}\label{die-benuxf6tige-paketen-fuxfcr-das-projekt-mittels-requirements.txt-installieren}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{3}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Falls die Packages noch nicht installiert wurden, }
+\PY{o}{!}pip install \PYZhy{}r \PY{l+s+s2}{\PYZdq{}/content/replication\PYZhy{}topic\PYZhy{}modelling\PYZhy{}in\PYZhy{}embedding\PYZhy{}space/requirements.txt\PYZdq{}}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Looking in indexes: https://pypi.org/simple, https://us-python.pkg.dev/colab-
+wheels/public/simple/
+Collecting gensim==3.8.3
+  Downloading gensim-3.8.3-cp37-cp37m-manylinux1\_x86\_64.whl (24.2 MB)
+     |████████████████████████████████| 24.2 MB 1.5 MB/s
+Requirement already satisfied: nltk in /usr/local/lib/python3.7/dist-
+packages (from -r /content/replication-topic-modelling-in-embedding-
+space/requirements.txt (line 2)) (3.2.5)
+Requirement already satisfied: numpy in /usr/local/lib/python3.7/dist-packages
+(from -r /content/replication-topic-modelling-in-embedding-
+space/requirements.txt (line 3)) (1.21.6)
+Requirement already satisfied: scikit-learn in /usr/local/lib/python3.7/dist-
+packages (from -r /content/replication-topic-modelling-in-embedding-
+space/requirements.txt (line 4)) (1.0.2)
+Requirement already satisfied: scipy in /usr/local/lib/python3.7/dist-packages
+(from -r /content/replication-topic-modelling-in-embedding-
+space/requirements.txt (line 5)) (1.4.1)
+Requirement already satisfied: torch in /usr/local/lib/python3.7/dist-packages
+(from -r /content/replication-topic-modelling-in-embedding-
+space/requirements.txt (line 6)) (1.11.0+cu113)
+Collecting transformers
+  Downloading transformers-4.19.2-py3-none-any.whl (4.2 MB)
+     |████████████████████████████████| 4.2 MB 59.1 MB/s
+Collecting umap-learn
+  Downloading umap-learn-0.5.3.tar.gz (88 kB)
+     |████████████████████████████████| 88 kB 8.6 MB/s
+Collecting plotly==5.7.0
+  Downloading plotly-5.7.0-py2.py3-none-any.whl (28.8 MB)
+     |████████████████████████████████| 28.8 MB 101.6 MB/s
+Requirement already satisfied: pathlib in /usr/local/lib/python3.7/dist-
+packages (from -r /content/replication-topic-modelling-in-embedding-
+space/requirements.txt (line 10)) (1.0.1)
+Collecting pyyaml==5.4.1
+  Downloading PyYAML-5.4.1-cp37-cp37m-manylinux1\_x86\_64.whl (636 kB)
+     |████████████████████████████████| 636 kB 52.7 MB/s
+Collecting kaleido
+  Downloading kaleido-0.2.1-py2.py3-none-manylinux1\_x86\_64.whl (79.9 MB)
+     |████████████████████████████████| 79.9 MB 115 kB/s
+Requirement already satisfied: torchvision in
+/usr/local/lib/python3.7/dist-packages (from -r /content/replication-topic-
+modelling-in-embedding-space/requirements.txt (line 13)) (0.12.0+cu113)
+Requirement already satisfied: pandas in /usr/local/lib/python3.7/dist-packages
+(from -r /content/replication-topic-modelling-in-embedding-
+space/requirements.txt (line 14)) (1.3.5)
+Requirement already satisfied: six>=1.5.0 in /usr/local/lib/python3.7/dist-
+packages (from gensim==3.8.3->-r /content/replication-topic-modelling-in-
+embedding-space/requirements.txt (line 1)) (1.15.0)
+Requirement already satisfied: smart-open>=1.8.1 in
+/usr/local/lib/python3.7/dist-packages (from gensim==3.8.3->-r
+/content/replication-topic-modelling-in-embedding-space/requirements.txt (line
+1)) (6.0.0)
+Requirement already satisfied: tenacity>=6.2.0 in /usr/local/lib/python3.7/dist-
+packages (from plotly==5.7.0->-r /content/replication-topic-modelling-in-
+embedding-space/requirements.txt (line 9)) (8.0.1)
+Requirement already satisfied: joblib>=0.11 in /usr/local/lib/python3.7/dist-
+packages (from scikit-learn->-r /content/replication-topic-modelling-in-
+embedding-space/requirements.txt (line 4)) (1.1.0)
+Requirement already satisfied: threadpoolctl>=2.0.0 in
+/usr/local/lib/python3.7/dist-packages (from scikit-learn->-r
+/content/replication-topic-modelling-in-embedding-space/requirements.txt (line
+4)) (3.1.0)
+Requirement already satisfied: typing-extensions in
+/usr/local/lib/python3.7/dist-packages (from torch->-r /content/replication-
+topic-modelling-in-embedding-space/requirements.txt (line 6)) (4.2.0)
+Requirement already satisfied: packaging>=20.0 in /usr/local/lib/python3.7/dist-
+packages (from transformers->-r /content/replication-topic-modelling-in-
+embedding-space/requirements.txt (line 7)) (21.3)
+Requirement already satisfied: importlib-metadata in
+/usr/local/lib/python3.7/dist-packages (from transformers->-r
+/content/replication-topic-modelling-in-embedding-space/requirements.txt (line
+7)) (4.11.3)
+Requirement already satisfied: filelock in /usr/local/lib/python3.7/dist-
+packages (from transformers->-r /content/replication-topic-modelling-in-
+embedding-space/requirements.txt (line 7)) (3.7.0)
+Requirement already satisfied: tqdm>=4.27 in /usr/local/lib/python3.7/dist-
+packages (from transformers->-r /content/replication-topic-modelling-in-
+embedding-space/requirements.txt (line 7)) (4.64.0)
+Requirement already satisfied: requests in /usr/local/lib/python3.7/dist-
+packages (from transformers->-r /content/replication-topic-modelling-in-
+embedding-space/requirements.txt (line 7)) (2.23.0)
+Collecting tokenizers!=0.11.3,<0.13,>=0.11.1
+  Downloading
+tokenizers-0.12.1-cp37-cp37m-manylinux\_2\_12\_x86\_64.manylinux2010\_x86\_64.whl (6.6
+MB)
+     |████████████████████████████████| 6.6 MB 53.5 MB/s
+Collecting huggingface-hub<1.0,>=0.1.0
+  Downloading huggingface\_hub-0.7.0-py3-none-any.whl (86 kB)
+     |████████████████████████████████| 86 kB 7.4 MB/s
+Requirement already satisfied: regex!=2019.12.17 in
+/usr/local/lib/python3.7/dist-packages (from transformers->-r
+/content/replication-topic-modelling-in-embedding-space/requirements.txt (line
+7)) (2019.12.20)
+Requirement already satisfied: pyparsing!=3.0.5,>=2.0.2 in
+/usr/local/lib/python3.7/dist-packages (from packaging>=20.0->transformers->-r
+/content/replication-topic-modelling-in-embedding-space/requirements.txt (line
+7)) (3.0.9)
+Requirement already satisfied: numba>=0.49 in /usr/local/lib/python3.7/dist-
+packages (from umap-learn->-r /content/replication-topic-modelling-in-embedding-
+space/requirements.txt (line 8)) (0.51.2)
+Collecting pynndescent>=0.5
+  Downloading pynndescent-0.5.7.tar.gz (1.1 MB)
+     |████████████████████████████████| 1.1 MB 56.1 MB/s
+Requirement already satisfied: llvmlite<0.35,>=0.34.0.dev0 in
+/usr/local/lib/python3.7/dist-packages (from numba>=0.49->umap-learn->-r
+/content/replication-topic-modelling-in-embedding-space/requirements.txt (line
+8)) (0.34.0)
+Requirement already satisfied: setuptools in /usr/local/lib/python3.7/dist-
+packages (from numba>=0.49->umap-learn->-r /content/replication-topic-modelling-
+in-embedding-space/requirements.txt (line 8)) (57.4.0)
+Requirement already satisfied: pillow!=8.3.*,>=5.3.0 in
+/usr/local/lib/python3.7/dist-packages (from torchvision->-r
+/content/replication-topic-modelling-in-embedding-space/requirements.txt (line
+13)) (7.1.2)
+Requirement already satisfied: python-dateutil>=2.7.3 in
+/usr/local/lib/python3.7/dist-packages (from pandas->-r /content/replication-
+topic-modelling-in-embedding-space/requirements.txt (line 14)) (2.8.2)
+Requirement already satisfied: pytz>=2017.3 in /usr/local/lib/python3.7/dist-
+packages (from pandas->-r /content/replication-topic-modelling-in-embedding-
+space/requirements.txt (line 14)) (2022.1)
+Requirement already satisfied: zipp>=0.5 in /usr/local/lib/python3.7/dist-
+packages (from importlib-metadata->transformers->-r /content/replication-topic-
+modelling-in-embedding-space/requirements.txt (line 7)) (3.8.0)
+Requirement already satisfied: idna<3,>=2.5 in /usr/local/lib/python3.7/dist-
+packages (from requests->transformers->-r /content/replication-topic-modelling-
+in-embedding-space/requirements.txt (line 7)) (2.10)
+Requirement already satisfied: certifi>=2017.4.17 in
+/usr/local/lib/python3.7/dist-packages (from requests->transformers->-r
+/content/replication-topic-modelling-in-embedding-space/requirements.txt (line
+7)) (2022.5.18.1)
+Requirement already satisfied: chardet<4,>=3.0.2 in
+/usr/local/lib/python3.7/dist-packages (from requests->transformers->-r
+/content/replication-topic-modelling-in-embedding-space/requirements.txt (line
+7)) (3.0.4)
+Requirement already satisfied: urllib3!=1.25.0,!=1.25.1,<1.26,>=1.21.1 in
+/usr/local/lib/python3.7/dist-packages (from requests->transformers->-r
+/content/replication-topic-modelling-in-embedding-space/requirements.txt (line
+7)) (1.24.3)
+Building wheels for collected packages: umap-learn, pynndescent
+  Building wheel for umap-learn (setup.py) {\ldots} done
+  Created wheel for umap-learn: filename=umap\_learn-0.5.3-py3-none-any.whl
+size=82829
+sha256=6ce95f2dd3c9a755a144ad0892d993e2d130586c771e420fe7b8e9001bf9d6bf
+  Stored in directory: /root/.cache/pip/wheels/b3/52/a5/1fd9e3e76a7ab34f134c0746
+9cd6f16e27ef3a37aeff1fe821
+  Building wheel for pynndescent (setup.py) {\ldots} done
+  Created wheel for pynndescent: filename=pynndescent-0.5.7-py3-none-any.whl
+size=54286
+sha256=58b51a31787d7621de51508a1a1e6435702588111cb3271feaed6e844f520db9
+  Stored in directory: /root/.cache/pip/wheels/7f/2a/f8/7bd5dcec71bd5c669f6f574d
+b3113513696b98f3f9b51f496c
+Successfully built umap-learn pynndescent
+Installing collected packages: pyyaml, tokenizers, pynndescent, huggingface-hub,
+umap-learn, transformers, plotly, kaleido, gensim
+  Attempting uninstall: pyyaml
+    Found existing installation: PyYAML 3.13
+    Uninstalling PyYAML-3.13:
+      Successfully uninstalled PyYAML-3.13
+  Attempting uninstall: plotly
+    Found existing installation: plotly 5.5.0
+    Uninstalling plotly-5.5.0:
+      Successfully uninstalled plotly-5.5.0
+  Attempting uninstall: gensim
+    Found existing installation: gensim 3.6.0
+    Uninstalling gensim-3.6.0:
+      Successfully uninstalled gensim-3.6.0
+Successfully installed gensim-3.8.3 huggingface-hub-0.7.0 kaleido-0.2.1
+plotly-5.7.0 pynndescent-0.5.7 pyyaml-5.4.1 tokenizers-0.12.1
+transformers-4.19.2 umap-learn-0.5.3
+\end{Verbatim}
+
+    \hypertarget{struktur}{%
+\section{\texorpdfstring{\textbf{Struktur}}{Struktur}}\label{struktur}}
+
+In diesem Notebook kann man zwei Versionen durchführen:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  durch command lines (LDA Command, ETM-Command, BERT-ETM Command)
+\item
+  Notebook für alle Schritten nach und nach durchführen
+\item
+  Wenn nur Notebook benutzen möchte, springen zum Teil Notebook
+\end{enumerate}
+
+\hypertarget{fuxfcr-notebooks}{%
+\section{\texorpdfstring{\textbf{Für
+Notebooks}:}{Für Notebooks:}}\label{fuxfcr-notebooks}}
+
+Wenn jemand Notebooks benutzt, um alle Schritten anzuschauen, bitte
+überspringen den Teil, in den Command-Lines sich befinden
+
+    \hypertarget{command-teil}{%
+\section{\texorpdfstring{\textbf{Command-Teil}}{Command-Teil}}\label{command-teil}}
+
+    \textbf{LDA Command} 1. batch-test-size: Testdataset wird zu kleineren
+Batches mit batch-size-test zerlegt und dann Perplexity berechnen. 2.
+die \emph{Endperplexity} ist der Durchschnitt von allen
+Batch-Perplexites
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{run} \PY{n}{main\PYZus{}lda}\PY{o}{.}\PY{n}{py} \PY{o}{\PYZhy{}}\PY{o}{\PYZhy{}}\PY{n+nb}{filter}\PY{o}{\PYZhy{}}\PY{n}{stopwords} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{True}\PY{l+s+s2}{\PYZdq{}} \PY{o}{\PYZhy{}}\PY{o}{\PYZhy{}}\PY{n+nb}{min}\PY{o}{\PYZhy{}}\PY{n}{df} \PY{l+m+mi}{30} \PY{o}{\PYZhy{}}\PY{o}{\PYZhy{}}\PY{n}{epochs} \PY{l+m+mi}{20} \PY{o}{\PYZhy{}}\PY{o}{\PYZhy{}}\PY{n}{use}\PY{o}{\PYZhy{}}\PY{n}{tensor} \PY{k+kc}{True} \PY{o}{\PYZhy{}}\PY{o}{\PYZhy{}}\PY{n}{batch}\PY{o}{\PYZhy{}}\PY{n}{test}\PY{o}{\PYZhy{}}\PY{n}{size} \PY{l+m+mi}{1000}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+filter stopwords: True
+filter stopwords: True
+loading texts: {\ldots}
+From: lerxst@wam.umd.edu (where's my thing)
+Subject: WHAT car is this!?
+Nntp-Posting-Host: rac3.wam.umd.edu
+Organization: University of Maryland, College Park
+Lines: 15
+
+ I was wondering if anyone out there could enlighten me on this car I saw
+the other day. It was a 2-door sports car, looked to be from the late 60s/
+early 70s. It was called a Bricklin. The doors were really small. In addition,
+the front bumper was separate from the rest of the body. This is
+all I know. If anyone can tellme a model name, engine specs, years
+of production, where this car is made, history, or whatever info you
+have on this funky looking car, please e-mail.
+
+Thanks,
+- IL
+   ---- brought to you by your neighborhood Lerxst ----
+
+
+
+
+
+train-size after loading: 11314
+test-size after loading: 7532
+finished load!
+start: preprocessing: {\ldots}
+preprocessing step: remove stopwords
+finised: preprocessing!
+vocab-size in df: 8496
+preprocessing remove stopwords from vocabulary
+start creating vocabulary {\ldots}
+length of the vocabulary: 8496
+length word2id list: 8496
+length id2word list: 8496
+finished: creating vocabulary
+save docs in txt{\ldots}
+save docs finished
+train-size-after-all: 11214
+test-size-after-all: 7532
+validation-size-after-all: 100
+test-size-after-all: 11214
+test-indices-length: 11214
+test-size-after-all: 100
+test-indices-length: 100
+test-size-after-all: 7532
+test-indices-length: 7532
+length train-documents-indices : 1150368
+length of the vocabulary: 8496
+
+
+start: creating bow representation{\ldots}
+finised creating bow input!
+
+start: creating bow representation{\ldots}
+finised creating bow input!
+
+start: creating bow representation{\ldots}
+finised creating bow input!
+
+start: creating bow representation{\ldots}
+finised creating bow input!
+
+start: creating bow representation{\ldots}
+finised creating bow input!
+
+compact representation for LDA
+save docs in txt{\ldots}
+save docs finished
+run LDA training{\ldots}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+100\%|██████████| 20/20 [00:00<00:00, 49402.87it/s]\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+number of topics: 20
+calculate perplexity:{\ldots}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+test-docs: from 0 to 1000
+ppl of batch 1: 8.150738847141124
+test-docs: from 1000 to 2000
+ppl of batch 2: 8.148755636492822
+test-docs: from 2000 to 3000
+ppl of batch 3: 8.146552472151644
+test-docs: from 3000 to 4000
+ppl of batch 4: 8.133709139763923
+test-docs: from 4000 to 5000
+ppl of batch 5: 8.144285514676735
+test-docs: from 5000 to 6000
+ppl of batch 6: 8.1097638767229
+test-docs: from 6000 to 7000
+ppl of batch 7: 8.155350564571188
+test-docs: from 7000 to 7532
+ppl of batch 8: 8.170441779038889
+end perplexity - show perplexity:
+e-normalized-perplexity-lda: 0.40559086629001884
+calculate coherence and diversity
+topic coherence 0.17668937635583054
+topic diversity 0.754
+ending coherence and diversity
+\end{Verbatim}
+
+    \textbf{Skipgram-ETM}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  epochs
+\item
+  wordvec-model: skipgram oder cbow
+\item
+  min-df
+\item
+  filter-stopwords: ``True''/``False'' as String
+\item
+  activate-func: ``ReLU'' oder ``tanh''
+\item
+  hidden-size:
+\item
+  optimizer-name: ``adam'' oder ``sgd''
+\item
+  learing rate: lr
+\item
+  weight-decay wdecay
+\end{enumerate}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{run} \PY{n}{main}\PY{o}{.}\PY{n}{py} \PY{o}{\PYZhy{}}\PY{o}{\PYZhy{}}\PY{n}{model} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ETM}\PY{l+s+s2}{\PYZdq{}} \PY{o}{\PYZhy{}}\PY{o}{\PYZhy{}}\PY{n}{epochs} \PY{l+m+mi}{150} \PY{o}{\PYZhy{}}\PY{o}{\PYZhy{}}\PY{n}{wordvec}\PY{o}{\PYZhy{}}\PY{n}{model} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{skipgram}\PY{l+s+s2}{\PYZdq{}} \PY{o}{\PYZhy{}}\PY{o}{\PYZhy{}}\PY{n}{loss}\PY{o}{\PYZhy{}}\PY{n}{name} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{cross\PYZhy{}entropy}\PY{l+s+s2}{\PYZdq{}} \PY{o}{\PYZhy{}}\PY{o}{\PYZhy{}}\PY{n+nb}{min}\PY{o}{\PYZhy{}}\PY{n}{df} \PY{l+m+mi}{100} \PY{o}{\PYZhy{}}\PY{o}{\PYZhy{}}\PY{n}{num}\PY{o}{\PYZhy{}}\PY{n}{topics} \PY{l+m+mi}{20} \PY{o}{\PYZhy{}}\PY{o}{\PYZhy{}}\PY{n+nb}{filter}\PY{o}{\PYZhy{}}\PY{n}{stopwords} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{True}\PY{l+s+s2}{\PYZdq{}} \PY{o}{\PYZhy{}}\PY{o}{\PYZhy{}}\PY{n}{hidden}\PY{o}{\PYZhy{}}\PY{n}{size} \PY{l+m+mi}{800} \PY{o}{\PYZhy{}}\PY{o}{\PYZhy{}}\PY{n}{activate}\PY{o}{\PYZhy{}}\PY{n}{func} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ReLU}\PY{l+s+s2}{\PYZdq{}} \PY{o}{\PYZhy{}}\PY{o}{\PYZhy{}}\PY{n}{optimizer}\PY{o}{\PYZhy{}}\PY{n}{name} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{adam}\PY{l+s+s2}{\PYZdq{}} \PY{o}{\PYZhy{}}\PY{o}{\PYZhy{}}\PY{n}{lr} \PY{l+m+mf}{0.002} \PY{o}{\PYZhy{}}\PY{o}{\PYZhy{}}\PY{n}{wdecay} \PY{l+m+mf}{0.0000012}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \textbf{BERT-ETM Command} 1. für Bert nur in dem Fall, dass Datensaz
+ohne Stopwörter ist das Durchführen möglich
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{run} \PY{n}{main}\PY{o}{.}\PY{n}{py} \PY{o}{\PYZhy{}}\PY{o}{\PYZhy{}}\PY{n}{model} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ETM}\PY{l+s+s2}{\PYZdq{}} \PY{o}{\PYZhy{}}\PY{o}{\PYZhy{}}\PY{n}{epochs} \PY{l+m+mi}{2} \PY{o}{\PYZhy{}}\PY{o}{\PYZhy{}}\PY{n}{wordvec}\PY{o}{\PYZhy{}}\PY{n}{model} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{bert}\PY{l+s+s2}{\PYZdq{}} \PY{o}{\PYZhy{}}\PY{o}{\PYZhy{}}\PY{n}{loss}\PY{o}{\PYZhy{}}\PY{n}{name} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{cross\PYZhy{}entropy}\PY{l+s+s2}{\PYZdq{}} \PY{o}{\PYZhy{}}\PY{o}{\PYZhy{}}\PY{n+nb}{min}\PY{o}{\PYZhy{}}\PY{n}{df} \PY{l+m+mi}{10} \PY{o}{\PYZhy{}}\PY{o}{\PYZhy{}}\PY{n}{num}\PY{o}{\PYZhy{}}\PY{n}{topics} \PY{l+m+mi}{20} \PY{o}{\PYZhy{}}\PY{o}{\PYZhy{}}\PY{n+nb}{filter}\PY{o}{\PYZhy{}}\PY{n}{stopwords} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{True}\PY{l+s+s2}{\PYZdq{}} \PY{o}{\PYZhy{}}\PY{o}{\PYZhy{}}\PY{n}{hidden}\PY{o}{\PYZhy{}}\PY{n}{size} \PY{l+m+mi}{800} \PY{o}{\PYZhy{}}\PY{o}{\PYZhy{}}\PY{n}{activate}\PY{o}{\PYZhy{}}\PY{n}{func} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ReLU}\PY{l+s+s2}{\PYZdq{}} \PY{o}{\PYZhy{}}\PY{o}{\PYZhy{}}\PY{n}{optimizer}\PY{o}{\PYZhy{}}\PY{n}{name} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{adam}\PY{l+s+s2}{\PYZdq{}} \PY{o}{\PYZhy{}}\PY{o}{\PYZhy{}}\PY{n}{lr} \PY{l+m+mf}{0.002} \PY{o}{\PYZhy{}}\PY{o}{\PYZhy{}}\PY{n}{wdecay} \PY{l+m+mf}{0.0000012}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+using cuda: False
+filter-stopwords: True
+--------------------------------------------------------------------------------
+--------------------
+
+
+loading texts: {\ldots}
+From: lerxst@wam.umd.edu (where's my thing)
+Subject: WHAT car is this!?
+Nntp-Posting-Host: rac3.wam.umd.edu
+Organization: University of Maryland, College Park
+Lines: 15
+
+ I was wondering if anyone out there could enlighten me on this car I saw
+the other day. It was a 2-door sports car, looked to be from the late 60s/
+early 70s. It was called a Bricklin. The doors were really small. In addition,
+the front bumper was separate from the rest of the body. This is
+all I know. If anyone can tellme a model name, engine specs, years
+of production, where this car is made, history, or whatever info you
+have on this funky looking car, please e-mail.
+
+Thanks,
+- IL
+   ---- brought to you by your neighborhood Lerxst ----
+
+
+
+
+
+train-size after loading: 11314
+test-size after loading: 7532
+finished load!
+start: preprocessing: {\ldots}
+preprocessing step: remove stopwords
+will use bert embedding, so delete words from not\_in\_bert\_vocab.txt
+finised: preprocessing!
+
+total documents 18846
+vocab-size in df: 18637
+preprocessing remove stopwords from vocabulary
+start creating vocabulary {\ldots}
+length of the vocabulary: 18637
+length word2id list: 18637
+length id2word list: 18637
+finished: creating vocabulary
+
+
+save docs in txt{\ldots}
+save docs finished
+train-size-after-all: 11214
+test-size-after-all: 7532
+validation-size-after-all: 100
+test-size-after-all: 11214
+test-indices-length: 11214
+test-size-after-all: 100
+test-indices-length: 100
+test-size-after-all: 7532
+test-indices-length: 7532
+length train-documents-indices : 1295140
+length of the vocabulary: 18637
+
+
+start: creating bow representation{\ldots}
+finised creating bow input!
+
+start: creating bow representation{\ldots}
+finised creating bow input!
+
+start: creating bow representation{\ldots}
+finised creating bow input!
+
+start: creating bow representation{\ldots}
+finised creating bow input!
+
+start: creating bow representation{\ldots}
+finised creating bow input!
+
+train-bow-representation for ETM:
+
+example ids of dict-id2word for ETM: [0, 1, 2, 3, 4]
+example words of dict-id2word for ETM: ['bobbs', 'opposing', 'gm', 'xterminals',
+'trim']
+Size of the vocabulary after prprocessing ist: 18637
+Size of train set: 11214
+Size of val set: 100
+Size of test set: 7532
+save docs in txt{\ldots}
+save docs finished
+prepare data finished
+--------------------------------------------------------------------------------
+--------------------
+word-embedding training begin
+using prepared\_data/bert\_vocab\_embedding.txt
+bert-embeddings were already builded
+word-embedding finised
+--------------------------------------------------------------------------------
+--------------------
+training parameter setting{\ldots}
+using epochs: 2
+using optimizer: adam
+using learning rate: 0.002
+using wdecay: 1.2e-06
+total train docs: 11214
+sum of vector: 0.9999996423721313
+length of vector: 0.14386114478111267
+reading bert prefitted-embedding{\ldots}
+prepared\_data//bert\_vocab\_embedding.txt
+loading bert from npy and pkl
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+iter over bert-vocab:   0\%|          | 84/104008 [00:00<02:04, 837.68it/s]\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+bert-reading finished
+update bert by given vocab
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+iter over bert-vocab: 100\%|██████████| 104008/104008 [01:27<00:00, 1185.24it/s]
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+example 5 element of word-vector: [-0.29880613 -2.86340356 -0.14214839
+-1.84090602  3.61773515]
+ETM initilize{\ldots}
+--------------------------------------------------MODEL-
+SUMMARY--------------------------------------------------
+ETM(
+  (theta\_act): ReLU()
+  (topic\_embeddings\_alphas): Linear(in\_features=768, out\_features=20,
+bias=False)
+  (q\_theta): Sequential(
+    (0): Linear(in\_features=18637, out\_features=800, bias=True)
+    (1): ReLU()
+    (2): Linear(in\_features=800, out\_features=800, bias=True)
+    (3): ReLU()
+  )
+  (mu\_q\_theta): Linear(in\_features=800, out\_features=20, bias=True)
+  (logsigma\_q\_theta): Linear(in\_features=800, out\_features=20, bias=True)
+)
+--------------------------------------------------TRAIN-------------------------
+-------------------------
+number of batches: 12
+Epoch: 1/2  -  Loss: 1097.84509          Rec: 1097.45032         KL: 0.39488
+Epoch: 2/2  -  Loss: 1036.34802          Rec: 1035.17322         KL: 1.17482
+Checkpoint saved at checkpoints/etm\_epoch\_2.pth.tar
+\end{Verbatim}
+
+    
+    \begin{verbatim}
+<Figure size 640x480 with 1 Axes>
+    \end{verbatim}
+
+    
+    
+    \begin{verbatim}
+<Figure size 640x480 with 1 Axes>
+    \end{verbatim}
+
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+100\%|██████████| 20/20 [00:00<00:00, 138425.87it/s]
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+topic-coherrence: 0.09996242525380584
+topic-diversity: 0.508
+calculate perplexitiy of test dataset: {\ldots}
+test-1-loader: 7
+test-2-loader: 7
+batch 0 finished
+batch 1 finished
+batch 2 finished
+batch 3 finished
+batch 4 finished
+batch 5 finished
+batch 6 finished
+topic-normalized-perplexity: 0.5014701937007029
+\end{Verbatim}
+
+    \hypertarget{notebooks-fuxfcr-alle-schritten-lda-und-etm}{%
+\section{\texorpdfstring{\textbf{Notebooks für alle Schritten: LDA und
+ETM}}{Notebooks für alle Schritten: LDA und ETM}}\label{notebooks-fuxfcr-alle-schritten-lda-und-etm}}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  Da der Umfang der Implementierung ziemlich große ist, wird die
+  Implementierung für unterschiedliche Komponenten in dem Ordner
+  \texttt{src} gespeichert
+  \href{https://github.com/hanhluukim/replication-topic-modelling-in-embedding-space/tree/main/src}{hier:}
+\item
+  Die gebrachten Komponenten werden in diesem Notebook dann importieren
+  und die Ausgaben werden angezeigt.
+\end{enumerate}
+
+    \hypertarget{gebrauchte-paketen-importieren}{%
+\section{\texorpdfstring{\textbf{Gebrauchte Paketen
+importieren}}{Gebrauchte Paketen importieren}}\label{gebrauchte-paketen-importieren}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{4}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} einige Paketten wurden für Visualisierung gebraucht}
+\PY{k+kn}{import} \PY{n+nn}{pandas} \PY{k}{as} \PY{n+nn}{pd}
+\PY{k+kn}{from} \PY{n+nn}{pathlib} \PY{k}{import} \PY{n}{Path}
+\PY{k+kn}{import} \PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot} \PY{k}{as} \PY{n+nn}{plt}
+\PY{o}{\PYZpc{}}\PY{k}{matplotlib} inline
+\PY{k+kn}{import} \PY{n+nn}{umap}\PY{n+nn}{.}\PY{n+nn}{umap\PYZus{}} \PY{k}{as} \PY{n+nn}{umap}
+\PY{k+kn}{import} \PY{n+nn}{time}
+\PY{k+kn}{import} \PY{n+nn}{plotly}\PY{n+nn}{.}\PY{n+nn}{express} \PY{k}{as} \PY{n+nn}{px}
+\PY{k+kn}{from} \PY{n+nn}{sklearn} \PY{k}{import} \PY{n}{cluster}
+\PY{k+kn}{from} \PY{n+nn}{sklearn} \PY{k}{import} \PY{n}{metrics}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/usr/local/lib/python3.7/dist-packages/distributed/config.py:20:
+YAMLLoadWarning: calling yaml.load() without Loader={\ldots} is deprecated, as the
+default Loader is unsafe. Please read https://msg.pyyaml.org/load for full
+details.
+  defaults = yaml.load(f)
+\end{Verbatim}
+
+    \hypertarget{vorverarbeitung-und-bow-repruxe4sentationen-fuxfcr-textdaten-durchfuxfchren}{%
+\section{\texorpdfstring{\textbf{Vorverarbeitung und
+BOW-Repräsentationen für Textdaten
+durchführen}}{Vorverarbeitung und BOW-Repräsentationen für Textdaten durchführen}}\label{vorverarbeitung-und-bow-repruxe4sentationen-fuxfcr-textdaten-durchfuxfchren}}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Vocabular erstellen
+\item
+  BOW-Repräsentationen für allen Teildatensätzen
+\item
+  Wichtige Parameters sind:
+\end{enumerate}
+
+\begin{itemize}
+\tightlist
+\item
+  stopwords\_filter = True/False
+\item
+  use\_bert\_embedding = True/False
+\item
+  min\_df für unterschiedliche Vocabulargröße
+\item
+  stopwords\_remove\_from\_vocab = True/False
+\end{itemize}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{5}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{use\PYZus{}bert\PYZus{}embedding} \PY{o}{=} \PY{k+kc}{False} \PY{c+c1}{\PYZsh{}in this notebook we do not use BERT\PYZhy{}Embeddings}
+\PY{n}{stopwords\PYZus{}filter} \PY{o}{=} \PY{k+kc}{True}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{6}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} init TextDataLoader für die Datenquelle 20 News Groups}
+\PY{c+c1}{\PYZsh{} Daten abrufen vom Sklearn, tokenisieren und besondere Charaktern entfernen}
+\PY{k+kn}{from} \PY{n+nn}{src}\PY{n+nn}{.}\PY{n+nn}{prepare\PYZus{}dataset} \PY{k}{import} \PY{n}{TextDataLoader}
+\PY{n}{textsloader} \PY{o}{=} \PY{n}{TextDataLoader}\PY{p}{(}\PY{n}{source}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{20newsgroups}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{train\PYZus{}size}\PY{o}{=}\PY{k+kc}{None}\PY{p}{,} \PY{n}{test\PYZus{}size}\PY{o}{=}\PY{k+kc}{None}\PY{p}{)}
+\PY{n}{textsloader}\PY{o}{.}\PY{n}{load\PYZus{}tokenize\PYZus{}texts}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{20newsgroups}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{textsloader}\PY{o}{.}\PY{n}{show\PYZus{}example\PYZus{}raw\PYZus{}texts}\PY{p}{(}\PY{n}{n\PYZus{}docs}\PY{o}{=}\PY{l+m+mi}{2}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} Vorverarbeitung von Daten mit folgenden Schritten:}
+\PY{n}{textsloader}\PY{o}{.}\PY{n}{preprocess\PYZus{}texts}\PY{p}{(}\PY{n}{length\PYZus{}one\PYZus{}remove}\PY{o}{=}\PY{k+kc}{True}\PY{p}{,} 
+                             \PY{n}{punctuation\PYZus{}lower} \PY{o}{=} \PY{k+kc}{True}\PY{p}{,} 
+                             \PY{n}{stopwords\PYZus{}filter} \PY{o}{=} \PY{n}{stopwords\PYZus{}filter}\PY{p}{,}
+                             \PY{n}{use\PYZus{}bert\PYZus{}embedding} \PY{o}{=} \PY{n}{use\PYZus{}bert\PYZus{}embedding}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} Daten zerlegen für Train, Test und Validation. Erstellen Vocabular aus dem Trainset}
+
+\PY{n}{min\PYZus{}df}\PY{o}{=}\PY{l+m+mi}{100}
+\PY{n}{textsloader}\PY{o}{.}\PY{n}{split\PYZus{}and\PYZus{}create\PYZus{}voca\PYZus{}from\PYZus{}trainset}\PY{p}{(}\PY{n}{max\PYZus{}df}\PY{o}{=}\PY{l+m+mf}{0.7}\PY{p}{,} 
+                                                \PY{n}{min\PYZus{}df}\PY{o}{=}\PY{n}{min\PYZus{}df}\PY{p}{,} 
+                                                \PY{n}{stopwords\PYZus{}remove\PYZus{}from\PYZus{}voca}\PY{o}{=}\PY{n}{stopwords\PYZus{}filter}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+loading texts: {\ldots}
+From: lerxst@wam.umd.edu (where's my thing)
+Subject: WHAT car is this!?
+Nntp-Posting-Host: rac3.wam.umd.edu
+Organization: University of Maryland, College Park
+Lines: 15
+
+ I was wondering if anyone out there could enlighten me on this car I saw
+the other day. It was a 2-door sports car, looked to be from the late 60s/
+early 70s. It was called a Bricklin. The doors were really small. In addition,
+the front bumper was separate from the rest of the body. This is
+all I know. If anyone can tellme a model name, engine specs, years
+of production, where this car is made, history, or whatever info you
+have on this funky looking car, please e-mail.
+
+Thanks,
+- IL
+   ---- brought to you by your neighborhood Lerxst ----
+
+
+
+
+
+train-size after loading: 11314
+test-size after loading: 7532
+finished load!
+check some sample texts of the dataset after filter punctuation and digits
+['From', ':', 'lerxst', '@', 'wam', '.', 'umd', '.', 'edu', '(', "where's",
+'my', 'thing', ')', 'Subject', ':', 'WHAT', 'car', 'is', 'this', '!', '?',
+'Nntp', 'Posting', 'Host', ':', 'rac3', '.', 'wam', '.', 'umd', '.', 'edu',
+'Organization', ':', 'University', 'of', 'Maryland', ',', 'College', 'Park',
+'Lines', ':', '15', 'I', 'was', 'wondering', 'if', 'anyone', 'out', 'there',
+'could', 'enlighten', 'me', 'on', 'this', 'car', 'I', 'saw', 'the', 'other',
+'day', '.', 'It', 'was', 'a', '2', 'door', 'sports', 'car', ',', 'looked', 'to',
+'be', 'from', 'the', 'late', '60s', '/', 'early', '70s', '.', 'It', 'was',
+'called', 'a', 'Bricklin', '.', 'The', 'doors', 'were', 'really', 'small', '.',
+'In', 'addition', ',', 'the', 'front', 'bumper', 'was', 'separate', 'from',
+'the', 'rest', 'of', 'the', 'body', '.', 'This', 'is', 'all', 'I', 'know', '.',
+'If', 'anyone', 'can', 'tellme', 'a', 'model', 'name', ',', 'engine', 'specs',
+',', 'years', 'of', 'production', ',', 'where', 'this', 'car', 'is', 'made',
+',', 'history', ',', 'or', 'whatever', 'info', 'you', 'have', 'on', 'this',
+'funky', 'looking', 'car', ',', 'please', 'e', 'mail', '.', 'Thanks', ',', 'IL',
+'brought', 'to', 'you', 'by', 'your', 'neighborhood', 'Lerxst']
+================================================================================
+====================
+['From', ':', 'guykuo', '@', 'carson', '.', 'u', '.', 'washington', '.', 'edu',
+'(', 'Guy', 'Kuo', ')', 'Subject', ':', 'SI', 'Clock', 'Poll', 'Final', 'Call',
+'Summary', ':', 'Final', 'call', 'for', 'SI', 'clock', 'reports', 'Keywords',
+':', 'SI', ',', 'acceleration', ',', 'clock', ',', 'upgrade', 'Article', 'I',
+'.', 'D', '.', ':', 'shelley', '.', '1qvfo9INNc3s', 'Organization', ':',
+'University', 'of', 'Washington', 'Lines', ':', '11', 'NNTP', 'Posting', 'Host',
+':', 'carson', '.', 'u', '.', 'washington', '.', 'edu', 'A', 'fair', 'number',
+'of', 'brave', 'souls', 'who', 'upgraded', 'their', 'SI', 'clock', 'oscillator',
+'have', 'shared', 'their', 'experiences', 'for', 'this', 'poll', '.', 'Please',
+'send', 'a', 'brief', 'message', 'detailing', 'your', 'experiences', 'with',
+'the', 'procedure', '.', 'Top', 'speed', 'attained', ',', 'CPU', 'rated',
+'speed', ',', 'add', 'on', 'cards', 'and', 'adapters', ',', 'heat', 'sinks',
+',', 'hour', 'of', 'usage', 'per', 'day', ',', 'floppy', 'disk',
+'functionality', 'with', '800', 'and', '1', '.', '4', 'm', 'floppies', 'are',
+'especially', 'requested', '.', 'I', 'will', 'be', 'summarizing', 'in', 'the',
+'next', 'two', 'days', ',', 'so', 'please', 'add', 'to', 'the', 'network',
+'knowledge', 'base', 'if', 'you', 'have', 'done', 'the', 'clock', 'upgrade',
+'and', "haven't", 'answered', 'this', 'poll', '.', 'Thanks', '.', 'Guy', 'Kuo',
+'<', 'guykuo', '@', 'u', '.', 'washington', '.', 'edu', '>']
+================================================================================
+====================
+start: preprocessing: {\ldots}
+preprocessing step: remove stopwords
+finised: preprocessing!
+vocab-size in df: 3102
+preprocessing remove stopwords from vocabulary
+start creating vocabulary {\ldots}
+length of the vocabulary: 3102
+length word2id list: 3102
+length id2word list: 3102
+finished: creating vocabulary
+\end{Verbatim}
+
+    \hypertarget{lda-model}{%
+\section{\texorpdfstring{\textbf{LDA
+Model}}{LDA Model}}\label{lda-model}}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Benutzen das fertige Paket von Gensim, um die Topics mit LDA zu
+  finden:
+  \href{https://radimrehurek.com/gensim/models/ldamodel.html}{LDA Model
+  GENSIM}
+\item
+  Der Klasse textsloader hat bereits die geeignete Format für LDA
+  vorbereitet:
+\end{enumerate}
+
+\begin{itemize}
+\tightlist
+\item
+  Setzen das Parameter: for\_lda\_model = True
+\end{itemize}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{7}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{from} \PY{n+nn}{src}\PY{n+nn}{.}\PY{n+nn}{evaluierung} \PY{k}{import} \PY{n}{topicCoherence2}\PY{p}{,} \PY{n}{topicDiversity}
+\PY{k+kn}{from} \PY{n+nn}{src}\PY{n+nn}{.}\PY{n+nn}{lda} \PY{k}{import} \PY{n}{lda}
+\PY{k+kn}{from} \PY{n+nn}{gensim}\PY{n+nn}{.}\PY{n+nn}{models} \PY{k}{import} \PY{n}{LdaModel}
+\PY{k+kn}{from} \PY{n+nn}{gensim}\PY{n+nn}{.}\PY{n+nn}{parsing}\PY{n+nn}{.}\PY{n+nn}{preprocessing} \PY{k}{import} \PY{n}{preprocess\PYZus{}string}\PY{p}{,} \PY{n}{strip\PYZus{}punctuation}\PY{p}{,} \PY{n}{strip\PYZus{}numeric}
+
+
+\PY{n}{for\PYZus{}lda\PYZus{}model} \PY{o}{=} \PY{k+kc}{True} 
+\PY{n}{num\PYZus{}topics} \PY{o}{=} \PY{l+m+mi}{20}
+
+\PY{c+c1}{\PYZsh{} Erstellen BOW\PYZhy{}Repräsentation für LDA Model}
+\PY{k}{if} \PY{n}{for\PYZus{}lda\PYZus{}model} \PY{o}{==} \PY{k+kc}{True}\PY{p}{:}
+    \PY{n}{word2id}\PY{p}{,} \PY{n}{id2word}\PY{p}{,} \PY{n}{train\PYZus{}set}\PY{p}{,} \PY{n}{test\PYZus{}set}\PY{p}{,} \PY{n}{val\PYZus{}set}\PY{p}{,} \PY{n}{test\PYZus{}set\PYZus{}h1}\PY{p}{,} \PY{n}{test\PYZus{}set\PYZus{}h2} \PY{o}{=} \PY{n}{textsloader}\PY{o}{.}\PY{n}{create\PYZus{}bow\PYZus{}and\PYZus{}savebow\PYZus{}for\PYZus{}each\PYZus{}set}\PY{p}{(}\PY{n}{for\PYZus{}lda\PYZus{}model}\PY{o}{=}\PY{n}{for\PYZus{}lda\PYZus{}model}\PY{p}{)}
+    \PY{n}{gensim\PYZus{}corpus\PYZus{}train\PYZus{}set} \PY{o}{=} \PY{n}{train\PYZus{}set}
+\PY{k}{else}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{for\PYZus{}lda\PYZus{}model is True but still here?}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n}{word2id}\PY{p}{,} \PY{n}{id2word}\PY{p}{,} \PY{n}{train\PYZus{}set}\PY{p}{,} \PY{n}{test\PYZus{}set}\PY{p}{,} \PY{n}{val\PYZus{}set} \PY{o}{=} \PY{n}{textsloader}\PY{o}{.}\PY{n}{create\PYZus{}bow\PYZus{}and\PYZus{}savebow\PYZus{}for\PYZus{}each\PYZus{}set}\PY{p}{(}\PY{n}{for\PYZus{}lda\PYZus{}model}\PY{o}{=}\PY{n}{for\PYZus{}lda\PYZus{}model}\PY{p}{)}
+
+\PY{n}{docs\PYZus{}tr}\PY{p}{,} \PY{n}{docs\PYZus{}t}\PY{p}{,} \PY{n}{docs\PYZus{}v} \PY{o}{=} \PY{n}{textsloader}\PY{o}{.}\PY{n}{get\PYZus{}docs\PYZus{}in\PYZus{}words\PYZus{}for\PYZus{}each\PYZus{}set}\PY{p}{(}\PY{p}{)}
+\PY{c+c1}{\PYZsh{}lda model}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+m+mi}{100}\PY{o}{*}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZhy{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+save docs in txt{\ldots}
+save docs finished
+train-size-after-all: 11214
+test-size-after-all: 7532
+validation-size-after-all: 100
+test-size-after-all: 11214
+test-indices-length: 11214
+test-size-after-all: 100
+test-indices-length: 100
+test-size-after-all: 7532
+test-indices-length: 7532
+length train-documents-indices : 896087
+length of the vocabulary: 3102
+
+
+start: creating bow representation{\ldots}
+finised creating bow input!
+
+start: creating bow representation{\ldots}
+finised creating bow input!
+
+start: creating bow representation{\ldots}
+finised creating bow input!
+
+start: creating bow representation{\ldots}
+finised creating bow input!
+
+start: creating bow representation{\ldots}
+finised creating bow input!
+
+compact representation for LDA
+save docs in txt{\ldots}
+save docs finished
+--------------------------------------------------------------------------------
+--------------------
+\end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{8}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}ldamodel = lda(train\PYZus{}set,10,id2word)}
+\PY{n}{ldamodel} \PY{o}{=} \PY{n}{LdaModel}\PY{p}{(}\PY{n}{train\PYZus{}set}\PY{p}{,} 
+                    \PY{n}{num\PYZus{}topics}\PY{o}{=} \PY{n}{num\PYZus{}topics}\PY{p}{,}
+                    \PY{n}{id2word} \PY{o}{=} \PY{n}{id2word}\PY{p}{,} 
+                    \PY{n}{passes} \PY{o}{=} \PY{l+m+mi}{5}\PY{p}{,}
+                    \PY{n}{random\PYZus{}state} \PY{o}{=} \PY{l+m+mi}{42}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{9}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{lda\PYZus{}topics} \PY{o}{=} \PY{n}{ldamodel}\PY{o}{.}\PY{n}{show\PYZus{}topics}\PY{p}{(}\PY{n}{num\PYZus{}topics} \PY{o}{=} \PY{l+m+mi}{20}\PY{p}{,} \PY{n}{num\PYZus{}words}\PY{o}{=}\PY{l+m+mi}{10}\PY{p}{)}
+\PY{n}{topics} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+\PY{n}{filters} \PY{o}{=} \PY{p}{[}\PY{k}{lambda} \PY{n}{x}\PY{p}{:} \PY{n}{x}\PY{o}{.}\PY{n}{lower}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{n}{strip\PYZus{}punctuation}\PY{p}{,} \PY{n}{strip\PYZus{}numeric}\PY{p}{]}
+\PY{k}{for} \PY{n}{topic} \PY{o+ow}{in} \PY{n}{lda\PYZus{}topics}\PY{p}{:}
+    \PY{n}{topics}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{preprocess\PYZus{}string}\PY{p}{(}\PY{n}{topic}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,} \PY{n}{filters}\PY{p}{)}\PY{p}{)}
+\PY{k}{for} \PY{n}{topic} \PY{o+ow}{in} \PY{n}{topics}\PY{p}{:}
+  \PY{n+nb}{print}\PY{p}{(}\PY{n}{topic}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+['windows', 'file', 'dos', 'graphics', 'software', 'pc', 'system', 'files',
+'ftp', 'program']
+['god', 'people', 'jesus', 'christian', 'bible', 'life', 'church', 'christ',
+'christians', 'time']
+['writes', 'article', 'cs', 'university', 'colorado', 'posting', 'cc', 'nntp',
+'host', 'science']
+['ca', 'uk', 'ac', 'writes', 'article', 'org', 'posting', 'nntp', 'host', 'mit']
+['drive', 'sale', 'scsi', 'disk', 'hp', 'hard', 'drives', 'system', 'ide',
+'computer']
+['window', 'information', 'data', 'application', 'source', 'time', 'widget',
+'set', 'include', 'list']
+['brian', 'indiana', 'gatech', 'apple', 'article', 'ucs', 'writes', 'georgia',
+'sandvik', 'kent']
+['university', 'posting', 'host', 'nntp', 'de', 'au', 'computer', 'writes',
+'article', 'distribution']
+['money', 'people', 'time', 'car', 'make', 'pay', 'work', 'year', 'list',
+'good']
+['power', 'state', 'ohio', 'back', 'acs', 'time', 'ground', 'home', 'work',
+'left']
+['andrew', 'cmu', 'washington', 'att', 'posting', 'ibm', 'host', 'nntp', 'san',
+'la']
+['israel', 'jews', 'armenians', 'armenian', 'people', 'war', 'turkish',
+'jewish', 'israeli', 'world']
+['writes', 'article', 'posting', 'nntp', 'host', 'university', 'bike', 'sun',
+'world', 'distribution']
+['people', 'mr', 'writes', 'fire', 'president', 'fbi', 'time', 'article',
+'police', 'koresh']
+['space', 'nasa', 'gov', 'access', 'mil', 'digex', 'net', 'shuttle', 'launch',
+'pat']
+['max', 'car', 'cwru', 'writes', 'cleveland', 'caltech', 'article', 'posting',
+'se', 'nntp']
+['medical', 'information', 'research', 'health', 'disease', 'national', 'april',
+'school', 'number', 'cancer']
+['people', 'article', 'gun', 'law', 'writes', 'government', 'rights', 'guns',
+'control', 'make']
+['game', 'team', 'year', 'games', 'writes', 'uiuc', 'hockey', 'season',
+'university', 'article']
+['key', 'netcom', 'chip', 'clipper', 'encryption', 'keys', 'public', 'des',
+'government', 'security']
+\end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{10}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{tc} \PY{o}{=} \PY{n}{topicCoherence2}\PY{p}{(}\PY{n}{topics}\PY{p}{,}\PY{n+nb}{len}\PY{p}{(}\PY{n}{topics}\PY{p}{)}\PY{p}{,}\PY{n}{docs\PYZus{}tr}\PY{p}{,}\PY{n+nb}{len}\PY{p}{(}\PY{n}{docs\PYZus{}tr}\PY{p}{)}\PY{p}{)}
+\PY{n}{td} \PY{o}{=} \PY{n}{topicDiversity}\PY{p}{(}\PY{n}{topics}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{topic\PYZhy{}coherrence: }\PY{l+s+si}{\PYZob{}tc\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{topic\PYZhy{}diversity: }\PY{l+s+si}{\PYZob{}td\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+topic-coherrence: 0.18777587945253085
+topic-diversity: 0.74
+\end{Verbatim}
+
+    \textbf{Perplexity for LDA}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{11}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{from} \PY{n+nn}{src}\PY{n+nn}{.}\PY{n+nn}{evaluierung} \PY{k}{import} \PY{n}{topicPerplexityTeil1}\PY{p}{,} \PY{n}{topicPerplexityNew}
+\PY{k+kn}{from} \PY{n+nn}{src}\PY{n+nn}{.}\PY{n+nn}{utils\PYZus{}perplexity} \PY{k}{import} \PY{n}{get\PYZus{}theta\PYZus{}from\PYZus{}lda}\PY{p}{,} \PY{n}{get\PYZus{}beta\PYZus{}from\PYZus{}lda}
+\PY{k+kn}{import} \PY{n+nn}{gensim}
+\PY{n}{vocab} \PY{o}{=} \PY{n+nb}{list}\PY{p}{(}\PY{n}{id2word}\PY{o}{.}\PY{n}{values}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\PY{n}{vocab\PYZus{}size}\PY{o}{=}\PY{n+nb}{len}\PY{p}{(}\PY{n}{vocab}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} get beta and theta}
+\PY{n}{beta\PYZus{}KV} \PY{o}{=} \PY{n}{get\PYZus{}beta\PYZus{}from\PYZus{}lda}\PY{p}{(}\PY{n}{ldamodel}\PY{p}{,} \PY{n}{num\PYZus{}topics}\PY{p}{,} \PY{n}{vocab}\PY{p}{,} \PY{n}{vocab\PYZus{}size}\PY{p}{)}
+\PY{n}{theta\PYZus{}test\PYZus{}1\PYZus{}DK} \PY{o}{=} \PY{n}{get\PYZus{}theta\PYZus{}from\PYZus{}lda}\PY{p}{(}\PY{n}{ldamodel}\PY{p}{,} \PY{n}{num\PYZus{}topics}\PY{p}{,} \PY{n}{test\PYZus{}set\PYZus{}h1}\PY{p}{)}
+\PY{n}{n\PYZus{}test\PYZus{}docs\PYZus{}2} \PY{o}{=} \PY{n+nb}{len}\PY{p}{(}\PY{n}{test\PYZus{}set\PYZus{}h2}\PY{p}{)}
+\PY{n}{test\PYZus{}set\PYZus{}h2\PYZus{}in\PYZus{}bow\PYZus{}sparse\PYZus{}matrix} \PY{o}{=} \PY{n}{gensim}\PY{o}{.}\PY{n}{matutils}\PY{o}{.}\PY{n}{corpus2csc}\PY{p}{(}\PY{n}{test\PYZus{}set\PYZus{}h2}\PY{p}{)}\PY{o}{.}\PY{n}{transpose}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{14}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}covert to tensor}
+\PY{k+kn}{import} \PY{n+nn}{math}
+\PY{k+kn}{import} \PY{n+nn}{torch}
+\PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np}
+
+\PY{n}{ppl\PYZus{}over\PYZus{}batches} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+\PY{n}{batch\PYZus{}test\PYZus{}size} \PY{o}{=} \PY{l+m+mi}{1000}
+\PY{n}{beta\PYZus{}KV} \PY{o}{=} \PY{n}{torch}\PY{o}{.}\PY{n}{from\PYZus{}numpy}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{n}{beta\PYZus{}KV}\PY{p}{)}\PY{p}{)}
+\PY{n}{i} \PY{o}{=} \PY{l+m+mi}{0}
+\PY{n}{j} \PY{o}{=} \PY{l+m+mi}{0}
+\PY{k}{while} \PY{n}{i} \PY{o}{\PYZlt{}}\PY{o}{=} \PY{n}{n\PYZus{}test\PYZus{}docs\PYZus{}2}\PY{p}{:}
+    \PY{k}{if} \PY{p}{(}\PY{n}{i}\PY{o}{+}\PY{n}{batch\PYZus{}test\PYZus{}size}\PY{p}{)} \PY{o}{\PYZlt{}}\PY{o}{=} \PY{n}{n\PYZus{}test\PYZus{}docs\PYZus{}2}\PY{p}{:}
+        \PY{n}{theta\PYZus{}test\PYZus{}1\PYZus{}batch} \PY{o}{=} \PY{n}{torch}\PY{o}{.}\PY{n}{tensor}\PY{p}{(}\PY{n}{theta\PYZus{}test\PYZus{}1\PYZus{}DK}\PY{p}{[}\PY{n}{i}\PY{p}{:}\PY{n}{i}\PY{o}{+}\PY{n}{batch\PYZus{}test\PYZus{}size}\PY{p}{]}\PY{p}{)}
+        \PY{n}{bows\PYZus{}test\PYZus{}2\PYZus{}batch} \PY{o}{=} \PY{n}{torch}\PY{o}{.}\PY{n}{from\PYZus{}numpy}\PY{p}{(}\PY{n}{test\PYZus{}set\PYZus{}h2\PYZus{}in\PYZus{}bow\PYZus{}sparse\PYZus{}matrix}\PY{p}{[}\PY{n}{i}\PY{p}{:}\PY{n}{i}\PY{o}{+}\PY{n}{batch\PYZus{}test\PYZus{}size}\PY{p}{]}\PY{o}{.}\PY{n}{toarray}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+    \PY{k}{else}\PY{p}{:}
+       
+        \PY{n}{theta\PYZus{}test\PYZus{}1\PYZus{}batch} \PY{o}{=} \PY{n}{torch}\PY{o}{.}\PY{n}{tensor}\PY{p}{(}\PY{n}{theta\PYZus{}test\PYZus{}1\PYZus{}DK}\PY{p}{[}\PY{n}{i}\PY{p}{:}\PY{p}{]}\PY{p}{)}
+        \PY{n}{bows\PYZus{}test\PYZus{}2\PYZus{}batch} \PY{o}{=} \PY{n}{torch}\PY{o}{.}\PY{n}{from\PYZus{}numpy}\PY{p}{(}\PY{n}{test\PYZus{}set\PYZus{}h2\PYZus{}in\PYZus{}bow\PYZus{}sparse\PYZus{}matrix}\PY{p}{[}\PY{n}{i}\PY{p}{:}\PY{p}{]}\PY{o}{.}\PY{n}{toarray}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+
+    \PY{n}{avg\PYZus{}ppl} \PY{o}{=} \PY{n}{topicPerplexityNew}\PY{p}{(}\PY{n}{theta\PYZus{}test\PYZus{}1\PYZus{}batch}\PY{p}{,} \PY{n}{bows\PYZus{}test\PYZus{}2\PYZus{}batch}\PY{p}{,} \PY{n}{vocab\PYZus{}size}\PY{p}{,} \PY{n}{beta\PYZus{}KV}\PY{p}{)}
+    \PY{n+nb}{print}\PY{p}{(}\PY{n}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ppl of batch }\PY{l+s+s1}{\PYZob{}}\PY{l+s+s1}{j+1\PYZcb{}: }\PY{l+s+si}{\PYZob{}avg\PYZus{}ppl\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n}{ppl\PYZus{}over\PYZus{}batches}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{avg\PYZus{}ppl}\PY{p}{)}
+    \PY{n}{i} \PY{o}{=} \PY{n}{i} \PY{o}{+} \PY{n}{batch\PYZus{}test\PYZus{}size}
+    \PY{n}{j} \PY{o}{+}\PY{o}{=} \PY{l+m+mi}{1}
+\PY{n}{avg\PYZus{}over\PYZus{}batches} \PY{o}{=} \PY{p}{(}\PY{n+nb}{sum}\PY{p}{(}\PY{n}{ppl\PYZus{}over\PYZus{}batches}\PY{p}{)}\PY{o}{/}\PY{n+nb}{len}\PY{p}{(}\PY{n}{ppl\PYZus{}over\PYZus{}batches}\PY{p}{)}\PY{p}{)}
+\PY{n}{ppl\PYZus{}total} \PY{o}{=} \PY{n+nb}{round}\PY{p}{(}\PY{n}{math}\PY{o}{.}\PY{n}{exp}\PY{p}{(}\PY{n}{avg\PYZus{}over\PYZus{}batches}\PY{p}{)}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{)}
+\PY{n}{normalized\PYZus{}ppl} \PY{o}{=} \PY{n}{ppl\PYZus{}total}\PY{o}{/}\PY{n}{vocab\PYZus{}size}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{end perplexity \PYZhy{} show perplexity: }\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{e\PYZhy{}normalized\PYZhy{}perplexity\PYZhy{}lda: }\PY{l+s+si}{\PYZob{}normalized\PYZus{}ppl\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ldamodel}\PY{o}{.}\PY{n}{clear}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+ppl of batch 1: 7.4626675565497775
+ppl of batch 2: 7.459199193874847
+ppl of batch 3: 7.4777010005196125
+ppl of batch 4: 7.472666592536151
+ppl of batch 5: 7.489781073904341
+ppl of batch 6: 7.457684657228188
+ppl of batch 7: 7.48213299047086
+ppl of batch 8: 7.471542143482913
+end perplexity - show perplexity:
+e-normalized-perplexity-lda: 0.5665699548678272
+\end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{15}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{del} \PY{n}{test\PYZus{}set\PYZus{}h2}
+\PY{k}{del} \PY{n}{test\PYZus{}set\PYZus{}h1}
+\PY{k}{del} \PY{n}{test\PYZus{}set\PYZus{}h2\PYZus{}in\PYZus{}bow\PYZus{}sparse\PYZus{}matrix}
+\PY{k}{del} \PY{n}{theta\PYZus{}test\PYZus{}1\PYZus{}DK}
+\PY{k}{del} \PY{n}{beta\PYZus{}KV}
+\PY{k}{del} \PY{n}{ppl\PYZus{}over\PYZus{}batches}
+\PY{k}{del} \PY{n}{batch\PYZus{}test\PYZus{}size}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \hypertarget{alle-schritten-im-experiment-mit-dem-etm-modell}{%
+\section{\texorpdfstring{\textbf{Alle Schritten im Experiment mit dem
+ETM-Modell}}{Alle Schritten im Experiment mit dem ETM-Modell}}\label{alle-schritten-im-experiment-mit-dem-etm-modell}}
+
+    \hypertarget{daten-fuxfcr-etm}{%
+\section{\texorpdfstring{\textbf{Daten für
+ETM}}{Daten für ETM}}\label{daten-fuxfcr-etm}}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Input Daten für der ersten Teil ETM ist
+  (normalisierte)Bag-Of-Words-Repräsentation
+\end{enumerate}
+
+\begin{verbatim}
+*   for_lda_model = False
+\end{verbatim}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{1}
+\tightlist
+\item
+  textsloader.create\_bow\_and\_savebow\_for\_each\_set(for\_lda\_model=True)
+  stellt die folgenden Daten für das Modell:
+\end{enumerate}
+
+\begin{verbatim}
+*   word2id
+*   id2word
+*   train_set, test_set, val_set in der Form von BoW
+\end{verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{16}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Erstellen BOW\PYZhy{}Repräsentation für ETM Modell}
+\PY{n}{for\PYZus{}lda\PYZus{}model} \PY{o}{=} \PY{k+kc}{False}
+\PY{n}{word2id}\PY{p}{,} \PY{n}{id2word}\PY{p}{,} \PY{n}{train\PYZus{}set}\PY{p}{,} \PY{n}{test\PYZus{}set}\PY{p}{,} \PY{n}{val\PYZus{}set} \PY{o}{=} \PY{n}{textsloader}\PY{o}{.}\PY{n}{create\PYZus{}bow\PYZus{}and\PYZus{}savebow\PYZus{}for\PYZus{}each\PYZus{}set}\PY{p}{(}\PY{n}{for\PYZus{}lda\PYZus{}model}\PY{o}{=}\PY{n}{for\PYZus{}lda\PYZus{}model}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+save docs in txt{\ldots}
+save docs finished
+train-size-after-all: 11214
+test-size-after-all: 7532
+validation-size-after-all: 100
+test-size-after-all: 11214
+test-indices-length: 11214
+test-size-after-all: 100
+test-indices-length: 100
+test-size-after-all: 7532
+test-indices-length: 7532
+length train-documents-indices : 896087
+length of the vocabulary: 3102
+
+
+start: creating bow representation{\ldots}
+finised creating bow input!
+
+start: creating bow representation{\ldots}
+finised creating bow input!
+
+start: creating bow representation{\ldots}
+finised creating bow input!
+
+start: creating bow representation{\ldots}
+finised creating bow input!
+
+start: creating bow representation{\ldots}
+finised creating bow input!
+
+\end{Verbatim}
+
+    \textbf{Vocabular und IDs anzeigen als Beispiel}
+
+\begin{center}\rule{0.5\linewidth}{\linethickness}\end{center}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{17}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} show for samples: 100 word2id and id2 word}
+\PY{n}{word2id\PYZus{}df\PYZus{}sample} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{p}{)}
+\PY{n}{word2id\PYZus{}df\PYZus{}sample}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{word}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n+nb}{list}\PY{p}{(}\PY{n}{word2id}\PY{o}{.}\PY{n}{keys}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{[}\PY{p}{:}\PY{l+m+mi}{20}\PY{p}{]}
+\PY{n}{word2id\PYZus{}df\PYZus{}sample}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{id}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n+nb}{list}\PY{p}{(}\PY{n}{word2id}\PY{o}{.}\PY{n}{values}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{[}\PY{p}{:}\PY{l+m+mi}{20}\PY{p}{]}
+\PY{n}{word2id\PYZus{}df\PYZus{}sample}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{17}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+           word  id
+0       totally   0
+1           top   1
+2         claim   2
+3       helping   3
+4        purdue   4
+5       conduct   5
+6       implies   6
+7     solutions   7
+8        affect   8
+9         multi   9
+10  authorities  10
+11       france  11
+12       joseph  12
+13        chris  13
+14        roads  14
+15        newer  15
+16     supports  16
+17           mr  17
+18     position  18
+19    macintosh  19
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \textbf{Die Größe von Datensätzen kontrollieren}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{18}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Kontrollieren die Größen von verschiedenen Datensätzen}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Size of the vocabulary after prprocessing ist: }\PY{l+s+s1}{\PYZob{}}\PY{l+s+s1}{len(textsloader.vocabulary)\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Size of train set: }\PY{l+s+s1}{\PYZob{}}\PY{l+s+s1}{len(train\PYZus{}set[}\PY{l+s+s1}{\PYZdq{}}\PY{l+s+s1}{tokens}\PY{l+s+s1}{\PYZdq{}}\PY{l+s+s1}{])\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Size of val set: }\PY{l+s+s1}{\PYZob{}}\PY{l+s+s1}{len(val\PYZus{}set[}\PY{l+s+s1}{\PYZdq{}}\PY{l+s+s1}{tokens}\PY{l+s+s1}{\PYZdq{}}\PY{l+s+s1}{])\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Size of test set: }\PY{l+s+s1}{\PYZob{}}\PY{l+s+s1}{len(test\PYZus{}set[}\PY{l+s+s1}{\PYZdq{}}\PY{l+s+s1}{test}\PY{l+s+s1}{\PYZdq{}}\PY{l+s+s1}{][}\PY{l+s+s1}{\PYZdq{}}\PY{l+s+s1}{tokens}\PY{l+s+s1}{\PYZdq{}}\PY{l+s+s1}{])\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Size of the vocabulary after prprocessing ist: 3102
+Size of train set: 11214
+Size of val set: 100
+Size of test set: 7532
+\end{Verbatim}
+
+    \hypertarget{word-embedding-word2vec-mit-skipgrammcbow}{%
+\section{\texorpdfstring{\textbf{Word-Embedding: Word2Vec mit
+Skipgramm/CBOW}}{Word-Embedding: Word2Vec mit Skipgramm/CBOW}}\label{word-embedding-word2vec-mit-skipgrammcbow}}
+
+    \textbf{Dokumenten wiederstellen für Word2Vec Embedding}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Da wir Embeddings für jedes Wort des Vocabulares (das Vocab nur aus
+  dem Trainset) trainieren möchten, brauchen die Train\_set (Dokumenten
+  in Wörtern)
+\item
+  Wir trainieren Wort-Embedding für jedes Wort mit Skipgram Methode (die
+  Autoren benutzten Skipgram. Sie stellen nur über CBOW in dem
+  Hintergrund vor, aber sie benutzen tatsächlich Skipgram)
+\item
+  Trainierensetting = Word2Vec (siehe
+  \href{https://arxiv.org/pdf/1310.4546.pdf}{Word2Vec-Tomas Mikolov})
+\end{enumerate}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{19}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} re\PYZhy{}erstellen von Dokumenten nach der Vorverarbeitungen. Die Dokumenten sind in Wörtern und werden für Word\PYZhy{}Embedding Training benutzt}
+\PY{n}{docs\PYZus{}tr}\PY{p}{,} \PY{n}{docs\PYZus{}t}\PY{p}{,} \PY{n}{docs\PYZus{}v} \PY{o}{=} \PY{n}{textsloader}\PY{o}{.}\PY{n}{get\PYZus{}docs\PYZus{}in\PYZus{}words\PYZus{}for\PYZus{}each\PYZus{}set}\PY{p}{(}\PY{p}{)}
+\PY{n}{train\PYZus{}docs\PYZus{}df} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{p}{)}
+\PY{n}{train\PYZus{}docs\PYZus{}df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{text\PYZhy{}after\PYZhy{}preprocessing}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ }\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{join}\PY{p}{(}\PY{n}{doc}\PY{p}{)} \PY{k}{for} \PY{n}{doc} \PY{o+ow}{in} \PY{n}{docs\PYZus{}tr}\PY{p}{[}\PY{p}{:}\PY{l+m+mi}{100}\PY{p}{]}\PY{p}{]}
+\PY{n}{train\PYZus{}docs\PYZus{}df}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+save docs in txt{\ldots}
+save docs finished
+\end{Verbatim}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{19}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+                             text-after-preprocessing
+0   jackson defense nntp posting host university i{\ldots}
+1   apollo hp red police state usa nntp posting ho{\ldots}
+2   dartmouth brian hughes installing ram quadra r{\ldots}
+3   bu boston university physics department articl{\ldots}
+4   king eng umd doug computer design lab maryland{\ldots}
+..                                                {\ldots}
+95  physics ca pc windows os unix reply physics ca{\ldots}
+96  ncr jim parts information distribution world n{\ldots}
+97  sera zuma serdar argic nazi germany armenians {\ldots}
+98  chips astro temple bible research temple unive{\ldots}
+99  loss cmu doug loss crazy electrical computer e{\ldots}
+
+[100 rows x 1 columns]
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \textbf{Word-Embedding trainieren mit dem Traindatensatz und gespeichert
+für ETM später}
+
+Wichtige Parameters sind:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  model\_name = ``skipgram''/``cbow''/``bert''
+\end{enumerate}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{20}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{save\PYZus{}path} \PY{o}{=} \PY{n}{Path}\PY{o}{.}\PY{n}{joinpath}\PY{p}{(}\PY{n}{Path}\PY{o}{.}\PY{n}{cwd}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{n}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{prepared\PYZus{}data/min\PYZus{}df\PYZus{}}\PY{l+s+si}{\PYZob{}min\PYZus{}df\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{figures\PYZus{}path} \PY{o}{=} \PY{n}{Path}\PY{o}{.}\PY{n}{joinpath}\PY{p}{(}\PY{n}{Path}\PY{o}{.}\PY{n}{cwd}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{n}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{figures/min\PYZus{}df\PYZus{}}\PY{l+s+si}{\PYZob{}min\PYZus{}df\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{Path}\PY{p}{(}\PY{n}{save\PYZus{}path}\PY{p}{)}\PY{o}{.}\PY{n}{mkdir}\PY{p}{(}\PY{n}{parents}\PY{o}{=}\PY{k+kc}{True}\PY{p}{,} \PY{n}{exist\PYZus{}ok}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+\PY{n}{Path}\PY{p}{(}\PY{n}{figures\PYZus{}path}\PY{p}{)}\PY{o}{.}\PY{n}{mkdir}\PY{p}{(}\PY{n}{parents}\PY{o}{=}\PY{k+kc}{True}\PY{p}{,} \PY{n}{exist\PYZus{}ok}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{save\PYZus{}path}\PY{p}{)}
+
+\PY{n}{vocab} \PY{o}{=} \PY{n+nb}{list}\PY{p}{(}\PY{n}{word2id}\PY{o}{.}\PY{n}{keys}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\PY{n}{model\PYZus{}name} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{skipgram}\PY{l+s+s2}{\PYZdq{}}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/content/replication-topic-modelling-in-embedding-space/prepared\_data/min\_df\_100
+\end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{21}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{from} \PY{n+nn}{src}\PY{n+nn}{.}\PY{n+nn}{embedding} \PY{k}{import} \PY{n}{WordEmbeddingCreator}
+\PY{k+kn}{from} \PY{n+nn}{pathlib} \PY{k}{import} \PY{n}{Path}
+
+\PY{k}{if} \PY{n}{model\PYZus{}name} \PY{o}{!=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{bert}\PY{l+s+s2}{\PYZdq{}} \PY{o+ow}{and} \PY{n}{use\PYZus{}bert\PYZus{}embedding} \PY{o}{==} \PY{k+kc}{False}\PY{p}{:}
+  \PY{n}{wb\PYZus{}creator} \PY{o}{=} \PY{n}{WordEmbeddingCreator}\PY{p}{(}\PY{n}{model\PYZus{}name}\PY{o}{=}\PY{n}{model\PYZus{}name}\PY{p}{,} \PY{n}{documents} \PY{o}{=} \PY{n}{docs\PYZus{}tr}\PY{p}{,} \PY{n}{save\PYZus{}path}\PY{o}{=} \PY{n}{save\PYZus{}path}\PY{p}{)}
+  \PY{n}{wb\PYZus{}creator}\PY{o}{.}\PY{n}{train}\PY{p}{(}\PY{n}{min\PYZus{}count}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{,} \PY{n}{embedding\PYZus{}size}\PY{o}{=} \PY{l+m+mi}{300}\PY{p}{)}
+  \PY{n}{wb\PYZus{}creator}\PY{o}{.}\PY{n}{create\PYZus{}and\PYZus{}save\PYZus{}vocab\PYZus{}embedding}\PY{p}{(}\PY{n}{vocab}\PY{p}{,} \PY{n}{save\PYZus{}path}\PY{p}{)}
+\PY{k}{else}\PY{p}{:}
+  \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{festlegen welches Modell für word2vec soll genutzt werden!}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{ Wenn bert\PYZhy{}Modell, bitte die Vocabular aktualisieren durch use\PYZus{}bert\PYZus{}embedding = True}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+train word-embedding with skipgram
+length of vocabulary from word-embedding with skipgram: 3102
+length of vocabulary after creating BOW: 3102
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+100\%|██████████| 3102/3102 [00:00<00:00, 5894.95it/s]
+\end{Verbatim}
+
+    \textbf{Visualierung von Wortembeddings mit UMAP (UMAP werden die
+Embeddings zu 2D reduziert. KMeans wurden benutzen, um zu sehen, wie die
+Clusters von Wörtern aussehen - nur zu sehen, nicht zu dem Paper
+gehören)}
+
+\begin{itemize}
+\tightlist
+\item
+  Dieses Experiment gehört nicht zum Artikel, der repliziert wurde
+\end{itemize}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{if} \PY{n}{model\PYZus{}name} \PY{o}{!=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{bert}\PY{l+s+s2}{\PYZdq{}} \PY{o+ow}{and} \PY{n}{use\PYZus{}bert\PYZus{}embedding} \PY{o}{==} \PY{k+kc}{False}\PY{p}{:}
+  \PY{n}{wb\PYZus{}creator}\PY{o}{.}\PY{n}{cluster\PYZus{}words}\PY{p}{(}\PY{n}{save\PYZus{}path}\PY{p}{,} \PY{n}{figures\PYZus{}path}\PY{p}{,} \PY{n}{n\PYZus{}components}\PY{o}{=}\PY{l+m+mi}{2}\PY{p}{,} \PY{n}{text} \PY{o}{=} \PY{k+kc}{False}\PY{p}{)}
+\PY{k}{else}\PY{p}{:}
+  \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{festlegen welches Modell für word2vec soll genutzt werden!}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{ Wenn bert\PYZhy{}Modell, bitte die Vocabular aktualisieren durch use\PYZus{}bert\PYZus{}embedding = True}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/usr/local/lib/python3.7/dist-packages/numba/np/ufunc/parallel.py:363:
+NumbaWarning: The TBB threading layer requires TBB version 2019.5 or later i.e.,
+TBB\_INTERFACE\_VERSION >= 11005. Found TBB\_INTERFACE\_VERSION = 9107. The TBB
+threading layer is disabled.
+  warnings.warn(problem)
+\end{Verbatim}
+
+    
+    
+    \#\textbf{Testen ein paar Word-Embeddings and ähnliche semantische
+Wörter}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{22}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{if} \PY{n}{model\PYZus{}name} \PY{o}{!=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{bert}\PY{l+s+s2}{\PYZdq{}} \PY{o+ow}{and} \PY{n}{use\PYZus{}bert\PYZus{}embedding} \PY{o}{==} \PY{k+kc}{False}\PY{p}{:}
+  \PY{n}{v} \PY{o}{=} \PY{n+nb}{list}\PY{p}{(}\PY{n}{wb\PYZus{}creator}\PY{o}{.}\PY{n}{model}\PY{o}{.}\PY{n}{wv}\PY{o}{.}\PY{n}{vocab}\PY{p}{)}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}
+  \PY{n}{vec} \PY{o}{=} \PY{n+nb}{list}\PY{p}{(}\PY{n}{wb\PYZus{}creator}\PY{o}{.}\PY{n}{model}\PY{o}{.}\PY{n}{wv}\PY{o}{.}\PY{n+nf+fm}{\PYZus{}\PYZus{}getitem\PYZus{}\PYZus{}}\PY{p}{(}\PY{n}{v}\PY{p}{)}\PY{p}{)}
+  \PY{n+nb}{print}\PY{p}{(}\PY{n}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+si}{\PYZob{}model\PYZus{}name\PYZcb{}}\PY{l+s+s1}{ word\PYZhy{}embedding of the word: }\PY{l+s+si}{\PYZob{}v\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+  \PY{n+nb}{print}\PY{p}{(}\PY{n}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{some elements of vector: }\PY{l+s+si}{\PYZob{}vec[:5]\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+  \PY{n+nb}{print}\PY{p}{(}\PY{n}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{total dim of vector: }\PY{l+s+s1}{\PYZob{}}\PY{l+s+s1}{len(vec)\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+  \PY{n+nb}{print}\PY{p}{(}\PY{n}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{show some semantic similar words }\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+  \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{5}\PY{p}{,}\PY{l+m+mi}{10}\PY{p}{)}\PY{p}{:}
+      \PY{n+nb}{print}\PY{p}{(}\PY{n}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{neighbors of word: }\PY{l+s+si}{\PYZob{}vocab[i]\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+      \PY{n+nb}{print}\PY{p}{(}\PY{p}{[}\PY{n}{r}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]} \PY{k}{for} \PY{n}{r} \PY{o+ow}{in} \PY{n}{wb\PYZus{}creator}\PY{o}{.}\PY{n}{find\PYZus{}most\PYZus{}similar\PYZus{}words}\PY{p}{(}\PY{n}{n\PYZus{}neighbor}\PY{o}{=}\PY{l+m+mi}{5}\PY{p}{,} \PY{n}{word}\PY{o}{=}\PY{n}{vocab}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{p}{)}\PY{p}{]}\PY{p}{)}
+      \PY{n+nb}{print}\PY{p}{(}\PY{p}{[}\PY{n}{r}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]} \PY{k}{for} \PY{n}{r} \PY{o+ow}{in} \PY{n}{wb\PYZus{}creator}\PY{o}{.}\PY{n}{find\PYZus{}most\PYZus{}similar\PYZus{}words}\PY{p}{(}\PY{n}{n\PYZus{}neighbor}\PY{o}{=}\PY{l+m+mi}{5}\PY{p}{,} \PY{n}{word}\PY{o}{=}\PY{n}{vocab}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{p}{)}\PY{p}{]}\PY{p}{)}
+      \PY{n+nb}{print}\PY{p}{(}\PY{l+m+mi}{100}\PY{o}{*}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZhy{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{k}{else}\PY{p}{:}
+  \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{festlegen welches Modell für word2vec soll genutzt werden!}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{ Wenn bert\PYZhy{}Modell, bitte die Vocabular aktualisieren durch use\PYZus{}bert\PYZus{}embedding = True}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+skipgram word-embedding of the word: jackson
+some elements of vector: [-0.0064425697, 0.05336388, -0.0791205, 0.14298755,
+0.01092479]
+total dim of vector: 300
+show some semantic similar words
+
+neighbors of word: conduct
+['establish', 'interests', 'grounds', 'measures', 'economic']
+[0.8785027861595154, 0.8771042227745056, 0.8538452982902527, 0.8492910265922546,
+0.8467714786529541]
+--------------------------------------------------------------------------------
+--------------------
+neighbors of word: implies
+['deny', 'irrelevant', 'imply', 'justification', 'arguing']
+[0.8767746090888977, 0.8689412474632263, 0.8676267266273499, 0.8623065948486328,
+0.861356258392334]
+--------------------------------------------------------------------------------
+--------------------
+neighbors of word: solutions
+['tool', 'tools', 'machines', 'platform', 'bug']
+[0.580713152885437, 0.5781648755073547, 0.5764162540435791, 0.5697091817855835,
+0.5674580335617065]
+--------------------------------------------------------------------------------
+--------------------
+neighbors of word: affect
+['virtually', 'circumstances', 'rely', 'serves', 'causing']
+[0.7895834445953369, 0.7865622639656067, 0.7850110530853271, 0.7843527793884277,
+0.7793745398521423]
+--------------------------------------------------------------------------------
+--------------------
+neighbors of word: multi
+['interface', 'displays', 'capabilities', 'platform', 'select']
+[0.8433104753494263, 0.7820426225662231, 0.7805764675140381, 0.7790523767471313,
+0.7777268290519714]
+--------------------------------------------------------------------------------
+--------------------
+\end{Verbatim}
+
+    \hypertarget{wenn-bert-embedding-benutzt-wurde-bert-embedding}{%
+\section{\texorpdfstring{\textbf{Wenn Bert-Embedding benutzt wurde:
+BERT-Embedding}}{Wenn Bert-Embedding benutzt wurde: BERT-Embedding}}\label{wenn-bert-embedding-benutzt-wurde-bert-embedding}}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Bert-Embedding wurde in einem anderen Prozess durchgeführt
+\item
+  Um Bert-Durchführen zu können, bitte herunterladen diesen Daten:
+  \texttt{bert\_vocab\_embedding.txt},und in den richtigen Order
+  einpacken, konvertiern mittels \texttt{src/bert\_covert\_format.py},
+  wie im dem READme beschrieben wurde.
+\item
+  Bert-Embedding wurde in dem
+  \texttt{prepared\_data/bert\_vocab\_embedding.txt} gespeichert
+\item
+  Um Bert-Embedding verwendet, muss man im Vorfield folgende Punkten
+  achten:
+\end{enumerate}
+
+\begin{itemize}
+\tightlist
+\item
+  Bei der Vorbereitung von Daten muss folgende Argument setzen:
+  use\_bert\_embedding = True
+\item
+  model\_name = ``bert'' setzen
+\end{itemize}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{23}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}run bert\PYZus{}main.py}
+\PY{c+c1}{\PYZsh{}dieser Teil wegen der Laufzeit werden separat durchgeführt. Die Vocab\PYZhy{}Embeddings wurde gespeichert und kann geladen und benutzt.}
+\PY{c+c1}{\PYZsh{}bert\PYZus{}vocab\PYZus{}embedding.txt in prepared\PYZus{}data}
+\PY{k}{if} \PY{n}{model\PYZus{}name} \PY{o}{==} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{bert}\PY{l+s+s2}{\PYZdq{}} \PY{o+ow}{and} \PY{n}{use\PYZus{}bert\PYZus{}embedding} \PY{o}{==} \PY{k+kc}{True}\PY{p}{:}
+  \PY{k+kn}{from} \PY{n+nn}{src}\PY{n+nn}{.}\PY{n+nn}{embedding} \PY{k}{import} \PY{n}{BertEmbedding}
+  \PY{n}{bert\PYZus{}eb} \PY{o}{=} \PY{n}{BertEmbedding}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{prepared\PYZus{}data}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)} \PY{c+c1}{\PYZsh{}directory, where the txt.file of bert\PYZus{}vocab\PYZus{}embedding.txt ist}
+  \PY{k}{try}\PY{p}{:}
+    \PY{n}{bert\PYZus{}eb}\PY{o}{.}\PY{n}{get\PYZus{}bert\PYZus{}embeddings}\PY{p}{(}\PY{n}{vocab}\PY{p}{)}
+    \PY{n+nb}{print}\PY{p}{(}\PY{n}{bert\PYZus{}eb}\PY{o}{.}\PY{n}{bert\PYZus{}embeddings}\PY{o}{.}\PY{n}{shape}\PY{p}{)}
+  \PY{k}{except}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{musst bert\PYZus{}main.py lokal durchgeführt werden, um die Bert\PYZhy{}Embedding für Vocabular zu erstellen. }\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{die Embedding wird erst danach durch bert\PYZus{}main.py in dem Ordner prepared\PYZus{}data}\PY{l+s+se}{\PYZbs{}b}\PY{l+s+s2}{ert\PYZus{}vocab\PYZus{}embedding.txt}\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{ gespeichert}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \hypertarget{etm-model-und-etm-trainieren}{%
+\section{\texorpdfstring{\textbf{ETM Model und ETM
+Trainieren}}{ETM Model und ETM Trainieren}}\label{etm-model-und-etm-trainieren}}
+
+ETM hat die ähnliche Architektur eines Variational Autoencoders (Encoder
+für Sampling latent Repräsentation von Dokument) und (Decoder: eigenlich
+nur das Produkt von doc-over-topics und topic-over-vocabulary)
+
+ETM wird mit den pretrainierten Embedding kombiniert. Die Embeddings für
+Topics werden als Gewichten eines Teiles des Netzes aktualiert mittels
+der negative-ELBO (Reconstruction-Loss + KLD Loss)
+
+\begin{figure}
+\centering
+\caption{ETM.drawio.png}
+\end{figure}
+
+    \textbf{kontrollieren die Inputdaten DocSet} 1. Diese Klasse
+\texttt{DocSet} wurde implementiert, damit die Daten effizienter mit
+Pytorch geladen innerhalb des Batches werden können 2.
+\texttt{tr\_set.\_\_getitem\_\_(0}) return die Repräsentation für das
+Dokument 0. Wegen der Normalisierung - die Summe =
+\texttt{0.9999997615814209}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{24}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} using DocSet to use easier the modul DataSet from torch}
+\PY{k+kn}{from} \PY{n+nn}{src}\PY{n+nn}{.}\PY{n+nn}{train\PYZus{}etm} \PY{k}{import} \PY{n}{DocSet}\PY{p}{,} \PY{n}{TrainETM}
+\PY{k+kn}{from} \PY{n+nn}{src}\PY{n+nn}{.}\PY{n+nn}{etm} \PY{k}{import} \PY{n}{ETM}
+\PY{k+kn}{import} \PY{n+nn}{torch}
+
+\PY{n}{vocab\PYZus{}size} \PY{o}{=} \PY{n+nb}{len}\PY{p}{(}\PY{n+nb}{list}\PY{p}{(}\PY{n}{word2id}\PY{o}{.}\PY{n}{keys}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+\PY{n}{tr\PYZus{}set} \PY{o}{=} \PY{n}{DocSet}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{train}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{vocab\PYZus{}size}\PY{p}{,} \PY{n}{train\PYZus{}set}\PY{p}{,} \PY{n}{normalize\PYZus{}data}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{total train docs: }\PY{l+s+s1}{\PYZob{}}\PY{l+s+s1}{len(tr\PYZus{}set)\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{sum of vector: }\PY{l+s+s1}{\PYZob{}}\PY{l+s+s1}{sum(tr\PYZus{}set.\PYZus{}\PYZus{}getitem\PYZus{}\PYZus{}(0)[}\PY{l+s+s1}{\PYZdq{}}\PY{l+s+s1}{normalized}\PY{l+s+s1}{\PYZdq{}}\PY{l+s+s1}{])\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{length of vector: }\PY{l+s+s1}{\PYZob{}}\PY{l+s+s1}{torch.norm(tr\PYZus{}set.\PYZus{}\PYZus{}getitem\PYZus{}\PYZus{}(0)[}\PY{l+s+s1}{\PYZdq{}}\PY{l+s+s1}{normalized}\PY{l+s+s1}{\PYZdq{}}\PY{l+s+s1}{])\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+total train docs: 11214
+sum of vector: 1.0000003576278687
+length of vector: 0.1649533212184906
+\end{Verbatim}
+
+    \textbf{Prefitted-Embeddings einlesen}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{25}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} read embedding }
+\PY{k+kn}{from} \PY{n+nn}{src}\PY{n+nn}{.}\PY{n+nn}{embedding} \PY{k}{import} \PY{n}{read\PYZus{}prefitted\PYZus{}embedding}
+\PY{n}{\PYZus{}}\PY{p}{,} \PY{n}{embedding\PYZus{}data} \PY{o}{=} \PY{n}{read\PYZus{}prefitted\PYZus{}embedding}\PY{p}{(}\PY{n}{model\PYZus{}name}\PY{p}{,} \PY{n}{vocab}\PY{p}{,} \PY{n}{save\PYZus{}path}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+start reading lines embeddings file:{\ldots}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+reading word-embedding{\ldots}: 100\%|██████████| 3102/3102 [00:00<00:00, 9954.79it/s]\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+end reading lines embeddings file!
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+\end{Verbatim}
+
+    \textbf{Trainingsparametern vorbereiten}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{26}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{epochs} \PY{o}{=} \PY{l+m+mi}{150}
+\PY{n}{batch\PYZus{}size} \PY{o}{=} \PY{l+m+mi}{1000}
+\PY{n}{lr} \PY{o}{=} \PY{l+m+mf}{0.002}
+\PY{n}{wdecay} \PY{o}{=} \PY{l+m+mf}{0.0000012}
+\PY{n}{num\PYZus{}topics} \PY{o}{=} \PY{l+m+mi}{20}
+\PY{n}{t\PYZus{}hidden\PYZus{}size} \PY{o}{=} \PY{l+m+mi}{8}
+\PY{n}{theta\PYZus{}act} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{tanh}\PY{l+s+s2}{\PYZdq{}}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{27}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{class} \PY{n+nc}{TrainArguments}\PY{p}{:}
+      \PY{k}{def} \PY{n+nf}{\PYZus{}\PYZus{}init\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{epochs}\PY{p}{,} \PY{n}{batch\PYZus{}size}\PY{p}{,} \PY{n}{log\PYZus{}interval}\PY{p}{)}\PY{p}{:}
+          \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{epochs} \PY{o}{=} \PY{n}{epochs}
+          \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{batch\PYZus{}size} \PY{o}{=} \PY{n}{batch\PYZus{}size}
+          \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{log\PYZus{}interval} \PY{o}{=} \PY{n}{log\PYZus{}interval}
+
+\PY{k}{class} \PY{n+nc}{OptimizerArguments}\PY{p}{:}
+      \PY{k}{def} \PY{n+nf}{\PYZus{}\PYZus{}init\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{optimizer\PYZus{}name}\PY{p}{,} \PY{n}{lr}\PY{p}{,} \PY{n}{wdecay}\PY{p}{)}\PY{p}{:}
+            \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{optimizer} \PY{o}{=} \PY{n}{optimizer\PYZus{}name}
+            \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{lr} \PY{o}{=} \PY{n}{lr}
+            \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{wdecay} \PY{o}{=} \PY{n}{wdecay}
+
+
+\PY{n}{train\PYZus{}args} \PY{o}{=} \PY{n}{TrainArguments}\PY{p}{(}\PY{n}{epochs}\PY{o}{=}\PY{n}{epochs}\PY{p}{,} \PY{n}{batch\PYZus{}size}\PY{o}{=}\PY{n}{batch\PYZus{}size}\PY{p}{,} \PY{n}{log\PYZus{}interval}\PY{o}{=}\PY{k+kc}{None}\PY{p}{)}
+\PY{n}{optimizer\PYZus{}args} \PY{o}{=} \PY{n}{OptimizerArguments}\PY{p}{(}\PY{n}{optimizer\PYZus{}name}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{adam}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{lr}\PY{o}{=}\PY{n}{lr}\PY{p}{,} \PY{n}{wdecay}\PY{o}{=}\PY{n}{wdecay}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{train\PYZus{}args}\PY{o}{.}\PY{n}{epochs}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{optimizer\PYZus{}args}\PY{o}{.}\PY{n}{optimizer}\PY{p}{)}
+\PY{n}{rho\PYZus{}size} \PY{o}{=} \PY{n+nb}{len}\PY{p}{(}\PY{n}{embedding\PYZus{}data}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}
+\PY{n}{emb\PYZus{}size} \PY{o}{=} \PY{n+nb}{len}\PY{p}{(}\PY{n}{embedding\PYZus{}data}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+150
+adam
+\end{Verbatim}
+
+    \hypertarget{etm-mit-cross-entropy}{%
+\section{\texorpdfstring{\textbf{ETM mit
+Cross-Entropy}}{ETM mit Cross-Entropy}}\label{etm-mit-cross-entropy}}
+
+    \begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  ETM-initialisieren
+\item
+  Trainieren das ETM-Modell mit den Training-Settings-Parameters
+\end{enumerate}
+
+    \textbf{Aktivierte Funktion: Tanh}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{28}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}training\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}}
+\PY{c+c1}{\PYZsh{}del etm\PYZus{}model}
+\PY{c+c1}{\PYZsh{} define the ETM\PYZhy{}model with setting\PYZhy{}parameters}
+\PY{n}{etm\PYZus{}model} \PY{o}{=} \PY{n}{ETM}\PY{p}{(}
+      \PY{n}{num\PYZus{}topics}\PY{p}{,} 
+      \PY{n}{vocab\PYZus{}size}\PY{p}{,} 
+      \PY{n}{t\PYZus{}hidden\PYZus{}size}\PY{p}{,} \PY{n}{rho\PYZus{}size}\PY{p}{,} \PY{n}{emb\PYZus{}size}\PY{p}{,} \PY{n}{theta\PYZus{}act}\PY{p}{,} 
+      \PY{n}{embedding\PYZus{}data}\PY{p}{,} 
+      \PY{n}{enc\PYZus{}drop}\PY{o}{=}\PY{l+m+mf}{0.5}\PY{p}{)}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{etm\PYZus{}model}\PY{p}{)}
+
+\PY{n}{loss\PYZus{}name} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{cross\PYZhy{}entropy}\PY{l+s+s2}{\PYZdq{}}
+
+\PY{n}{train\PYZus{}class} \PY{o}{=} \PY{n}{TrainETM}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{train}\PY{p}{(}
+    \PY{n}{etm\PYZus{}model}\PY{p}{,}
+    \PY{n}{loss\PYZus{}name}\PY{p}{,}
+    \PY{n}{vocab\PYZus{}size}\PY{p}{,} 
+    \PY{n}{train\PYZus{}args}\PY{p}{,} \PY{n}{optimizer\PYZus{}args}\PY{p}{,} \PY{n}{train\PYZus{}set}\PY{p}{,}
+    \PY{n}{normalize\PYZus{}data} \PY{o}{=} \PY{k+kc}{True}\PY{p}{,}
+    \PY{n}{figures\PYZus{}path} \PY{o}{=} \PY{n}{figures\PYZus{}path}\PY{p}{,}
+    \PY{n}{visualization} \PY{o}{=} \PY{k+kc}{True}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}show topics}
+\PY{n}{topics} \PY{o}{=} \PY{n}{etm\PYZus{}model}\PY{o}{.}\PY{n}{show\PYZus{}topics}\PY{p}{(}\PY{n}{id2word}\PY{p}{,} \PY{l+m+mi}{10}\PY{p}{)}
+\PY{c+c1}{\PYZsh{}for tp in topics:}
+\PY{c+c1}{\PYZsh{}  print(tp)}
+
+\PY{n}{topics} \PY{o}{=} \PY{n}{etm\PYZus{}model}\PY{o}{.}\PY{n}{show\PYZus{}topics}\PY{p}{(}\PY{n}{id2word}\PY{p}{,} \PY{l+m+mi}{10}\PY{p}{)}
+\PY{n}{topics} \PY{o}{=} \PY{p}{[}\PY{p}{[}\PY{n}{e}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]} \PY{k}{for} \PY{n}{e} \PY{o+ow}{in} \PY{n}{tp}\PY{p}{]} \PY{k}{for} \PY{n}{tp} \PY{o+ow}{in} \PY{n}{topics}\PY{p}{]} \PY{c+c1}{\PYZsh{}get only top words}
+\PY{k}{for} \PY{n}{tp} \PY{o+ow}{in} \PY{n}{topics}\PY{p}{:}
+  \PY{n+nb}{print}\PY{p}{(}\PY{n}{tp}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+ETM(
+  (theta\_act): Tanh()
+  (topic\_embeddings\_alphas): Linear(in\_features=300, out\_features=20,
+bias=False)
+  (q\_theta): Sequential(
+    (0): Linear(in\_features=3102, out\_features=8, bias=True)
+    (1): Tanh()
+    (2): Linear(in\_features=8, out\_features=8, bias=True)
+    (3): Tanh()
+  )
+  (mu\_q\_theta): Linear(in\_features=8, out\_features=20, bias=True)
+  (logsigma\_q\_theta): Linear(in\_features=8, out\_features=20, bias=True)
+)
+number of batches: 12
+Epoch: 1/150  -  Loss: 641.94141         Rec: 641.33563          KL: 0.60583
+Epoch: 2/150  -  Loss: 641.37244         Rec: 641.03174          KL: 0.3407
+Epoch: 3/150  -  Loss: 633.64502         Rec: 633.46173          KL: 0.18331
+Epoch: 4/150  -  Loss: 629.30756         Rec: 629.21301          KL: 0.09456
+Epoch: 5/150  -  Loss: 636.04968         Rec: 636.00208          KL: 0.04756
+Epoch: 6/150  -  Loss: 627.70471         Rec: 627.68103          KL: 0.02362
+Epoch: 7/150  -  Loss: 632.35791         Rec: 632.34375          KL: 0.01418
+Epoch: 8/150  -  Loss: 632.05511         Rec: 632.0448   KL: 0.01034
+Epoch: 9/150  -  Loss: 630.68201         Rec: 630.66779          KL: 0.01422
+Epoch: 10/150  -  Loss: 633.72559        Rec: 633.70343          KL: 0.02216
+Epoch: 11/150  -  Loss: 631.77728        Rec: 631.73358          KL: 0.0438
+Epoch: 12/150  -  Loss: 631.47937        Rec: 631.38635          KL: 0.09309
+Epoch: 13/150  -  Loss: 630.909          Rec: 630.70239          KL: 0.20657
+Epoch: 14/150  -  Loss: 630.11023        Rec: 629.62891          KL: 0.48133
+Epoch: 15/150  -  Loss: 630.41028        Rec: 629.35614          KL: 1.05419
+Epoch: 16/150  -  Loss: 618.37512        Rec: 616.5495   KL: 1.82557
+Epoch: 17/150  -  Loss: 620.46033        Rec: 618.2265   KL: 2.23371
+Epoch: 18/150  -  Loss: 627.32092        Rec: 625.07288          KL: 2.24803
+Epoch: 19/150  -  Loss: 617.276          Rec: 614.93481          KL: 2.34126
+Epoch: 20/150  -  Loss: 619.20752        Rec: 616.68628          KL: 2.52135
+Epoch: 21/150  -  Loss: 622.58838        Rec: 619.96069          KL: 2.62767
+Epoch: 22/150  -  Loss: 616.5025         Rec: 613.76001          KL: 2.74254
+Epoch: 23/150  -  Loss: 613.87732        Rec: 611.02051          KL: 2.85679
+Epoch: 24/150  -  Loss: 622.7713         Rec: 619.81677          KL: 2.95452
+Epoch: 25/150  -  Loss: 617.50507        Rec: 614.41309          KL: 3.09199
+Epoch: 26/150  -  Loss: 617.24329        Rec: 614.02234          KL: 3.22097
+Epoch: 27/150  -  Loss: 611.14722        Rec: 607.84076          KL: 3.30646
+Epoch: 28/150  -  Loss: 620.29187        Rec: 616.91846          KL: 3.37352
+Epoch: 29/150  -  Loss: 618.659          Rec: 615.23132          KL: 3.42766
+Epoch: 30/150  -  Loss: 609.69763        Rec: 606.20892          KL: 3.48861
+Epoch: 31/150  -  Loss: 607.13043        Rec: 603.63428          KL: 3.49611
+Epoch: 32/150  -  Loss: 619.45953        Rec: 615.88037          KL: 3.5792
+Epoch: 33/150  -  Loss: 611.18762        Rec: 607.53412          KL: 3.65352
+Epoch: 34/150  -  Loss: 611.12872        Rec: 607.40393          KL: 3.72477
+Epoch: 35/150  -  Loss: 606.9585         Rec: 603.07495          KL: 3.88348
+Epoch: 36/150  -  Loss: 608.43793        Rec: 604.48724          KL: 3.95077
+Epoch: 37/150  -  Loss: 613.99915        Rec: 610.00208          KL: 3.99706
+Epoch: 38/150  -  Loss: 611.15588        Rec: 607.13788          KL: 4.01811
+Epoch: 39/150  -  Loss: 610.74951        Rec: 606.62781          KL: 4.12165
+Epoch: 40/150  -  Loss: 603.88501        Rec: 599.70532          KL: 4.17971
+Epoch: 41/150  -  Loss: 603.54315        Rec: 599.28442          KL: 4.25868
+Epoch: 42/150  -  Loss: 600.42847        Rec: 596.08752          KL: 4.341
+Epoch: 43/150  -  Loss: 598.93994        Rec: 594.53003          KL: 4.40993
+Epoch: 44/150  -  Loss: 603.73389        Rec: 599.24286          KL: 4.49099
+Epoch: 45/150  -  Loss: 600.50464        Rec: 595.92761          KL: 4.57697
+Epoch: 46/150  -  Loss: 601.52435        Rec: 596.81696          KL: 4.70741
+Epoch: 47/150  -  Loss: 609.49188        Rec: 604.72723          KL: 4.76468
+Epoch: 48/150  -  Loss: 598.85083        Rec: 594.00275          KL: 4.84795
+Epoch: 49/150  -  Loss: 601.98059        Rec: 597.08997          KL: 4.8906
+Epoch: 50/150  -  Loss: 607.97034        Rec: 603.0542   KL: 4.91609
+Epoch: 51/150  -  Loss: 601.39307        Rec: 596.35767          KL: 5.03544
+Epoch: 52/150  -  Loss: 617.00031        Rec: 611.92847          KL: 5.07185
+Epoch: 53/150  -  Loss: 599.11151        Rec: 593.90887          KL: 5.20271
+Epoch: 54/150  -  Loss: 600.28235        Rec: 595.0282   KL: 5.25419
+Epoch: 55/150  -  Loss: 603.53802        Rec: 598.28015          KL: 5.25789
+Epoch: 56/150  -  Loss: 597.25629        Rec: 591.93896          KL: 5.31733
+Epoch: 57/150  -  Loss: 594.59729        Rec: 589.1712   KL: 5.42604
+Epoch: 58/150  -  Loss: 597.18481        Rec: 591.7981   KL: 5.38684
+Epoch: 59/150  -  Loss: 595.36938        Rec: 589.88751          KL: 5.48189
+Epoch: 60/150  -  Loss: 608.01544        Rec: 602.48254          KL: 5.53298
+Epoch: 61/150  -  Loss: 602.31946        Rec: 596.68323          KL: 5.63619
+Epoch: 62/150  -  Loss: 593.51733        Rec: 587.87219          KL: 5.64515
+Epoch: 63/150  -  Loss: 608.03174        Rec: 602.33923          KL: 5.69255
+Epoch: 64/150  -  Loss: 598.89368        Rec: 593.09521          KL: 5.79838
+Epoch: 65/150  -  Loss: 594.49249        Rec: 588.68579          KL: 5.80669
+Epoch: 66/150  -  Loss: 589.26892        Rec: 583.53406          KL: 5.73472
+Epoch: 67/150  -  Loss: 592.87671        Rec: 587.04163          KL: 5.83511
+Epoch: 68/150  -  Loss: 609.49518        Rec: 603.60437          KL: 5.89083
+Epoch: 69/150  -  Loss: 596.02014        Rec: 590.12115          KL: 5.899
+Epoch: 70/150  -  Loss: 596.75189        Rec: 590.84705          KL: 5.90498
+Epoch: 71/150  -  Loss: 592.28888        Rec: 586.36035          KL: 5.92849
+Epoch: 72/150  -  Loss: 596.48511        Rec: 590.4541   KL: 6.03098
+Epoch: 73/150  -  Loss: 606.28528        Rec: 600.28168          KL: 6.0036
+Epoch: 74/150  -  Loss: 610.17926        Rec: 604.0918   KL: 6.08738
+Epoch: 75/150  -  Loss: 592.36169        Rec: 586.28308          KL: 6.07857
+Epoch: 76/150  -  Loss: 593.51343        Rec: 587.41479          KL: 6.09866
+Epoch: 77/150  -  Loss: 595.68408        Rec: 589.53754          KL: 6.14665
+Epoch: 78/150  -  Loss: 592.38898        Rec: 586.24731          KL: 6.14164
+Epoch: 79/150  -  Loss: 596.86597        Rec: 590.63049          KL: 6.23545
+Epoch: 80/150  -  Loss: 592.33905        Rec: 586.17194          KL: 6.16706
+Epoch: 81/150  -  Loss: 604.86389        Rec: 598.66418          KL: 6.19966
+Epoch: 82/150  -  Loss: 594.66132        Rec: 588.35956          KL: 6.30172
+Epoch: 83/150  -  Loss: 592.71863        Rec: 586.36353          KL: 6.35513
+Epoch: 84/150  -  Loss: 599.86902        Rec: 593.55872          KL: 6.31026
+Epoch: 85/150  -  Loss: 590.32379        Rec: 584.01862          KL: 6.30524
+Epoch: 86/150  -  Loss: 588.23157        Rec: 581.88269          KL: 6.34877
+Epoch: 87/150  -  Loss: 597.4859         Rec: 591.14594          KL: 6.34001
+Epoch: 88/150  -  Loss: 589.13507        Rec: 582.7439   KL: 6.39118
+Epoch: 89/150  -  Loss: 590.5351         Rec: 584.1095   KL: 6.42568
+Epoch: 90/150  -  Loss: 594.84167        Rec: 588.4032   KL: 6.43839
+Epoch: 91/150  -  Loss: 595.36865        Rec: 588.91602          KL: 6.45264
+Epoch: 92/150  -  Loss: 593.75922        Rec: 587.276    KL: 6.48316
+Epoch: 93/150  -  Loss: 591.55273        Rec: 585.07288          KL: 6.47988
+Epoch: 94/150  -  Loss: 595.96362        Rec: 589.39325          KL: 6.57035
+Epoch: 95/150  -  Loss: 593.55798        Rec: 586.98254          KL: 6.57547
+Epoch: 96/150  -  Loss: 599.87646        Rec: 593.25769          KL: 6.6188
+Epoch: 97/150  -  Loss: 593.45386        Rec: 586.85339          KL: 6.60052
+Epoch: 98/150  -  Loss: 600.21637        Rec: 593.52283          KL: 6.69353
+Epoch: 99/150  -  Loss: 587.68573        Rec: 580.95001          KL: 6.73584
+Epoch: 100/150  -  Loss: 588.47156       Rec: 581.78259          KL: 6.68891
+Epoch: 101/150  -  Loss: 587.42883       Rec: 580.77124          KL: 6.65756
+Epoch: 102/150  -  Loss: 589.19141       Rec: 582.48145          KL: 6.7099
+Epoch: 103/150  -  Loss: 593.93628       Rec: 587.21503          KL: 6.72118
+Epoch: 104/150  -  Loss: 591.57422       Rec: 584.8042   KL: 6.77002
+Epoch: 105/150  -  Loss: 602.82935       Rec: 595.94904          KL: 6.88032
+Epoch: 106/150  -  Loss: 591.15979       Rec: 584.25543          KL: 6.90436
+Epoch: 107/150  -  Loss: 588.51746       Rec: 581.63806          KL: 6.87939
+Epoch: 108/150  -  Loss: 586.94556       Rec: 580.01465          KL: 6.93093
+Epoch: 109/150  -  Loss: 590.05664       Rec: 583.11102          KL: 6.94572
+Epoch: 110/150  -  Loss: 588.34485       Rec: 581.34387          KL: 7.00102
+Epoch: 111/150  -  Loss: 592.37219       Rec: 585.41052          KL: 6.96175
+Epoch: 112/150  -  Loss: 589.96204       Rec: 582.94946          KL: 7.01252
+Epoch: 113/150  -  Loss: 593.19177       Rec: 586.10229          KL: 7.0894
+Epoch: 114/150  -  Loss: 587.35052       Rec: 580.30505          KL: 7.0455
+Epoch: 115/150  -  Loss: 590.4707        Rec: 583.46625          KL: 7.00442
+Epoch: 116/150  -  Loss: 588.74866       Rec: 581.68945          KL: 7.05924
+Epoch: 117/150  -  Loss: 593.96942       Rec: 586.90015          KL: 7.06925
+Epoch: 118/150  -  Loss: 586.02454       Rec: 578.9624   KL: 7.0621
+Epoch: 119/150  -  Loss: 589.70441       Rec: 582.64258          KL: 7.06188
+Epoch: 120/150  -  Loss: 595.73792       Rec: 588.64929          KL: 7.08859
+Epoch: 121/150  -  Loss: 585.15137       Rec: 578.09039          KL: 7.06095
+Epoch: 122/150  -  Loss: 589.20355       Rec: 582.11084          KL: 7.0927
+Epoch: 123/150  -  Loss: 594.39331       Rec: 587.28796          KL: 7.10533
+Epoch: 124/150  -  Loss: 592.68884       Rec: 585.5528   KL: 7.13601
+Epoch: 125/150  -  Loss: 586.77545       Rec: 579.62769          KL: 7.14776
+Epoch: 126/150  -  Loss: 590.7536        Rec: 583.60315          KL: 7.15045
+Epoch: 127/150  -  Loss: 589.01215       Rec: 581.86871          KL: 7.14351
+Epoch: 128/150  -  Loss: 589.85974       Rec: 582.70972          KL: 7.15004
+Epoch: 129/150  -  Loss: 585.16913       Rec: 578.08765          KL: 7.0815
+Epoch: 130/150  -  Loss: 593.74414       Rec: 586.6062   KL: 7.13798
+Epoch: 131/150  -  Loss: 594.22217       Rec: 587.06274          KL: 7.15949
+Epoch: 132/150  -  Loss: 590.96344       Rec: 583.81036          KL: 7.15312
+Epoch: 133/150  -  Loss: 586.97205       Rec: 579.75281          KL: 7.21926
+Epoch: 134/150  -  Loss: 594.14001       Rec: 587.02844          KL: 7.11152
+Epoch: 135/150  -  Loss: 597.77637       Rec: 590.57214          KL: 7.20424
+Epoch: 136/150  -  Loss: 590.8291        Rec: 583.65753          KL: 7.17156
+Epoch: 137/150  -  Loss: 587.29797       Rec: 580.10938          KL: 7.18861
+Epoch: 138/150  -  Loss: 595.66943       Rec: 588.51538          KL: 7.15409
+Epoch: 139/150  -  Loss: 586.77808       Rec: 579.58887          KL: 7.18925
+Epoch: 140/150  -  Loss: 591.42798       Rec: 584.1958   KL: 7.23211
+Epoch: 141/150  -  Loss: 589.54346       Rec: 582.34045          KL: 7.20293
+Epoch: 142/150  -  Loss: 598.61938       Rec: 591.40741          KL: 7.21197
+Epoch: 143/150  -  Loss: 591.76001       Rec: 584.51379          KL: 7.24626
+Epoch: 144/150  -  Loss: 591.58795       Rec: 584.35718          KL: 7.23078
+Epoch: 145/150  -  Loss: 587.94019       Rec: 580.74823          KL: 7.19196
+Epoch: 146/150  -  Loss: 585.94458       Rec: 578.75098          KL: 7.19359
+Epoch: 147/150  -  Loss: 599.77527       Rec: 592.55676          KL: 7.2185
+Epoch: 148/150  -  Loss: 593.73077       Rec: 586.45483          KL: 7.27584
+Epoch: 149/150  -  Loss: 584.98438       Rec: 577.63501          KL: 7.34939
+Epoch: 150/150  -  Loss: 586.47314       Rec: 579.18323          KL: 7.28994
+Checkpoint saved at checkpoints/etm\_epoch\_150.pth.tar
+\end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{notebook_replication_files/notebook_replication_60_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{notebook_replication_files/notebook_replication_60_2.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+['left', 'research', 'side', 'center', 'message', 'back', 'org', 'problems',
+'major', 'disclaimer']
+['writes', 'host', 'ca', 'posting', 'university', 'article', 'nntp', 'mail',
+'computer', 'cs']
+['writes', 'article', 'posting', 'host', 'nntp', 'university', 'cs', 'reply',
+'apr', 'org']
+['time', 'work', 'back', 'years', 'good', 'run', 'read', 'long', 'make',
+'times']
+['windows', 'file', 'dos', 'drive', 'software', 'system', 'information',
+'program', 'data', 'version']
+['people', 'problem', 'things', 'find', 'point', 'made', 'lot', 'thing', 'big',
+'good']
+['space', 'key', 'nasa', 'encryption', 'clipper', 'technology', 'chip', 'keys',
+'public', 'security']
+['phone', 'line', 'power', 'send', 'find', 'buy', 'work', 'good', 'info',
+'stuff']
+['article', 'writes', 'computer', 'posting', 'case', 'wrote', 'post', 'steve',
+'type', 'power']
+['writes', 'article', 'state', 'world', 'john', 'man', 'day', 'love', 'news',
+'david']
+['car', 'speed', 'engine', 'bike', 'hp', 'high', 'cover', 'low', 'wire',
+'rider']
+['time', 'year', 'long', 'state', 'good', 'order', 'university', 'distribution',
+'single', 'place']
+['max', 'ibm', 'bit', 'graphics', 'color', 'card', 'scsi', 'mac', 'lc', 'pc']
+['game', 'team', 'games', 'play', 'players', 'win', 'league', 'player',
+'playoffs', 'division']
+['god', 'jesus', 'israel', 'christians', 'armenian', 'jews', 'men', 'jewish',
+'christian', 'history']
+['ca', 'university', 'host', 'posting', 'nntp', 'distribution', 'de', 'uk',
+'net', 'cs']
+['world', 'article', 'read', 'book', 'good', 'university', 'david', 'issue',
+'reply', 'question']
+['case', 'mit', 'set', 'call', 'questions', 'local', 'high', 'institute',
+'part', 'support']
+['people', 'government', 'law', 'gun', 'life', 'rights', 'fact', 'question',
+'reason', 'person']
+['fbi', 'health', 'children', 'mr', 'day', 'information', 'medical', 'house',
+'care', 'general']
+\end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{29}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{from} \PY{n+nn}{src}\PY{n+nn}{.}\PY{n+nn}{evaluierung} \PY{k}{import} \PY{n}{topicCoherence2}\PY{p}{,} \PY{n}{topicDiversity}
+\PY{n}{tc} \PY{o}{=} \PY{n}{topicCoherence2}\PY{p}{(}\PY{n}{topics}\PY{p}{,}\PY{n+nb}{len}\PY{p}{(}\PY{n}{topics}\PY{p}{)}\PY{p}{,}\PY{n}{docs\PYZus{}tr}\PY{p}{,}\PY{n+nb}{len}\PY{p}{(}\PY{n}{docs\PYZus{}tr}\PY{p}{)}\PY{p}{)}
+\PY{n}{td} \PY{o}{=} \PY{n}{topicDiversity}\PY{p}{(}\PY{n}{topics}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{etm\PYZhy{}topic\PYZhy{}coherrence: }\PY{l+s+si}{\PYZob{}tc\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{etm\PYZhy{}topic\PYZhy{}diversity: }\PY{l+s+si}{\PYZob{}td\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+etm-topic-coherrence: 0.1595585135160988
+etm-topic-diversity: 0.775
+\end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{30}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{from} \PY{n+nn}{src}\PY{n+nn}{.}\PY{n+nn}{utils\PYZus{}perplexity} \PY{k}{import} \PY{n}{get\PYZus{}perplexity}
+\PY{n}{test\PYZus{}batch\PYZus{}size} \PY{o}{=} \PY{l+m+mi}{1000}
+\PY{n}{\PYZus{}}\PY{p}{,} \PY{n}{test\PYZus{}ppl} \PY{o}{=} \PY{n}{get\PYZus{}perplexity}\PY{p}{(}\PY{n}{etm\PYZus{}model}\PY{p}{,} \PY{n}{test\PYZus{}set}\PY{p}{,} \PY{n}{vocab\PYZus{}size}\PY{p}{,} \PY{n}{test\PYZus{}batch\PYZus{}size}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{etm\PYZhy{}normalized\PYZhy{}perplexity: }\PY{l+s+si}{\PYZob{}test\PYZus{}ppl\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+calculate perplexitiy of test dataset: {\ldots}
+test-1-loader: 7
+test-2-loader: 7
+batch 0 finished
+batch 1 finished
+batch 2 finished
+batch 3 finished
+batch 4 finished
+batch 5 finished
+batch 6 finished
+etm-normalized-perplexity: 0.9576724693745969
+\end{Verbatim}
+
+    \textbf{Aktivierte Funktion ReLU}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{31}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{del} \PY{n}{etm\PYZus{}model}
+\PY{k}{del} \PY{n}{train\PYZus{}class} 
+\PY{k}{del} \PY{n}{train\PYZus{}args}
+\PY{k}{del} \PY{n}{optimizer\PYZus{}args}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{32}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{train\PYZus{}args} \PY{o}{=} \PY{n}{TrainArguments}\PY{p}{(}\PY{n}{epochs}\PY{o}{=}\PY{l+m+mi}{150}\PY{p}{,} \PY{n}{batch\PYZus{}size}\PY{o}{=}\PY{l+m+mi}{1000}\PY{p}{,} \PY{n}{log\PYZus{}interval}\PY{o}{=}\PY{k+kc}{None}\PY{p}{)}
+\PY{n}{optimizer\PYZus{}args} \PY{o}{=} \PY{n}{OptimizerArguments}\PY{p}{(}\PY{n}{optimizer\PYZus{}name}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{adam}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{lr}\PY{o}{=}\PY{l+m+mf}{0.002}\PY{p}{,} \PY{n}{wdecay}\PY{o}{=}\PY{l+m+mf}{0.0000012}\PY{p}{)}
+
+\PY{k+kn}{from} \PY{n+nn}{src}\PY{n+nn}{.}\PY{n+nn}{embedding} \PY{k}{import} \PY{n}{read\PYZus{}prefitted\PYZus{}embedding}
+\PY{n}{\PYZus{}}\PY{p}{,} \PY{n}{embedding\PYZus{}data} \PY{o}{=} \PY{n}{read\PYZus{}prefitted\PYZus{}embedding}\PY{p}{(}\PY{n}{model\PYZus{}name}\PY{p}{,} \PY{n}{vocab}\PY{p}{,} \PY{n}{save\PYZus{}path}\PY{p}{)}
+
+\PY{n}{num\PYZus{}topics} \PY{o}{=} \PY{l+m+mi}{20}
+\PY{n}{t\PYZus{}hidden\PYZus{}size} \PY{o}{=} \PY{l+m+mi}{800}
+\PY{n}{rho\PYZus{}size} \PY{o}{=} \PY{n+nb}{len}\PY{p}{(}\PY{n}{embedding\PYZus{}data}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}
+\PY{n}{emb\PYZus{}size} \PY{o}{=} \PY{n+nb}{len}\PY{p}{(}\PY{n}{embedding\PYZus{}data}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}
+\PY{n}{theta\PYZus{}act} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ReLU}\PY{l+s+s2}{\PYZdq{}}
+
+
+\PY{n}{etm\PYZus{}model} \PY{o}{=} \PY{n}{ETM}\PY{p}{(}
+      \PY{n}{num\PYZus{}topics}\PY{p}{,} 
+      \PY{n}{vocab\PYZus{}size}\PY{p}{,} 
+      \PY{n}{t\PYZus{}hidden\PYZus{}size}\PY{p}{,} \PY{n}{rho\PYZus{}size}\PY{p}{,} \PY{n}{emb\PYZus{}size}\PY{p}{,} \PY{n}{theta\PYZus{}act}\PY{p}{,} 
+      \PY{n}{embedding\PYZus{}data}\PY{p}{,} 
+      \PY{n}{enc\PYZus{}drop}\PY{o}{=}\PY{l+m+mf}{0.5}\PY{p}{)}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{etm\PYZus{}model}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}training\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}}
+\PY{n}{loss\PYZus{}name} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{cross\PYZhy{}entropy}\PY{l+s+s2}{\PYZdq{}}
+
+\PY{n}{train\PYZus{}class} \PY{o}{=} \PY{n}{TrainETM}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{train}\PY{p}{(}
+    \PY{n}{etm\PYZus{}model}\PY{p}{,}
+    \PY{n}{loss\PYZus{}name}\PY{p}{,}
+    \PY{n}{vocab\PYZus{}size}\PY{p}{,} 
+    \PY{n}{train\PYZus{}args}\PY{p}{,} \PY{n}{optimizer\PYZus{}args}\PY{p}{,} \PY{n}{train\PYZus{}set}\PY{p}{,}
+    \PY{n}{normalize\PYZus{}data} \PY{o}{=} \PY{k+kc}{True}\PY{p}{,}
+    \PY{n}{figures\PYZus{}path} \PY{o}{=} \PY{n}{figures\PYZus{}path}\PY{p}{,}
+    \PY{n}{visualization} \PY{o}{=} \PY{k+kc}{True}\PY{p}{)}
+    
+
+\PY{c+c1}{\PYZsh{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}show topics}
+\PY{n}{topics} \PY{o}{=} \PY{n}{etm\PYZus{}model}\PY{o}{.}\PY{n}{show\PYZus{}topics}\PY{p}{(}\PY{n}{id2word}\PY{p}{,} \PY{l+m+mi}{10}\PY{p}{)}
+\PY{n}{topics} \PY{o}{=} \PY{p}{[}\PY{p}{[}\PY{n}{e}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]} \PY{k}{for} \PY{n}{e} \PY{o+ow}{in} \PY{n}{tp}\PY{p}{]} \PY{k}{for} \PY{n}{tp} \PY{o+ow}{in} \PY{n}{topics}\PY{p}{]} \PY{c+c1}{\PYZsh{}get only top words}
+\PY{k}{for} \PY{n}{tp} \PY{o+ow}{in} \PY{n}{topics}\PY{p}{:}
+  \PY{n+nb}{print}\PY{p}{(}\PY{n}{tp}\PY{p}{)}
+
+\PY{n}{tc} \PY{o}{=} \PY{n}{topicCoherence2}\PY{p}{(}\PY{n}{topics}\PY{p}{,}\PY{n+nb}{len}\PY{p}{(}\PY{n}{topics}\PY{p}{)}\PY{p}{,}\PY{n}{docs\PYZus{}tr}\PY{p}{,}\PY{n+nb}{len}\PY{p}{(}\PY{n}{docs\PYZus{}tr}\PY{p}{)}\PY{p}{)}
+\PY{n}{td} \PY{o}{=} \PY{n}{topicDiversity}\PY{p}{(}\PY{n}{topics}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{topic\PYZhy{}coherrence: }\PY{l+s+si}{\PYZob{}tc\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{topic\PYZhy{}diversity: }\PY{l+s+si}{\PYZob{}td\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+start reading lines embeddings file:{\ldots}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+reading word-embedding{\ldots}: 100\%|██████████| 3102/3102 [00:00<00:00, 8653.27it/s]
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+end reading lines embeddings file!
+ETM(
+  (theta\_act): ReLU()
+  (topic\_embeddings\_alphas): Linear(in\_features=300, out\_features=20,
+bias=False)
+  (q\_theta): Sequential(
+    (0): Linear(in\_features=3102, out\_features=800, bias=True)
+    (1): ReLU()
+    (2): Linear(in\_features=800, out\_features=800, bias=True)
+    (3): ReLU()
+  )
+  (mu\_q\_theta): Linear(in\_features=800, out\_features=20, bias=True)
+  (logsigma\_q\_theta): Linear(in\_features=800, out\_features=20, bias=True)
+)
+number of batches: 12
+Epoch: 1/150  -  Loss: 649.70953         Rec: 649.70026          KL: 0.00929
+Epoch: 2/150  -  Loss: 643.68079         Rec: 643.61145          KL: 0.06925
+Epoch: 3/150  -  Loss: 643.56934         Rec: 643.14886          KL: 0.42048
+Epoch: 4/150  -  Loss: 630.76715         Rec: 629.49231          KL: 1.27488
+Epoch: 5/150  -  Loss: 623.78253         Rec: 621.58148          KL: 2.2011
+Epoch: 6/150  -  Loss: 628.23364         Rec: 625.47089          KL: 2.7628
+Epoch: 7/150  -  Loss: 620.57849         Rec: 617.32025          KL: 3.25821
+Epoch: 8/150  -  Loss: 617.84705         Rec: 614.32288          KL: 3.5242
+Epoch: 9/150  -  Loss: 614.91205         Rec: 610.87817          KL: 4.03386
+Epoch: 10/150  -  Loss: 612.82678        Rec: 608.42169          KL: 4.40505
+Epoch: 11/150  -  Loss: 617.08679        Rec: 612.60571          KL: 4.48112
+Epoch: 12/150  -  Loss: 619.34595        Rec: 614.72351          KL: 4.62245
+Epoch: 13/150  -  Loss: 607.37134        Rec: 602.61591          KL: 4.75541
+Epoch: 14/150  -  Loss: 603.24695        Rec: 598.37384          KL: 4.87311
+Epoch: 15/150  -  Loss: 609.01404        Rec: 603.92578          KL: 5.08835
+Epoch: 16/150  -  Loss: 608.3667         Rec: 603.05609          KL: 5.3106
+Epoch: 17/150  -  Loss: 603.90204        Rec: 598.46741          KL: 5.43465
+Epoch: 18/150  -  Loss: 601.24731        Rec: 595.82745          KL: 5.41986
+Epoch: 19/150  -  Loss: 598.20386        Rec: 592.6178   KL: 5.58604
+Epoch: 20/150  -  Loss: 599.75989        Rec: 594.17981          KL: 5.58006
+Epoch: 21/150  -  Loss: 599.51416        Rec: 593.76776          KL: 5.74641
+Epoch: 22/150  -  Loss: 601.95874        Rec: 596.20911          KL: 5.74966
+Epoch: 23/150  -  Loss: 607.34955        Rec: 601.51532          KL: 5.83426
+Epoch: 24/150  -  Loss: 602.46393        Rec: 596.57776          KL: 5.88624
+Epoch: 25/150  -  Loss: 598.89398        Rec: 593.00256          KL: 5.89141
+Epoch: 26/150  -  Loss: 593.34216        Rec: 587.38818          KL: 5.95393
+Epoch: 27/150  -  Loss: 595.76923        Rec: 589.7478   KL: 6.02145
+Epoch: 28/150  -  Loss: 593.58099        Rec: 587.37988          KL: 6.2011
+Epoch: 29/150  -  Loss: 590.97974        Rec: 584.78387          KL: 6.19588
+Epoch: 30/150  -  Loss: 598.23376        Rec: 591.95673          KL: 6.27708
+Epoch: 31/150  -  Loss: 591.86389        Rec: 585.51416          KL: 6.3497
+Epoch: 32/150  -  Loss: 593.42725        Rec: 586.9198   KL: 6.50747
+Epoch: 33/150  -  Loss: 590.31665        Rec: 583.79285          KL: 6.52384
+Epoch: 34/150  -  Loss: 603.64355        Rec: 597.00549          KL: 6.63807
+Epoch: 35/150  -  Loss: 595.60803        Rec: 588.93793          KL: 6.66999
+Epoch: 36/150  -  Loss: 588.60504        Rec: 581.74811          KL: 6.85691
+Epoch: 37/150  -  Loss: 587.33685        Rec: 580.47852          KL: 6.85833
+Epoch: 38/150  -  Loss: 584.55872        Rec: 577.617    KL: 6.94175
+Epoch: 39/150  -  Loss: 595.64557        Rec: 588.56982          KL: 7.07579
+Epoch: 40/150  -  Loss: 587.37   Rec: 580.23553          KL: 7.13453
+Epoch: 41/150  -  Loss: 586.52966        Rec: 579.3208   KL: 7.20876
+Epoch: 42/150  -  Loss: 589.55798        Rec: 582.32275          KL: 7.23526
+Epoch: 43/150  -  Loss: 590.84833        Rec: 583.58508          KL: 7.26326
+Epoch: 44/150  -  Loss: 591.65442        Rec: 584.32367          KL: 7.3307
+Epoch: 45/150  -  Loss: 588.08789        Rec: 580.6156   KL: 7.47232
+Epoch: 46/150  -  Loss: 585.65576        Rec: 578.07874          KL: 7.57712
+Epoch: 47/150  -  Loss: 581.89935        Rec: 574.30603          KL: 7.5934
+Epoch: 48/150  -  Loss: 592.39032        Rec: 584.74933          KL: 7.641
+Epoch: 49/150  -  Loss: 586.8938         Rec: 579.11584          KL: 7.77801
+Epoch: 50/150  -  Loss: 582.4361         Rec: 574.57471          KL: 7.86134
+Epoch: 51/150  -  Loss: 580.95898        Rec: 573.0708   KL: 7.88816
+Epoch: 52/150  -  Loss: 580.27081        Rec: 572.40063          KL: 7.87013
+Epoch: 53/150  -  Loss: 581.30249        Rec: 573.26813          KL: 8.03443
+Epoch: 54/150  -  Loss: 588.30853        Rec: 580.08496          KL: 8.22352
+Epoch: 55/150  -  Loss: 583.23206        Rec: 575.04437          KL: 8.18769
+Epoch: 56/150  -  Loss: 582.6853         Rec: 574.31555          KL: 8.36986
+Epoch: 57/150  -  Loss: 585.03479        Rec: 576.61304          KL: 8.42188
+Epoch: 58/150  -  Loss: 584.24628        Rec: 575.77649          KL: 8.46974
+Epoch: 59/150  -  Loss: 582.69336        Rec: 574.26111          KL: 8.43218
+Epoch: 60/150  -  Loss: 582.06116        Rec: 573.41846          KL: 8.64262
+Epoch: 61/150  -  Loss: 583.0791         Rec: 574.48181          KL: 8.59739
+Epoch: 62/150  -  Loss: 587.14484        Rec: 578.46729          KL: 8.67754
+Epoch: 63/150  -  Loss: 579.534          Rec: 570.71442          KL: 8.81965
+Epoch: 64/150  -  Loss: 590.03656        Rec: 581.30298          KL: 8.73353
+Epoch: 65/150  -  Loss: 576.27319        Rec: 567.47144          KL: 8.8017
+Epoch: 66/150  -  Loss: 578.62646        Rec: 569.77234          KL: 8.85409
+Epoch: 67/150  -  Loss: 577.3291         Rec: 568.57031          KL: 8.75873
+Epoch: 68/150  -  Loss: 590.41821        Rec: 581.46851          KL: 8.94968
+Epoch: 69/150  -  Loss: 578.06909        Rec: 569.08044          KL: 8.98871
+Epoch: 70/150  -  Loss: 580.53448        Rec: 571.61475          KL: 8.91973
+Epoch: 71/150  -  Loss: 577.9209         Rec: 568.93292          KL: 8.98801
+Epoch: 72/150  -  Loss: 583.63129        Rec: 574.58191          KL: 9.04943
+Epoch: 73/150  -  Loss: 585.04871        Rec: 575.98242          KL: 9.06636
+Epoch: 74/150  -  Loss: 576.37909        Rec: 567.38306          KL: 8.99601
+Epoch: 75/150  -  Loss: 576.43524        Rec: 567.38647          KL: 9.04868
+Epoch: 76/150  -  Loss: 583.60596        Rec: 574.53845          KL: 9.06751
+Epoch: 77/150  -  Loss: 585.96283        Rec: 576.84473          KL: 9.118
+Epoch: 78/150  -  Loss: 575.633          Rec: 566.49164          KL: 9.14132
+Epoch: 79/150  -  Loss: 588.05463        Rec: 578.89636          KL: 9.15828
+Epoch: 80/150  -  Loss: 585.00647        Rec: 575.83575          KL: 9.17069
+Epoch: 81/150  -  Loss: 575.76355        Rec: 566.67804          KL: 9.08546
+Epoch: 82/150  -  Loss: 579.38452        Rec: 570.1593   KL: 9.22517
+Epoch: 83/150  -  Loss: 583.06531        Rec: 573.89099          KL: 9.1743
+Epoch: 84/150  -  Loss: 571.67468        Rec: 562.52246          KL: 9.15228
+Epoch: 85/150  -  Loss: 579.49585        Rec: 570.32385          KL: 9.17209
+Epoch: 86/150  -  Loss: 581.49506        Rec: 572.28967          KL: 9.20542
+Epoch: 87/150  -  Loss: 577.08057        Rec: 567.87445          KL: 9.20611
+Epoch: 88/150  -  Loss: 574.16687        Rec: 564.96948          KL: 9.19738
+Epoch: 89/150  -  Loss: 582.93433        Rec: 573.63464          KL: 9.29978
+Epoch: 90/150  -  Loss: 585.60815        Rec: 576.30811          KL: 9.30002
+Epoch: 91/150  -  Loss: 580.74445        Rec: 571.44171          KL: 9.3027
+Epoch: 92/150  -  Loss: 580.28003        Rec: 571.00647          KL: 9.27355
+Epoch: 93/150  -  Loss: 577.86646        Rec: 568.62256          KL: 9.24386
+Epoch: 94/150  -  Loss: 582.53162        Rec: 573.19452          KL: 9.33712
+Epoch: 95/150  -  Loss: 579.73035        Rec: 570.40692          KL: 9.32338
+Epoch: 96/150  -  Loss: 574.60962        Rec: 565.31592          KL: 9.29369
+Epoch: 97/150  -  Loss: 582.21606        Rec: 572.90967          KL: 9.30641
+Epoch: 98/150  -  Loss: 576.09668        Rec: 566.79089          KL: 9.3058
+Epoch: 99/150  -  Loss: 585.47681        Rec: 576.10956          KL: 9.36729
+Epoch: 100/150  -  Loss: 576.43304       Rec: 567.18518          KL: 9.24793
+Epoch: 101/150  -  Loss: 573.51184       Rec: 564.17175          KL: 9.34012
+Epoch: 102/150  -  Loss: 579.64758       Rec: 570.29742          KL: 9.35014
+Epoch: 103/150  -  Loss: 575.73547       Rec: 566.38403          KL: 9.35141
+Epoch: 104/150  -  Loss: 574.75275       Rec: 565.39142          KL: 9.36126
+Epoch: 105/150  -  Loss: 575.40155       Rec: 566.04517          KL: 9.35642
+Epoch: 106/150  -  Loss: 576.44714       Rec: 567.10101          KL: 9.34612
+Epoch: 107/150  -  Loss: 573.50085       Rec: 564.11298          KL: 9.38786
+Epoch: 108/150  -  Loss: 583.97192       Rec: 574.59338          KL: 9.37856
+Epoch: 109/150  -  Loss: 573.97064       Rec: 564.62982          KL: 9.34082
+Epoch: 110/150  -  Loss: 576.10956       Rec: 566.6759   KL: 9.43372
+Epoch: 111/150  -  Loss: 580.20343       Rec: 570.74005          KL: 9.46342
+Epoch: 112/150  -  Loss: 581.39673       Rec: 571.97424          KL: 9.42253
+Epoch: 113/150  -  Loss: 574.93127       Rec: 565.53711          KL: 9.39416
+Epoch: 114/150  -  Loss: 577.03156       Rec: 567.60999          KL: 9.42163
+Epoch: 115/150  -  Loss: 583.95667       Rec: 574.45319          KL: 9.50351
+Epoch: 116/150  -  Loss: 582.99036       Rec: 573.56909          KL: 9.42127
+Epoch: 117/150  -  Loss: 583.18701       Rec: 573.74048          KL: 9.4466
+Epoch: 118/150  -  Loss: 576.37805       Rec: 566.98785          KL: 9.39022
+Epoch: 119/150  -  Loss: 577.52185       Rec: 568.04346          KL: 9.47841
+Epoch: 120/150  -  Loss: 571.25177       Rec: 561.89075          KL: 9.36099
+Epoch: 121/150  -  Loss: 585.54175       Rec: 576.06787          KL: 9.47383
+Epoch: 122/150  -  Loss: 577.10803       Rec: 567.59442          KL: 9.51355
+Epoch: 123/150  -  Loss: 581.44855       Rec: 571.96985          KL: 9.47867
+Epoch: 124/150  -  Loss: 574.55334       Rec: 565.10724          KL: 9.44614
+Epoch: 125/150  -  Loss: 577.34613       Rec: 567.89789          KL: 9.44827
+Epoch: 126/150  -  Loss: 577.11316       Rec: 567.61133          KL: 9.5018
+Epoch: 127/150  -  Loss: 574.18317       Rec: 564.7334   KL: 9.44973
+Epoch: 128/150  -  Loss: 591.43036       Rec: 581.82446          KL: 9.60588
+Epoch: 129/150  -  Loss: 582.91589       Rec: 573.49243          KL: 9.42343
+Epoch: 130/150  -  Loss: 579.60535       Rec: 570.16211          KL: 9.44319
+Epoch: 131/150  -  Loss: 580.62231       Rec: 571.146    KL: 9.47637
+Epoch: 132/150  -  Loss: 577.56531       Rec: 568.09766          KL: 9.46766
+Epoch: 133/150  -  Loss: 581.91437       Rec: 572.40466          KL: 9.50976
+Epoch: 134/150  -  Loss: 575.71509       Rec: 566.12183          KL: 9.59315
+Epoch: 135/150  -  Loss: 573.93652       Rec: 564.48553          KL: 9.45094
+Epoch: 136/150  -  Loss: 575.66864       Rec: 566.27539          KL: 9.39326
+Epoch: 137/150  -  Loss: 576.77478       Rec: 567.24451          KL: 9.53028
+Epoch: 138/150  -  Loss: 584.24188       Rec: 574.71271          KL: 9.52913
+Epoch: 139/150  -  Loss: 578.24115       Rec: 568.66296          KL: 9.57823
+Epoch: 140/150  -  Loss: 579.26373       Rec: 569.8468   KL: 9.417
+Epoch: 141/150  -  Loss: 583.10834       Rec: 573.57495          KL: 9.53341
+Epoch: 142/150  -  Loss: 589.71106       Rec: 580.22052          KL: 9.49049
+Epoch: 143/150  -  Loss: 580.0802        Rec: 570.53149          KL: 9.54881
+Epoch: 144/150  -  Loss: 571.57166       Rec: 562.09497          KL: 9.47676
+Epoch: 145/150  -  Loss: 578.0188        Rec: 568.51672          KL: 9.50211
+Epoch: 146/150  -  Loss: 577.26465       Rec: 567.73431          KL: 9.53037
+Epoch: 147/150  -  Loss: 576.4339        Rec: 566.89777          KL: 9.53615
+Epoch: 148/150  -  Loss: 573.29053       Rec: 563.76947          KL: 9.52104
+Epoch: 149/150  -  Loss: 576.54486       Rec: 566.9668   KL: 9.57809
+Epoch: 150/150  -  Loss: 579.0882        Rec: 569.56366          KL: 9.52451
+Checkpoint saved at checkpoints/etm\_epoch\_150.pth.tar
+\end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{notebook_replication_files/notebook_replication_65_3.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{notebook_replication_files/notebook_replication_65_4.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+['max', 'uk', 'ac', 'de', 'au', 'tu', 'sgi', 'rz', 'wa', 'keith']
+['mail', 'information', 'list', 'group', 'email', 'internet', 'info', 'send',
+'ftp', 'faq']
+['key', 'public', 'chip', 'clipper', 'encryption', 'government', 'law', 'keys',
+'phone', 'secure']
+['posting', 'host', 'nntp', 'university', 'cc', 'news', 'reply', 'apr',
+'article', 'message']
+['years', 'read', 'back', 'times', 'heard', 'left', 'israel', 'ago', 'history',
+'told']
+['cs', 'university', 'writes', 'article', 'andrew', 'uiuc', 'cmu', 'cwru',
+'engineering', 'ohio']
+['state', 'writes', 'article', 'distribution', 'world', 'computer',
+'university', 'usa', 'netcom', 'david']
+['space', 'nasa', 'gov', 'access', 'health', 'national', 'shuttle', 'billion',
+'research', 'medical']
+['time', 'problem', 'work', 'find', 'long', 'system', 'line', 'good', 'day',
+'number']
+['car', 'power', 'high', 'speed', 'front', 'bike', 'engine', 'water', 'good',
+'cars']
+['god', 'jesus', 'people', 'life', 'christian', 'christians', 'christianity',
+'religion', 'church', 'christ']
+['john', 'writes', 'article', 'bill', 'washington', 'man', 'art', 'ed', 'book',
+'good']
+['drive', 'card', 'mac', 'ibm', 'scsi', 'pc', 'disk', 'price', 'apple', 'bus']
+['article', 'writes', 'org', 'michael', 'hp', 'research', 'att', 'opinions',
+'colorado', 'disclaimer']
+['windows', 'file', 'dos', 'program', 'files', 'window', 'data', 'image',
+'software', 'system']
+['game', 'team', 'games', 'players', 'league', 'year', 'play', 'win', 'player',
+'division']
+['ca', 'sun', 'writes', 'wrote', 'version', 'posting', 'canada', 'mike',
+'newsreader', 'post']
+['question', 'point', 'true', 'fact', 'wrong', 'claim', 'case', 'part',
+'evidence', 'simply']
+['gun', 'government', 'people', 'israeli', 'armenians', 'armenian', 'world',
+'villages', 'children', 'states']
+['people', 'make', 'good', 'things', 'lot', 'made', 'problems', 'bad', 'thing',
+'president']
+topic-coherrence: 0.18821489049264942
+topic-diversity: 0.9
+\end{Verbatim}
+
+
+    % Add a bibliography block to the postdoc
+    
+    
+    
+    \end{document}
