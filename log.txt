@@ -1,29 +1,48 @@
-using cuda: True
+using cuda: False
+filter-stopwords: False
+----------------------------------------------------------------------------------------------------
 
 
 loading texts: ...
+From: lerxst@wam.umd.edu (where's my thing)
+Subject: WHAT car is this!?
+Nntp-Posting-Host: rac3.wam.umd.edu
+Organization: University of Maryland, College Park
+Lines: 15
+
+ I was wondering if anyone out there could enlighten me on this car I saw
+the other day. It was a 2-door sports car, looked to be from the late 60s/
+early 70s. It was called a Bricklin. The doors were really small. In addition,
+the front bumper was separate from the rest of the body. This is 
+all I know. If anyone can tellme a model name, engine specs, years
+of production, where this car is made, history, or whatever info you
+have on this funky looking car, please e-mail.
+
+Thanks,
+- IL
+   ---- brought to you by your neighborhood Lerxst ----
+
+
+
+
+
 train-size after loading: 11314
 test-size after loading: 7532
 finished load!
 start: preprocessing: ...
 finised: preprocessing!
-check some sample texts of the dataset after filter punctuation and digits
-lerxst wam umd thing subject car nntp posting host wam umd organization university maryland college park lines wondering enlighten car day door sports car looked late early called bricklin doors small addition front bumper separate rest body tellme model engine specs years production car made history info funky car mail il brought neighborhood lerxst
-====================================================================================================
-guykuo carson washington guy kuo subject si clock poll final call summary final call si clock reports keywords si acceleration clock upgrade article shelley organization university washington lines nntp posting host carson washington fair number brave souls upgraded si clock oscillator shared experiences poll send message detailing experiences procedure top speed attained cpu rated speed add cards adapters heat sinks hour usage day floppy disk functionality floppies requested summarizing days add network knowledge base clock upgrade answered poll guy kuo guykuo washington
-====================================================================================================
 
 total documents 18846
-vocab-size in df: 18677
-validation-size ist: 0.01
+vocab-size in df: 19148
 start creating vocabulary ...
-length of the vocabulary: 18677
-sample ten words of the vocabulary: ['stopped', 'glowing', 'lopez', 'marks', 'xc', 'manuscripts', 'courtyard', 'au', 'destroyed', 'mohit']
-length word2id list: 18677
-length id2word list: 18677
+length of the vocabulary: 19148
+length word2id list: 19148
+length id2word list: 19148
 finished: creating vocabulary
 
 
+save docs in txt...
+save docs finished
 train-size-after-all: 11214
 test-size-after-all: 7532
 validation-size-after-all: 100
@@ -33,8 +52,8 @@ test-size-after-all: 100
 test-indices-length: 100
 test-size-after-all: 7532
 test-indices-length: 7532
-length train-documents-indices : 1299485
-length of the vocabulary: 18677
+length train-documents-indices : 2262697
+length of the vocabulary: 19148
 
 
 start: creating bow representation...
@@ -55,39 +74,172 @@ finised creating bow input!
 train-bow-representation for ETM: 
 
 example ids of dict-id2word for ETM: [0, 1, 2, 3, 4]
-example words of dict-id2word for ETM: ['stopped', 'glowing', 'lopez', 'marks', 'xc']
-====================================================================================================
-Size of the vocabulary after prprocessing ist: 18677
+example words of dict-id2word for ETM: ['classic', 'wage', 'usa', 'jaw', 'noaa']
+Size of the vocabulary after prprocessing ist: 19148
 Size of train set: 11214
 Size of val set: 100
 Size of test set: 7532
-train begin:word-embedding with skipgram
-word-embedding train finished
-length of vocabulary from word-embedding model 18677
-length of the vocabulary of prepraring-dataset-vocabulary: 18677
+save docs in txt...
+save docs finished
+prepare data finished
+----------------------------------------------------------------------------------------------------
+word-embedding training begin
+train word-embedding with skipgram
+length of vocabulary from word-embedding with skipgram: 19148
+length of vocabulary after creating BOW: 19148
 neighbor words of some sample selected words
-word: stopped
-vector: [0.100283705, 0.06339941, -0.012738428, 0.12598227, 0.15250528] 
-using epochs: 2
+word: classic
+vector: [0.17541203, 0.064165495, -0.004532594, -0.11816872, -0.05392469] 
+[('sentra', 0.7932232618331909), ('pickup', 0.7931208610534668), ('jeep', 0.792050302028656), ('camry', 0.7882952094078064), ('lemon', 0.7836377620697021)]
+word-embedding finised
+----------------------------------------------------------------------------------------------------
+training parameter setting...
+using epochs: 150
 using optimizer: adam
-11214
-sum of vector: 0.9999994039535522
-length of vector: 0.14386112987995148
-[0.100283705, 0.063399412, -0.012738428, 0.12598227, 0.152505279]
-type embdding: <class 'list'>
+using learning rate: 0.002
+using wdecay: 1.2e-06
+total train docs: 11214
+sum of vector: 1.0000004768371582
+length of vector: 0.1214134618639946
+reading skipgram prefitted-embedding...
+start reading lines embeddings file:...
+end reading lines embeddings file!
+example 5 element of word-vector: [0.175412029, 0.064165495, -0.004532594, -0.118168719, -0.053924691]
+ETM initilize...
 --------------------------------------------------MODEL-SUMMARY--------------------------------------------------
 ETM(
-  (t_drop): Dropout(p=0.5, inplace=False)
   (theta_act): ReLU()
-  (topic_embeddings_alphas): Linear(in_features=300, out_features=50, bias=False)
+  (topic_embeddings_alphas): Linear(in_features=300, out_features=20, bias=False)
   (q_theta): Sequential(
-    (0): Linear(in_features=18677, out_features=800, bias=True)
+    (0): Linear(in_features=19148, out_features=800, bias=True)
     (1): ReLU()
     (2): Linear(in_features=800, out_features=800, bias=True)
     (3): ReLU()
   )
-  (mu_q_theta): Linear(in_features=800, out_features=50, bias=True)
-  (logsigma_q_theta): Linear(in_features=800, out_features=50, bias=True)
+  (mu_q_theta): Linear(in_features=800, out_features=20, bias=True)
+  (logsigma_q_theta): Linear(in_features=800, out_features=20, bias=True)
 )
 --------------------------------------------------TRAIN--------------------------------------------------
-number of batches: 11
+number of batches: 12
+Epoch: 1/150  -  Loss: 1949.13965 	 Rec: 1948.67029 	 KL: 0.46936
+Epoch: 2/150  -  Loss: 1968.1908 	 Rec: 1967.00183 	 KL: 1.18914
+Epoch: 3/150  -  Loss: 1904.23254 	 Rec: 1900.6781 	 KL: 3.55461
+Epoch: 4/150  -  Loss: 1837.51306 	 Rec: 1831.24719 	 KL: 6.26581
+Epoch: 5/150  -  Loss: 1826.33789 	 Rec: 1818.74902 	 KL: 7.58883
+Epoch: 6/150  -  Loss: 1782.8009 	 Rec: 1774.36804 	 KL: 8.43294
+Epoch: 7/150  -  Loss: 1746.50977 	 Rec: 1737.50354 	 KL: 9.00636
+Epoch: 8/150  -  Loss: 1750.51135 	 Rec: 1741.28772 	 KL: 9.22399
+Epoch: 9/150  -  Loss: 1727.90771 	 Rec: 1718.61145 	 KL: 9.29615
+Epoch: 10/150  -  Loss: 1702.83508 	 Rec: 1693.50476 	 KL: 9.33034
+Epoch: 11/150  -  Loss: 1719.47107 	 Rec: 1710.16614 	 KL: 9.30481
+Epoch: 12/150  -  Loss: 1730.7926 	 Rec: 1721.60974 	 KL: 9.18296
+Epoch: 13/150  -  Loss: 1690.71887 	 Rec: 1681.22375 	 KL: 9.49506
+Epoch: 14/150  -  Loss: 1682.97754 	 Rec: 1673.62292 	 KL: 9.35462
+Epoch: 15/150  -  Loss: 1680.98206 	 Rec: 1671.48303 	 KL: 9.49894
+Epoch: 16/150  -  Loss: 1658.09033 	 Rec: 1648.61389 	 KL: 9.47661
+Epoch: 17/150  -  Loss: 1687.69202 	 Rec: 1678.14392 	 KL: 9.54801
+Epoch: 18/150  -  Loss: 1697.90613 	 Rec: 1688.10156 	 KL: 9.80467
+Epoch: 19/150  -  Loss: 1655.6615 	 Rec: 1645.7052 	 KL: 9.95602
+Epoch: 20/150  -  Loss: 1672.89746 	 Rec: 1662.73816 	 KL: 10.15931
+Epoch: 21/150  -  Loss: 1646.66052 	 Rec: 1636.16809 	 KL: 10.4924
+Epoch: 22/150  -  Loss: 1660.20691 	 Rec: 1649.89905 	 KL: 10.30781
+Epoch: 23/150  -  Loss: 1641.21179 	 Rec: 1630.72839 	 KL: 10.4832
+Epoch: 24/150  -  Loss: 1653.51514 	 Rec: 1643.01697 	 KL: 10.49839
+Epoch: 25/150  -  Loss: 1634.44287 	 Rec: 1623.86975 	 KL: 10.57301
+Epoch: 26/150  -  Loss: 1632.82959 	 Rec: 1622.13757 	 KL: 10.69204
+Epoch: 27/150  -  Loss: 1657.7168 	 Rec: 1646.8949 	 KL: 10.82214
+Epoch: 28/150  -  Loss: 1614.7793 	 Rec: 1603.75403 	 KL: 11.02536
+Epoch: 29/150  -  Loss: 1641.52966 	 Rec: 1630.30139 	 KL: 11.22824
+Epoch: 30/150  -  Loss: 1623.43701 	 Rec: 1612.20007 	 KL: 11.23713
+Epoch: 31/150  -  Loss: 1624.26575 	 Rec: 1612.89062 	 KL: 11.37507
+Epoch: 32/150  -  Loss: 1629.69373 	 Rec: 1618.2959 	 KL: 11.39783
+Epoch: 33/150  -  Loss: 1618.42773 	 Rec: 1606.91736 	 KL: 11.51051
+Epoch: 34/150  -  Loss: 1609.84045 	 Rec: 1598.12598 	 KL: 11.71465
+Epoch: 35/150  -  Loss: 1611.422 	 Rec: 1599.65027 	 KL: 11.77176
+Epoch: 36/150  -  Loss: 1609.79785 	 Rec: 1597.88171 	 KL: 11.91621
+Epoch: 37/150  -  Loss: 1618.29456 	 Rec: 1606.31543 	 KL: 11.97916
+Epoch: 38/150  -  Loss: 1600.28772 	 Rec: 1588.25488 	 KL: 12.03281
+Epoch: 39/150  -  Loss: 1610.71228 	 Rec: 1598.63928 	 KL: 12.07299
+Epoch: 40/150  -  Loss: 1614.42468 	 Rec: 1602.31055 	 KL: 12.11402
+Epoch: 41/150  -  Loss: 1614.06543 	 Rec: 1601.88245 	 KL: 12.18306
+Epoch: 42/150  -  Loss: 1599.19543 	 Rec: 1586.97156 	 KL: 12.22427
+Epoch: 43/150  -  Loss: 1612.65637 	 Rec: 1600.19531 	 KL: 12.46125
+Epoch: 44/150  -  Loss: 1608.93799 	 Rec: 1596.49414 	 KL: 12.4439
+Epoch: 45/150  -  Loss: 1601.77161 	 Rec: 1589.22791 	 KL: 12.54373
+Epoch: 46/150  -  Loss: 1619.11035 	 Rec: 1606.43274 	 KL: 12.67765
+Epoch: 47/150  -  Loss: 1591.23108 	 Rec: 1578.46448 	 KL: 12.76664
+Epoch: 48/150  -  Loss: 1609.55164 	 Rec: 1596.75891 	 KL: 12.79277
+Epoch: 49/150  -  Loss: 1629.29944 	 Rec: 1616.31396 	 KL: 12.98545
+Epoch: 50/150  -  Loss: 1620.51086 	 Rec: 1607.51086 	 KL: 13.00013
+Epoch: 51/150  -  Loss: 1600.24951 	 Rec: 1587.00623 	 KL: 13.24329
+Epoch: 52/150  -  Loss: 1607.92297 	 Rec: 1594.41565 	 KL: 13.50723
+Epoch: 53/150  -  Loss: 1608.547 	 Rec: 1594.86536 	 KL: 13.68162
+Epoch: 54/150  -  Loss: 1577.11584 	 Rec: 1563.20471 	 KL: 13.91119
+Epoch: 55/150  -  Loss: 1603.98157 	 Rec: 1590.31458 	 KL: 13.66699
+Epoch: 56/150  -  Loss: 1601.05969 	 Rec: 1587.20813 	 KL: 13.85156
+Epoch: 57/150  -  Loss: 1588.36267 	 Rec: 1574.61877 	 KL: 13.74394
+Epoch: 58/150  -  Loss: 1596.4873 	 Rec: 1582.66992 	 KL: 13.81752
+Epoch: 59/150  -  Loss: 1579.17102 	 Rec: 1565.32129 	 KL: 13.84969
+Epoch: 60/150  -  Loss: 1590.32092 	 Rec: 1576.50134 	 KL: 13.81973
+Epoch: 61/150  -  Loss: 1615.9325 	 Rec: 1602.06506 	 KL: 13.86743
+Epoch: 62/150  -  Loss: 1574.53113 	 Rec: 1560.59973 	 KL: 13.93122
+Epoch: 63/150  -  Loss: 1575.0166 	 Rec: 1561.1991 	 KL: 13.81749
+Epoch: 64/150  -  Loss: 1597.55066 	 Rec: 1583.71619 	 KL: 13.83457
+Epoch: 65/150  -  Loss: 1590.68762 	 Rec: 1576.79968 	 KL: 13.88803
+Epoch: 66/150  -  Loss: 1583.36194 	 Rec: 1569.52966 	 KL: 13.83233
+Epoch: 67/150  -  Loss: 1582.89502 	 Rec: 1569.00586 	 KL: 13.88895
+Epoch: 68/150  -  Loss: 1584.4071 	 Rec: 1570.5531 	 KL: 13.85392
+Epoch: 69/150  -  Loss: 1570.87537 	 Rec: 1557.06287 	 KL: 13.81255
+Epoch: 70/150  -  Loss: 1578.82678 	 Rec: 1564.92297 	 KL: 13.90381
+Epoch: 71/150  -  Loss: 1592.01123 	 Rec: 1578.1626 	 KL: 13.84855
+Epoch: 72/150  -  Loss: 1573.11755 	 Rec: 1559.15759 	 KL: 13.95998
+Epoch: 73/150  -  Loss: 1587.76965 	 Rec: 1573.93652 	 KL: 13.83306
+Epoch: 74/150  -  Loss: 1575.03113 	 Rec: 1561.05908 	 KL: 13.97199
+Epoch: 75/150  -  Loss: 1562.54797 	 Rec: 1548.63086 	 KL: 13.91708
+Epoch: 76/150  -  Loss: 1587.46985 	 Rec: 1573.60059 	 KL: 13.86924
+Epoch: 77/150  -  Loss: 1562.4198 	 Rec: 1548.45764 	 KL: 13.96222
+Epoch: 78/150  -  Loss: 1560.86609 	 Rec: 1546.94324 	 KL: 13.92294
+Epoch: 79/150  -  Loss: 1581.151 	 Rec: 1567.17859 	 KL: 13.97257
+Epoch: 80/150  -  Loss: 1557.37244 	 Rec: 1543.34668 	 KL: 14.02582
+Epoch: 81/150  -  Loss: 1559.83154 	 Rec: 1545.83728 	 KL: 13.99421
+Epoch: 82/150  -  Loss: 1569.0791 	 Rec: 1554.92822 	 KL: 14.15129
+Epoch: 83/150  -  Loss: 1570.1698 	 Rec: 1556.01428 	 KL: 14.15521
+Epoch: 84/150  -  Loss: 1581.99902 	 Rec: 1567.9679 	 KL: 14.03114
+Epoch: 85/150  -  Loss: 1551.29797 	 Rec: 1537.10535 	 KL: 14.19265
+Epoch: 86/150  -  Loss: 1563.64404 	 Rec: 1549.49011 	 KL: 14.15385
+Epoch: 87/150  -  Loss: 1563.55432 	 Rec: 1549.37207 	 KL: 14.18241
+Epoch: 88/150  -  Loss: 1573.53772 	 Rec: 1559.32227 	 KL: 14.21524
+Epoch: 89/150  -  Loss: 1588.33215 	 Rec: 1574.0509 	 KL: 14.28135
+Epoch: 90/150  -  Loss: 1566.97791 	 Rec: 1552.7334 	 KL: 14.24442
+Epoch: 91/150  -  Loss: 1561.28613 	 Rec: 1547.02844 	 KL: 14.25773
+Epoch: 92/150  -  Loss: 1561.83875 	 Rec: 1547.56348 	 KL: 14.27509
+Epoch: 93/150  -  Loss: 1571.36633 	 Rec: 1556.96155 	 KL: 14.40476
+Epoch: 94/150  -  Loss: 1554.34265 	 Rec: 1540.16809 	 KL: 14.17453
+Epoch: 95/150  -  Loss: 1571.30701 	 Rec: 1556.83984 	 KL: 14.46721
+Epoch: 96/150  -  Loss: 1552.11084 	 Rec: 1537.87012 	 KL: 14.24097
+Epoch: 97/150  -  Loss: 1558.94385 	 Rec: 1544.53516 	 KL: 14.40872
+Epoch: 98/150  -  Loss: 1565.26697 	 Rec: 1550.92346 	 KL: 14.34345
+Epoch: 99/150  -  Loss: 1560.53027 	 Rec: 1546.20898 	 KL: 14.32134
+Epoch: 100/150  -  Loss: 1564.07422 	 Rec: 1549.62305 	 KL: 14.45109
+Epoch: 101/150  -  Loss: 1553.29993 	 Rec: 1538.88513 	 KL: 14.41494
+Epoch: 102/150  -  Loss: 1565.50195 	 Rec: 1551.09192 	 KL: 14.41003
+Epoch: 103/150  -  Loss: 1560.59509 	 Rec: 1546.20605 	 KL: 14.38897
+Epoch: 104/150  -  Loss: 1557.91345 	 Rec: 1543.49219 	 KL: 14.42123
+Epoch: 105/150  -  Loss: 1577.80371 	 Rec: 1563.17871 	 KL: 14.62514
+Epoch: 106/150  -  Loss: 1561.52136 	 Rec: 1547.04297 	 KL: 14.47834
+Epoch: 107/150  -  Loss: 1559.49365 	 Rec: 1544.92761 	 KL: 14.56613
+Epoch: 108/150  -  Loss: 1566.91272 	 Rec: 1552.30322 	 KL: 14.60972
+Epoch: 109/150  -  Loss: 1567.92932 	 Rec: 1553.40613 	 KL: 14.52327
+Epoch: 110/150  -  Loss: 1566.01331 	 Rec: 1551.51013 	 KL: 14.50338
+Epoch: 111/150  -  Loss: 1546.44812 	 Rec: 1531.78015 	 KL: 14.66798
+Epoch: 112/150  -  Loss: 1547.17139 	 Rec: 1532.60303 	 KL: 14.56806
+Epoch: 113/150  -  Loss: 1542.172 	 Rec: 1527.59583 	 KL: 14.57622
+Epoch: 114/150  -  Loss: 1574.73645 	 Rec: 1559.98975 	 KL: 14.74669
+Epoch: 115/150  -  Loss: 1551.01428 	 Rec: 1536.37073 	 KL: 14.64343
+Epoch: 116/150  -  Loss: 1548.85339 	 Rec: 1534.18213 	 KL: 14.67131
+Epoch: 117/150  -  Loss: 1557.35876 	 Rec: 1542.64001 	 KL: 14.71866
+Epoch: 118/150  -  Loss: 1579.94141 	 Rec: 1565.16394 	 KL: 14.77752
+Epoch: 119/150  -  Loss: 1557.64258 	 Rec: 1542.94788 	 KL: 14.69475
+Epoch: 120/150  -  Loss: 1551.72986 	 Rec: 1536.95544 	 KL: 14.77445
+Epoch: 121/150  -  Loss: 1549.66736 	 Rec: 1534.91614 	 KL: 14.75105
+Epoch: 122/150  -  Loss: 1583.45496 	 Rec: 1568.57556 	 KL: 14.87935

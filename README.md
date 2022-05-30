@@ -3,6 +3,8 @@
 **Ziel des Projekts**
 1. Replizieren des Artikels: [Topic Modelling in embedding space](https://arxiv.org/abs/1907.04907) von Adji B. Dieng, Francisco J. R. Ruiz, David M. Blei. Die [originale Implementierung](https://github.com/adjidieng/ETM) von Autoren. 
 2. Neues Experiment: Kombination von pre-fitted BERT-Embeddings mit ETM
+**Bericht**
+1. Berichtschreiben im Overleaf: [Bericht](https://www.overleaf.com/read/wpfpwbxwwjhz)
 
 **Durchgeführte Experimenten**
 - [x] Laufzeit des ETM Modells in der Abhängigkeit von der Vokabulargrößen
@@ -15,6 +17,7 @@
 1. List aller verwendeten Paketten ist in der Datei: requirements.txt
 2. Installieren durch: `pip install -r requirements.txt`
 3. Wichtig sind: [gensim](https://radimrehurek.com/gensim/) für LDA, [torch](https://pytorch.org/docs/stable/torch.html) für variationale Inference, [sklearn](https://scikit-learn.org/stable/) für Datensatz
+4. Anmerkung: Unsere Implementierung verwendet gensim=="3.8.3", sodass einige Parameters andere Namen hat als in dem neusten gensim (gensim=="4.2.0")
 
 **Notwendige Dateien für BERT-prefitted-ETM**
 1. Herunterladen die Bert-Embeddings from [Google-Drive-Link](https://drive.google.com/file/d/1aLLQCDFncdaedOS4pnB0-T6y0T7dHIck/view?usp=sharing): 

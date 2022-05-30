@@ -1,4 +1,14 @@
-* 8e0372b (HEAD -> main, origin/main, origin/HEAD) (remove etm-julia from dir, 2022-05-29)
+* 9759c68 (HEAD -> main, origin/main, origin/HEAD) (create colab notebook for control preparing data, 2022-05-29)
+* 6efaa03 (get_perplexity problem, 2022-05-29)
+* 23e02a5 (update to device get_perplexity, 2022-05-29)
+* a898d4b (update to device get_perplexity, 2022-05-29)
+* 197e834 (update to device get_perplexity, 2022-05-29)
+* cfd0012 (update to device get_perplexity, 2022-05-29)
+* f9fbc6b (add to(device) to perplexity, 2022-05-29)
+* f705502 (clean folders update visualization, 2022-05-29)
+* 134370d (run time figure, 2022-05-29)
+* 216388b (update main_lda.py show ppl each batch, 2022-05-29)
+* 8e0372b (remove etm-julia from dir, 2022-05-29)
 * c054859 (remove testing_notebooks, 2022-05-29)
 * 246e4a7 (remove testing_notebooks, 2022-05-29)
 * 1953962 (Update README.md, 2022-05-29)
@@ -58,11 +68,6 @@
 * | a036309 (LDA results by min_df, notebooks documentation, 2022-05-25)
 |/  
 * b01b7d6 (fixing lda gensim error, 2022-05-25)
-| *   e48ad01 (refs/stash) (WIP on main: 84a9103 etm and lda num_topis 20 min_df 100, 2022-05-25)
-| |\  
-|/ /  
-| * 12b2b10 (index on main: 84a9103 etm and lda num_topis 20 min_df 100, 2022-05-25)
-|/  
 * 84a9103 (etm and lda num_topis 20 min_df 100, 2022-05-25)
 * ac822d2 (etm and lda num_topis 20 min_df 100, 2022-05-25)
 * 6316f8b (etm and lda num_topis 20, 2022-05-25)
