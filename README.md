@@ -4,7 +4,7 @@
 1. Replizieren des Artikels: [Topic Modelling in embedding space](https://arxiv.org/abs/1907.04907) von Adji B. Dieng, Francisco J. R. Ruiz, David M. Blei. Die [originale Implementierung](https://github.com/adjidieng/ETM) von Autoren. 
 2. Neues Experiment: Kombination von pre-fitted BERT-Embeddings mit ETM
 **Bericht**
-1. Berichtschreiben im Overleaf: [Bericht](https://www.overleaf.com/read/wpfpwbxwwjhz), [HTML-Notebook](https://github.com/hanhluukim/replication-topic-modelling-in-embedding-space/blob/main/notebook_replication.html)
+1. Berichtschreiben im Overleaf: [Bericht](https://www.overleaf.com/read/wpfpwbxwwjhz), [HTML-Notebook-as-pdf](https://github.com/hanhluukim/replication-topic-modelling-in-embedding-space/blob/main/pdf_html_files/notebook_replication.pdf)
 
 **Durchgeführte Experimenten**
 - [x] Laufzeit des ETM Modells in der Abhängigkeit von der Vokabulargrößen
