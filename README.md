@@ -4,7 +4,7 @@
 1. Replizieren des Artikels: [Topic Modelling in embedding space](https://arxiv.org/abs/1907.04907) von Adji B. Dieng, Francisco J. R. Ruiz, David M. Blei. Die [originale Implementierung](https://github.com/adjidieng/ETM) von Autoren. 
 2. Neues Experiment: Kombination von pre-fitted BERT-Embeddings mit ETM
 **Bericht**
-1. Berichtschreiben im Overleaf: [Bericht](https://www.overleaf.com/read/wpfpwbxwwjhz), [HTML-Notebook](https://github.com/hanhluukim/replication-topic-modelling-in-embedding-space/blob/main/notebook_replication.html)
+1. Berichtschreiben im Overleaf: [Bericht](https://www.overleaf.com/read/wpfpwbxwwjhz), [HTML-Notebook-as-pdf](https://github.com/hanhluukim/replication-topic-modelling-in-embedding-space/blob/main/pdf_html_files/notebook_replication.pdf)
 
 **Durchgeführte Experimenten**
 - [x] Laufzeit des ETM Modells in der Abhängigkeit von der Vokabulargrößen
@@ -47,9 +47,9 @@
 3. Zerlegung: Traindatensatz (112114), Testdatensatz (Testdatensatz-h1, Testdatensatz-h2) (7532) und Validationssatz von 100 Dokumenten
 
 **Angewandte Word-Embedding Methoden**
-- [ ] CBOW und Skipgram mittels [Gensim](https://radimrehurek.com/gensim/). Word-Embeddings werden für jedes Wort des Traindatensatzes gelernt. Es wird ein Trainingsprozess gebraucht, um Word-Repräsentationen zu haben
-- [ ] based-BERT-Wordembedding mittels [Transformer-Huggingface](https://huggingface.co/docs/transformers/installation). Benutzung von pretrained-BERT-Modell um direkt Repräsentationen für Wörter zu haben. Kein Trainieren ist benötig. 
-- [ ] Implementierung in : `src/embedding.py` für CBOW und Skipgram und für BERT: `src/bert_preparing.py`, `src/bert_embedding.py`, `bert_main.py`. Durchfühen Bert-Embedding mit `python bert_main.py` aus dem Hauptordner
+- [x] CBOW und Skipgram mittels [Gensim](https://radimrehurek.com/gensim/). Word-Embeddings werden für jedes Wort des Traindatensatzes gelernt. Es wird ein Trainingsprozess gebraucht, um Word-Repräsentationen zu haben
+- [x] based-BERT-Wordembedding mittels [Transformer-Huggingface](https://huggingface.co/docs/transformers/installation). Benutzung von pretrained-BERT-Modell um direkt Repräsentationen für Wörter zu haben. Kein Trainieren ist benötig. 
+- [x] Implementierung in : `src/embedding.py` für CBOW und Skipgram und für BERT: `src/bert_preparing.py`, `src/bert_embedding.py`, `bert_main.py`. Durchfühen Bert-Embedding mit `python bert_main.py` aus dem Hauptordner
 
 **Architektur des ETM-Modells**
 1. Einige wichtige Beschreibung:
