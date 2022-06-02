@@ -87,11 +87,12 @@ class ETM(nn.Module):
         # trick to get the sample from Gaussian-Distribuation for update gradient-updating
         # using log-var-trik to allowed positive and negative values
         # see the tutorial: https://www.youtube.com/watch?v=pmvo0S3-G-I
-        if self.train():
+        if self.training:
             std = torch.exp(0.5 * logvar) 
             eps = torch.randn_like(std)
             return eps.mul_(std).add_(mu) # e*stad + \mu
         else:
+            # use mu for evaluation
             return mu
     
     def encode(self, normalized_bows):

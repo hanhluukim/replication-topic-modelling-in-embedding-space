@@ -1,0 +1,1968 @@
+* commit 76b69b5c4c28d6f72f237bc27c80f342e012d66e
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-31
+| 
+|     add new pdf-notebook
+| 
+* commit 213512e06737ce77fa87744eb1ae0f2bbcd0162e
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-31
+| 
+|     rm figures files
+| 
+* commit 7557104eae344ffc61a1e7c48348f766ebb25b00
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-31
+| 
+|     add report
+| 
+* commit 4523328544e8bf58ab60e3037e520003e0295bb1
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-31
+| 
+|     report
+| 
+* commit 28188a63b8005ac015dad1fb74df0a36a93a4453
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-30
+| 
+|     report
+| 
+* commit 91e3075e4083b68be759ccba4f8862ef095bd9fc
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-30
+| 
+|     add report and latex code
+| 
+* commit b7906bbebba4268f662b61f06b81c4cb3543c50f
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-30
+| 
+|     add pdf-files directory
+| 
+* commit ab50a6938b8fd3cbf422576d8b740393482c3bc9
+| Author: hanhluukim <51424320+hanhluukim@users.noreply.github.com>
+| Date:   2022-05-30
+| 
+|     Update README.md
+| 
+* commit 07b1587441ac3110b6c050523371da7635d69000
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-30
+| 
+|     add html notebook, add history commits, update notebooks and figures
+| 
+* commit b15fc85bfc615dc60a6283faf106d38cbd6ddab1
+| Author: hanhluukim <51424320+hanhluukim@users.noreply.github.com>
+| Date:   2022-05-30
+| 
+|     update completed notebook for using
+| 
+* commit 6643fd83fe36257bb462a96d3be64ff292fee7ab
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-30
+| 
+|     update READme
+| 
+* commit 9759c68c22b1c15546509d70c993d1b4ab38a1a1
+| Author: hanhluukim <51424320+hanhluukim@users.noreply.github.com>
+| Date:   2022-05-29
+| 
+|     create colab notebook for control preparing data
+| 
+* commit 6efaa034bf00d8a8f23be81e339fadceeed1ceaf
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-29
+| 
+|     get_perplexity problem
+| 
+* commit 23e02a5bfd333a9164f84808d1e31992a9de4d54
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-29
+| 
+|     update to device get_perplexity
+| 
+* commit a898d4b5b6b369d1229d2039534ae27990ab1b33
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-29
+| 
+|     update to device get_perplexity
+| 
+* commit 197e834c06459293c0aac83482cde48d70a103a2
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-29
+| 
+|     update to device get_perplexity
+| 
+* commit cfd001203a426dededf475d0f616d1d19515c1a4
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-29
+| 
+|     update to device get_perplexity
+| 
+* commit f9fbc6b8c7a95b164c63563c2fee19a76cdb8652
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-29
+| 
+|     add to(device) to perplexity
+| 
+* commit f7055025ea5f4546ddb541df5f43c5a4b27e0a6c
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-29
+| 
+|     clean folders update visualization
+| 
+* commit 134370d3fa0227471f1f4efa6fbb0ef433f36a11
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-29
+| 
+|     run time figure
+| 
+* commit 216388b1deb31c6aef78b4d4b7f60d18e66fcd2d
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-29
+| 
+|     update main_lda.py show ppl each batch
+| 
+* commit 8e0372bd3a61b124e196ea4e06941b5d3d3c04a4
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-29
+| 
+|     remove etm-julia from dir
+| 
+* commit c054859c198508d5c852811212d3c3372a68b479
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-29
+| 
+|     remove testing_notebooks
+| 
+* commit 246e4a79ceb176f05769b745630171463aff8405
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-29
+| 
+|     remove testing_notebooks
+| 
+* commit 1953962b4ce9884a7ccb8b1eb3304f6144e24a41
+| Author: hanhluukim <51424320+hanhluukim@users.noreply.github.com>
+| Date:   2022-05-29
+| 
+|     Update README.md
+| 
+* commit 9bb13d8f4ad2f8a2c46f3ade653a521e734e4b75
+| Author: hanhluukim <51424320+hanhluukim@users.noreply.github.com>
+| Date:   2022-05-29
+| 
+|     Update README.md
+| 
+* commit 8a8092a51ef80b8e1432f7c4360c0517939ee830
+| Author: hanhluukim <51424320+hanhluukim@users.noreply.github.com>
+| Date:   2022-05-29
+| 
+|     Update README.md
+| 
+* commit 566c9a7153dd0a42d4ee5d1224cef988ee7a862b
+| Author: hanhluukim <51424320+hanhluukim@users.noreply.github.com>
+| Date:   2022-05-29
+| 
+|     Update README.md
+| 
+* commit bcb00ee3160800a67474781df0ffe71d9e5453cf
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-29
+| 
+|     perplexity update, update notebook
+| 
+* commit 0a463e24eefa8b03e270b60205ffc223a63c66da
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-28
+| 
+|     update perplexity for lda, main_lda.py command, add new topicPerplexityNew
+| 
+* commit 4397f69c40dea69054bcdb5f38fad97a4cdd3430
+| Author: hanhluukim <51424320+hanhluukim@users.noreply.github.com>
+| Date:   2022-05-28
+| 
+|     Update README.md
+| 
+* commit f6da1e444e4aeb0f47871bf9c63aae570120bbc1
+| Author: hanhluukim <51424320+hanhluukim@users.noreply.github.com>
+| Date:   2022-05-28
+| 
+|     Update README.md
+| 
+* commit 1e7cb8487ba871714a53e8b3e23a10b89268c596
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-28
+| 
+|     add lda-perplexity as batches of 100
+| 
+* commit 266481b4561006df8e4a103bb2adb8daab4c25a9
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-28
+| 
+|     visualization runtime update path figures
+| 
+* commit d113463b65301b267b1d16942cfb712c8b2dfc2f
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-28
+| 
+|     visualization runtime update path figures
+| 
+* commit 725156b5ed05d01dfb1a5fed080ea68351ad22d3
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-28
+| 
+|     visualization runtime, update normalized perplexity for ETM
+| 
+* commit cfab55637f86bf5c9b7f1ad45714e6f112ccda30
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-28
+| 
+|     bert problem solved, update not_in_bert_vocab, update read_prefitted for bert-embedding
+| 
+* commit d202402a9b133886c102d2ff944809721a8c2cc9
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-28
+| 
+|     perplexity build in
+| 
+* commit d136413cc31eab30237cc841ef5c2d9a7a1468b9
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-27
+| 
+|     solved bert-vocab for all min_df
+|   
+*   commit 83b086157f18c868d926b7b2f2906a6cea21a736
+|\  Merge: f3c36f3 7255c3f
+| | Author: hanhluukim <luukimbi@gmail.com>
+| | Date:   2022-05-27
+| | 
+| |     Merge branch 'main' of https://github.com/hanhluukim/replication-topic-modelling-in-embedding-space into main
+| | 
+| * commit 7255c3f57325b99168d4aa4bc963a5c9c790915c
+| | Author: hanhluukim <51424320+hanhluukim@users.noreply.github.com>
+| | Date:   2022-05-27
+| | 
+| |     notebook for complete running from data to etm
+| | 
+* | commit f3c36f3562e6796c7021db64a19a82defc64982a
+|/  Author: hanhluukim <luukimbi@gmail.com>
+|   Date:   2022-05-27
+|   
+|       tiny change self.train()
+| 
+* commit c2a1a5e01bb66952704c3ab41567a3b8c87ba52d
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-27
+| 
+|     testdataset check
+| 
+* commit 3ddf364047aa9e99f87e959f0cc3ba1704ba0ab5
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-27
+| 
+|     add visualization=True to train()
+| 
+* commit fb3e5f6607b100ecaed45152f66d7188da5803ed
+| Author: hanhluukim <51424320+hanhluukim@users.noreply.github.com>
+| Date:   2022-05-27
+| 
+|     run notebook main.py with all args
+| 
+* commit f05ded7b23ed2d7834c93e9c6e6b334460496a42
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-27
+| 
+|     control args.lr, args.wdecay, update plot for neg-kld
+| 
+* commit ad485e30e3190aa391b29af15f853229761faf4a
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-27
+| 
+|     change KLD plot, add args.lr, args.wdecay to main
+| 
+* commit d6428dce3fe6dd5bbf5d6666a66e6dbc9cbe8b8e
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-27
+| 
+|     run bert-prefitted-ETM, save figures, topics by word2vec_model, add comments to main
+| 
+* commit 710fcffd427f4e19540ed3fe4e1cd6d75e695cce
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-27
+| 
+|     update notebook etm
+| 
+* commit 52f5d32e3e775bd0b06820497bbfe67474e4f7fd
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-27
+| 
+|     solved conflict vocab file
+| 
+* commit 3373c58ccd003bea7f9602b4f943e857921b8056
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-27
+| 
+|     ETM error found at cross-entropy
+| 
+* commit 1dbc8977f541fa7bafb8cddb70e6551fa4f65cba
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-26
+| 
+|     remove sorted train_indices from get_doc_in_words
+| 
+* commit 76702610c48d81f72bc554e88a0832f1e0dbdd95
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-27
+| 
+|     control prepared_data, update read_prefitted, todo testdataset
+| 
+* commit 479d205dd62bab696e9a78913980c0a86bd8d820
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-26
+| 
+|     update notebook main and notebook embeddings
+| 
+* commit 5fa13e5f4ad62106e09b293542794661d32709a8
+| Author: hanhluukim <51424320+hanhluukim@users.noreply.github.com>
+| Date:   2022-05-26
+| 
+|     update notebook_replication cause of implementation changes in /src
+| 
+* commit 2f64a477f8c91c26c7ae3b946db507a7e44097b9
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-26
+| 
+|     results etm by hidden-size and activat func
+| 
+* commit 4ba5530ca29414b04c6860d52a61a1599023fb9e
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-26
+| 
+|     add new args to main for hidden-size and activat func
+| 
+* commit 0051ac3efc59bd3067f0c9d8c6e55e19e7332cd9
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-26
+| 
+|     add new args to main, save etm-topics with topics und without topics directory
+| 
+* commit f0fc8a9a593b0c15ae1dd6d93e57259660e0e1dc
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-26
+| 
+|     add new args to main args.filter_stopwords and use_bert_embedding
+| 
+* commit 459043a7d0fd1427a5e932f9c2b44f637cd3043c
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-26
+| 
+|     lda new runs stopwords and without stopwords
+| 
+* commit c6ef4509374a337a0f31df072de42f5570efb929
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-26
+| 
+|     add not_in_bert_vocab, update prepare_dataset.py
+| 
+* commit 38d787afe5c481a53a6cc6f868d5df68bd5222fc
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-25
+| 
+|     lda run stopwords and without stopwords
+|   
+*   commit 08a59a436251c75738b34863b46042841c7f39b5
+|\  Merge: d3798bf 17ed1e8
+| | Author: hanhluukim <luukimbi@gmail.com>
+| | Date:   2022-05-25
+| | 
+| |     update epochs for LDA
+| |   
+| *   commit 17ed1e8218a54ec4ba8e9c79160074ae8df13a21
+| |\  Merge: fbf97cf 5be92eb
+| | | Author: EliFritsch <spanien310@yahoo.de>
+| | | Date:   2022-05-25
+| | | 
+| | |     das was schon oben war übernehmen
+| | | 
+| * | commit fbf97cf2f62ac75427419859420caf6cb6e3b50b
+| | | Author: EliFritsch <spanien310@yahoo.de>
+| | | Date:   2022-05-25
+| | | 
+| | |     Fehlerbehebung in Perplexity
+| | | 
+* | | commit d3798bfb59e7a8884d63a8c29326f7be4d7666c2
+| |/  Author: hanhluukim <luukimbi@gmail.com>
+|/|   Date:   2022-05-25
+| |   
+| |       update epochs for LDA
+| | 
+* | commit 5be92ebaad0b9dc3dc87c38f9629553ae004e2bd
+| | Author: hanhluukim <luukimbi@gmail.com>
+| | Date:   2022-05-25
+| | 
+| |     move runtime files
+| | 
+* | commit e3bb55a2d0db910166485b731666a46deea2e24c
+| | Author: hanhluukim <luukimbi@gmail.com>
+| | Date:   2022-05-25
+| | 
+| |     notebook compare similar words of different embeddings methods
+| | 
+* | commit c41c7448ad4fe5a49d26784e9732958471f5efaa
+| | Author: hanhluukim <luukimbi@gmail.com>
+| | Date:   2022-05-25
+| | 
+| |     remove old BERT notebook, remove old lda corpus function
+| | 
+* | commit 4d74944c50d2eec25c1409e0fa62e49a7bd2991c
+| | Author: hanhluukim <51424320+hanhluukim@users.noreply.github.com>
+| | Date:   2022-05-25
+| | 
+| |     update documentation for implementation words-embeddings with BERT
+| | 
+* | commit 742b6895dd506b5c1fa7dd0032636b686104fdf4
+| | Author: hanhluukim <51424320+hanhluukim@users.noreply.github.com>
+| | Date:   2022-05-25
+| | 
+| |     control of correctness of implementation with bert
+| | 
+* | commit b0d7dfa0da9f9bf808144b0de05a5987961e6b1e
+| | Author: hanhluukim <luukimbi@gmail.com>
+| | Date:   2022-05-25
+| | 
+| |     add not_in_bert_vocab
+| | 
+* | commit a036309b6226936e88baf09a9dab8a4a117f89d9
+|/  Author: hanhluukim <luukimbi@gmail.com>
+|   Date:   2022-05-25
+|   
+|       LDA results by min_df, notebooks documentation
+| 
+* commit b01b7d6553190038d3198d0ae03da733768969e4
+| Author: EliFritsch <spanien310@yahoo.de>
+| Date:   2022-05-25
+| 
+|     fixing lda gensim error
+| 
+* commit 84a91032c56eabff92ceb16988a0367a4ad39a73
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-25
+| 
+|     etm and lda num_topis 20 min_df 100
+| 
+* commit ac822d25049566bf61766f13e6053c8f4f6f35b1
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-25
+| 
+|     etm and lda num_topis 20 min_df 100
+| 
+* commit 6316f8b5594ea66712f7dbc8f1ac797753338461
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-25
+| 
+|     etm and lda num_topis 20
+| 
+* commit a13da3b21e961c78a627c0e8a7b0cd0f09482c0a
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-24
+| 
+|     etm min_df 2 num_topis 50
+| 
+* commit 27fe96b9f6b51557fa6cfeb9b26ff6c58e43ae26
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-24
+| 
+|     etm min_df 2 10, 20 epochs
+| 
+* commit 5886160cc81f7022e256c32782a125979092b513
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-24
+| 
+|     etm 200 n-topcs 10 epochs results
+| 
+* commit be46c13f0a9f7e540655d33415d88b81b0183823
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-24
+| 
+|     etm 100 epochs results
+| 
+* commit 51533267dc36bdba379b67378d124be72845b833
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-24
+| 
+|     add torch to embedding.py
+| 
+* commit f6363ed127a3e032da51b664a4c86741f3d802e0
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-24
+| 
+|     update main_eval_checkpoints, update seed=42 embeddings
+| 
+* commit b07dc3a347368b97abf5731bb6531eb48bc63ffa
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-24
+| 
+|     change args.min_df
+| 
+* commit 0faf9528e4bdc58b9722b2c011497596e2a8dd48
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-24
+| 
+|     epochs 100, update main.py with num_toics, update train_etm save by num_topics, add load ckpt
+| 
+* commit 981674beae7d11e9c922f06929d79db534b10df0
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-24
+| 
+|     remove textsloader from main_lda
+| 
+* commit c9395c7307fa599373e381f56024b0801cd200da
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-24
+| 
+|     add loss, min_df args to main.py, update read_prefitted, update find similar words
+| 
+* commit b9f03865e32e09d7a9592b544782d1a17c940f7a
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-24
+| 
+|     update bert_preparing remove stopwords list
+| 
+* commit c81ab1892470fec916dc863cd0c5bd7165b80605
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-24
+| 
+|     update bert preparing fix splitting long sentences
+| 
+* commit 12dfa7b82d1e1066110d3c057662f2706f25083b
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-24
+| 
+|     solved similar problem
+| 
+* commit 501dab7d9a3dad8d8acbecebcee28d4b37aaff3d
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-24
+| 
+|     remove cache topics
+| 
+* commit acc32b3281c1b41e07855e916a917ae478f4bfe4
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-24
+| 
+|     update gitignore file
+| 
+* commit 812765e032016eb70c1ef1843fde685c47c371e0
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-24
+| 
+|     problem lda by min_df
+| 
+* commit cc4471b56a516b37145c8b18b935166af7f77020
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-24
+| 
+|     problem mit lda, update evaluierung with number words
+| 
+* commit 3e0a268ce53a280685c05e2acd5e1adb01df5ff2
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-23
+| 
+|     not upload min_df dirs
+| 
+* commit 91b001008d56401ca3bdd18dea765d7c96c39697
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-23
+| 
+|     remove saving, update ignore file, run notebook
+| 
+* commit 1a0cc48ebc1ee4d422fdde9908066cfbb66e6f68
+| Author: hanhluukim <51424320+hanhluukim@users.noreply.github.com>
+| Date:   2022-05-23
+| 
+|     testing save_path in notebook
+| 
+* commit 0ecd32dd4871d1245e9be7187bd959df79db0a0d
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-23
+| 
+|     embedding.py change save path
+| 
+* commit 897a45ab804a6b8ecae0333fe1916b48024c9553
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-23
+| 
+|     remove save prepared_data/ outputs from code
+| 
+* commit fa436be4a5118d7bd43e02d93c76c58e025d0c20
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-23
+| 
+|     add checkpoints
+| 
+* commit 5bc6be4de0e6719f7f3cbfa601fa2e79fff575e7
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-23
+| 
+|     push etm_julia
+| 
+* commit 9513197b59dbb63e45175a1fd16668019881a966
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-23
+| 
+|     test gitignore after rm --cached
+| 
+* commit cfb58923eeac713be6c7aae1580f2628b0b43f99
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-23
+| 
+|     add prepared_data/ in gitignore
+| 
+* commit dee1b63dcd3bbba9260700e60f937d5e2483e00b
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-23
+| 
+|     test add after conflicts
+|   
+*   commit 09864d241b5906af6358a85729ac97ef52c41c93
+|\  Merge: 396a07d 55cc7d2
+| | Author: EliFritsch <spanien310@yahoo.de>
+| | Date:   2022-05-23
+| | 
+| |     Merge branch 'main' of https://github.com/hanhluukim/replication-topic-modelling-in-embedding-space
+| | 
+| * commit 55cc7d2884a6270770ccf0d30f3724657a4ff974
+| | Author: hanhluukim <luukimbi@gmail.com>
+| | Date:   2022-05-23
+| | 
+| |     test push after conflicts
+| | 
+* | commit 396a07d66ec2e7cff97c49a2eedfb67fd16a440b
+|/  Author: EliFritsch <spanien310@yahoo.de>
+|   Date:   2022-05-23
+|   
+|       adding the exponential for perplexity
+| 
+* commit 1ae8189e79d6034c278d0fcd2c54dacc4e3f39a2
+| Author: EliFritsch <spanien310@yahoo.de>
+| Date:   2022-05-23
+| 
+|     fixing syntax errors
+| 
+* commit 5a134accb8b60968d0c2a36d56e2bf060074f0ce
+| Author: EliFritsch <spanien310@yahoo.de>
+| Date:   2022-05-23
+| 
+|     Test
+|   
+*   commit b53928154b0abece1034cf50532e8ad5c47d204e
+|\  Merge: b1bfe20 edb902c
+| | Author: EliFritsch <spanien310@yahoo.de>
+| | Date:   2022-05-23
+| | 
+| |     Merge branch 'main' of https://github.com/hanhluukim/replication-topic-modelling-in-embedding-space
+| | 
+| * commit edb902c542b950d17abac76d318ffe36502d623e
+| | Author: hanhluukim <luukimbi@gmail.com>
+| | Date:   2022-05-23
+| | 
+| |     change save embedding format, add new read_prefitted embeddings, todo:notebook
+| | 
+| * commit b4e4a4e570ca60cad066c9972f5f39ef5631709f
+| | Author: hanhluukim <luukimbi@gmail.com>
+| | Date:   2022-05-22
+| | 
+| |     testing similar words of embeddings
+| | 
+| * commit 04edcf12e64a574fe1851dab7447ce3fd486069e
+| | Author: hanhluukim <luukimbi@gmail.com>
+| | Date:   2022-05-22
+| | 
+| |     remove save bert from bert_main, update find_similar_words
+| | 
+| * commit f222a4a927235da7bd563467b4127309998cb5ea
+| | Author: hanhluukim <luukimbi@gmail.com>
+| | Date:   2022-05-22
+| | 
+| |     test bert_vocab of two sentences
+| | 
+| * commit 8bccc8d63b5c670e60cfe05acaaa4d8e16438253
+| | Author: hanhluukim <luukimbi@gmail.com>
+| | Date:   2022-05-22
+| | 
+| |     update embedding, find_similiar_words_self_implemented
+| |   
+| *   commit 6627429e3c6d5d8d733b61803a1431b25227838e
+| |\  Merge: 402eebc 0243046
+| | | Author: hanhluukim <luukimbi@gmail.com>
+| | | Date:   2022-05-22
+| | | 
+| | |     Merge branch 'main' of https://github.com/hanhluukim/replication-topic-modelling-in-embedding-space
+| | | 
+| | * commit 0243046ff7ee4a306b0d0c534d537a534ea94b8e
+| | | Author: Hanh Luu <hanh@hanh-pc.fritz.box>
+| | | Date:   2022-05-22
+| | | 
+| | |     add BertEmbedding, implemented find_similar_words
+| | | 
+| * | commit 402eebc96d035f853ff8b0b88981875bc2af78af
+| | | Author: hanhluukim <luukimbi@gmail.com>
+| | | Date:   2022-05-22
+| | | 
+| | |     remove subprocess bert from main.py
+| | | 
+| * | commit 611f267975c8ac4750af0fcbde59c8ce25e5bc29
+| |/  Author: hanhluukim <luukimbi@gmail.com>
+| |   Date:   2022-05-22
+| |   
+| |       add BertEmbedding, implemented find_similar_words
+| | 
+| * commit ba5f1ab3e30c38827cebc96e4a713dc87a3b2512
+| | Author: hanhluukim <51424320+hanhluukim@users.noreply.github.com>
+| | Date:   2022-05-22
+| | 
+| |     remove run bert_embedding.py
+| |   
+| *   commit 3dfc23a1ec7197225e68d4d9699f686afd2b6031
+| |\  Merge: 6fda8b2 7a25673
+| | | Author: hanhluukim <luukimbi@gmail.com>
+| | | Date:   2022-05-22
+| | | 
+| | |     Merge branch 'main' of https://github.com/hanhluukim/replication-topic-modelling-in-embedding-space into main
+| | | 
+| | * commit 7a25673bd6aeb5ab00439423c0730665a0364bf5
+| | | Author: hanhluukim <51424320+hanhluukim@users.noreply.github.com>
+| | | Date:   2022-05-22
+| | | 
+| | |     check word_ids tokenizerfast
+| | | 
+| | * commit 23a4cc49f55f04fe62bcff1cdcedc81f078456c1
+| | | Author: hanhluukim <51424320+hanhluukim@users.noreply.github.com>
+| | | Date:   2022-05-22
+| | | 
+| | |     check word-ids tokenizerfast
+| | | 
+| * | commit 6fda8b20441b6dcbfb295aa50f2053e15a2a7930
+| |/  Author: hanhluukim <luukimbi@gmail.com>
+| |   Date:   2022-05-22
+| |   
+| |       sort embeddings by order in vocabulary
+| | 
+| * commit deddea7b83b4f9ef14794d59fe7011482ed2d9bb
+| | Author: hanhluukim <luukimbi@gmail.com>
+| | Date:   2022-05-22
+| | 
+| |     remove prints in bert
+| | 
+| * commit a1ad27247418bbe25c499b60c36ae7ca597f470f
+| | Author: hanhluukim <51424320+hanhluukim@users.noreply.github.com>
+| | Date:   2022-05-22
+| | 
+| |     add run bert_main.py to notebook
+| | 
+| * commit d67fa96d8c202388949e836f5228f641953b03a9
+| | Author: hanhluukim <51424320+hanhluukim@users.noreply.github.com>
+| | Date:   2022-05-22
+| | 
+| |     remove evaluation code of authors, add from src.evaluation_of_authors
+| |   
+| *   commit 77cb6b0c05ed12f8d36cff5dba49212fa5ae923a
+| |\  Merge: d253a1f 54c39ac
+| | | Author: hanhluukim <luukimbi@gmail.com>
+| | | Date:   2022-05-22
+| | | 
+| | |     Merge branch 'main' of https://github.com/hanhluukim/replication-topic-modelling-in-embedding-space into main
+| | | 
+| | * commit 54c39aca4f00083db1d02d08e91e0ae1644c6915
+| | | Author: hanhluukim <51424320+hanhluukim@users.noreply.github.com>
+| | | Date:   2022-05-22
+| | | 
+| | |     copy TopicCoherrence and TopicDiversity to notebook
+| | | 
+| * | commit d253a1f93aef088541b12206a4a707752a6d20c0
+| |/  Author: hanhluukim <luukimbi@gmail.com>
+| |   Date:   2022-05-22
+| |   
+| |       add evaluation of authors
+| | 
+| * commit 458e971f29ab9d0e75ada7aa0efa1ef293a39c76
+| | Author: hanhluukim <luukimbi@gmail.com>
+| | Date:   2022-05-22
+| | 
+| |     move bert_main.py, update readme
+| | 
+| * commit d69308f547269df2f0effce679d84b0d35b00549
+| | Author: hanhluukim <luukimbi@gmail.com>
+| | Date:   2022-05-22
+| | 
+| |     add fixed seed and deteministic net layers
+| | 
+| * commit 4fe067ed7aef6ef1aa110d316594ff23aa22c267
+| | Author: hanhluukim <luukimbi@gmail.com>
+| | Date:   2022-05-22
+| | 
+| |     update readme
+| | 
+| * commit fb9e1d8c0de2dd411bea9c380659ff64afba53b4
+| | Author: hanhluukim <luukimbi@gmail.com>
+| | Date:   2022-05-22
+| | 
+| |     build bert in main, changed embedding path, update read prefitted
+| | 
+| * commit e9414dece87e327a73d5e76dede3fc9e607016de
+| | Author: hanhluukim <luukimbi@gmail.com>
+| | Date:   2022-05-22
+| | 
+| |     test completed bert
+| | 
+| * commit 9e79b8349bd101102f206e5098820094a5740166
+| | Author: hanhluukim <luukimbi@gmail.com>
+| | Date:   2022-05-22
+| | 
+| |     add bert completed
+| | 
+| * commit c48e6a5e95a0ef288aa895604da3184dc7bb2d28
+| | Author: hanhluukim <luukimbi@gmail.com>
+| | Date:   2022-05-22
+| | 
+| |     add bert completed
+| | 
+| * commit aabcfeae1e620f06a1c5e2aaaa4d45f0c7e800ac
+| | Author: hanhluukim <51424320+hanhluukim@users.noreply.github.com>
+| | Date:   2022-05-22
+| | 
+| |     bert-embedding completed
+| | 
+| * commit ee69fc9cd7078a738e5982634b0a0f7db76f6028
+| | Author: hanhluukim <51424320+hanhluukim@users.noreply.github.com>
+| | Date:   2022-05-22
+| | 
+| |     Created using Colaboratory
+| | 
+| * commit f4d1939ff339c5e537c9e79a9e6b90602f468a60
+| | Author: hanhluukim <luukimbi@gmail.com>
+| | Date:   2022-05-22
+| | 
+| |     save bert by sent
+| | 
+| * commit 04a576379cbbdef1280465e9eb83829e4b485e79
+| | Author: hanhluukim <luukimbi@gmail.com>
+| | Date:   2022-05-22
+| | 
+| |     rename bert notebook
+| | 
+| * commit d0cf4b0293ee3a36cc7c68d82475369e57cbdd3b
+| | Author: hanhluukim <luukimbi@gmail.com>
+| | Date:   2022-05-22
+| | 
+| |     create embedding for each word in a sentence
+| | 
+| * commit 35d4f11cbe8fed0f3c8d84bba415894922f66d5e
+| | Author: hanhluukim <51424320+hanhluukim@users.noreply.github.com>
+| | Date:   2022-05-22
+| | 
+| |     create embedding for each unique word in a sentence
+| | 
+| * commit 3a07e225d4e75f437d52f62fa76e0d08729d83a9
+| | Author: hanhluukim <51424320+hanhluukim@users.noreply.github.com>
+| | Date:   2022-05-21
+| | 
+| |     error download bert
+| | 
+| * commit 2aa9919ebd79c1b6afc1afdb128a48a911358261
+| | Author: hanhluukim <51424320+hanhluukim@users.noreply.github.com>
+| | Date:   2022-05-21
+| | 
+| |     Update README.md
+| | 
+| * commit 8df3f504f577a80f3a1f64fa3b981a86b729dc2c
+| | Author: hanhluukim <luukimbi@gmail.com>
+| | Date:   2022-05-21
+| | 
+| |     update bert_embedding
+| |   
+* |   commit b1bfe20259233fb96662a47716e8f34431540cc3
+|\ \  Merge: 4addede 8ddd06a
+| |/  Author: EliFritsch <spanien310@yahoo.de>
+| |   Date:   2022-05-21
+| |   
+| |       Merge branch 'main' of https://github.com/hanhluukim/replication-topic-modelling-in-embedding-space
+| |   
+| *   commit 8ddd06a5c652057e273ee5c5bcfdbe5f06e15769
+| |\  Merge: 7eb586d 16a20ad
+| | | Author: hanhluukim <luukimbi@gmail.com>
+| | | Date:   2022-05-21
+| | | 
+| | |     Merge branch 'main' of https://github.com/hanhluukim/replication-topic-modelling-in-embedding-space into main
+| | | 
+| * | commit 7eb586d19e6b58587332379da0b9d1407f74c2c6
+| | | Author: hanhluukim <luukimbi@gmail.com>
+| | | Date:   2022-05-21
+| | | 
+| | |     conflicts solved, first version bert_embedding
+| | | 
+* | | commit 4addede56f97eaceb7dc7644f864a3fe6b2ad0eb
+| |/  Author: EliFritsch <spanien310@yahoo.de>
+|/|   Date:   2022-05-21
+| |   
+| |       fixing Syntax error
+| | 
+* | commit 16a20ad5008a35965eafaade51c0a66abc9ef0b5
+| | Author: EliFritsch <spanien310@yahoo.de>
+| | Date:   2022-05-21
+| | 
+| |     bei perplexity 2.teil mit einbezug des 2. Teil der Dokumente eingebaut
+| | 
+* | commit fff935d289b597fef960013a8d9d13c5ddad9e32
+| | Author: hanhluukim <51424320+hanhluukim@users.noreply.github.com>
+| | Date:   2022-05-21
+| | 
+| |     todo: same word/belonging subwords in different positions in the sentence
+| | 
+* | commit 15c3655f78b3320f6102699613865afd360bd7a4
+|/  Author: hanhluukim <51424320+hanhluukim@users.noreply.github.com>
+|   Date:   2022-05-21
+|   
+|       get subwords-embedding und create wb
+|   
+*   commit a62bed364e453cc44e3f9f5a52d62d5570a7c931
+|\  Merge: e625918 18506c2
+| | Author: hanhluukim <luukimbi@gmail.com>
+| | Date:   2022-05-20
+| | 
+| |     Merge branch 'main' of https://github.com/hanhluukim/replication-topic-modelling-in-embedding-space into main
+| |   
+| *   commit 18506c2270dda70dda74edcbe18b4170f3a34d70
+| |\  Merge: ddd67ca dda4181
+| | | Author: EliFritsch <spanien310@yahoo.de>
+| | | Date:   2022-05-20
+| | | 
+| | |     Merge branch 'main' of https://github.com/hanhluukim/replication-topic-modelling-in-embedding-space
+| | | 
+| | * commit dda418159cf8d0db771e17568904b1c37f0ca14d
+| | | Author: hanhluukim <51424320+hanhluukim@users.noreply.github.com>
+| | | Date:   2022-05-20
+| | | 
+| | |     add BERT implemetation
+| | | 
+| * | commit ddd67ca18c00c596cc39b05cdcdc2757a91c5f91
+| |/  Author: EliFritsch <spanien310@yahoo.de>
+| |   Date:   2022-05-20
+| |   
+| |       fixing naming error
+| | 
+| * commit 0bbad5856ee7d1449dd112fb94eadd0ea1018415
+| | Author: EliFritsch <spanien310@yahoo.de>
+| | Date:   2022-05-19
+| | 
+| |     fixing Syntax errors
+| | 
+* | commit e6259184584a8923d64ac996b8fc224aabaf0b08
+|/  Author: hanhluukim <luukimbi@gmail.com>
+|   Date:   2022-05-20
+|   
+|       remove cv2
+|   
+*   commit 3114602efa63694dacf8d57663d7cecbd7eef13c
+|\  Merge: e4942af 58b3ef2
+| | Author: hanhluukim <luukimbi@gmail.com>
+| | Date:   2022-05-18
+| | 
+| |     Merge branch 'main' of https://github.com/hanhluukim/replication-topic-modelling-in-embedding-space into main
+| | 
+| * commit 58b3ef21b95ca268dca7958fb9c524fd10dde264
+| | Author: hanhluukim <51424320+hanhluukim@users.noreply.github.com>
+| | Date:   2022-05-18
+| | 
+| |     update figure ETM in notebook
+| | 
+* | commit e4942af11fbcaaa3a161c6cb8cf6ffd6971cf9e5
+|/  Author: hanhluukim <luukimbi@gmail.com>
+|   Date:   2022-05-18
+|   
+|       extend figure with embedding part
+| 
+* commit 443f61ff429e46c1f945b7a3e2ef7bea8a26ce8a
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-18
+| 
+|     update pipeline
+| 
+* commit 11e690a33ad3e1968e6888d51b25d96703ebfcc4
+| Author: hanhluukim <51424320+hanhluukim@users.noreply.github.com>
+| Date:   2022-05-18
+| 
+|     update notebook
+|   
+*   commit 8d06affcc5f9230013723b8547d42742391686e4
+|\  Merge: 1a6e259 7a5d7f8
+| | Author: hanhluukim <luukimbi@gmail.com>
+| | Date:   2022-05-18
+| | 
+| |     Merge branch 'main' of https://github.com/hanhluukim/replication-topic-modelling-in-embedding-space into main
+| | 
+| * commit 7a5d7f8e9f5edb442ed20fd9695beb343114e888
+| | Author: hanhluukim <51424320+hanhluukim@users.noreply.github.com>
+| | Date:   2022-05-18
+| | 
+| |     add more explanation and documentation for notebook
+| | 
+* | commit 1a6e259abe1b49c92682c0beaf642fb3a65144dc
+|/  Author: hanhluukim <luukimbi@gmail.com>
+|   Date:   2022-05-18
+|   
+|       remove old codes
+| 
+* commit 59afcf1a39b0cabff9aac8cd9972eba478c66f34
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-18
+| 
+|     add new ETM architecture
+| 
+* commit 11309808a8bb75851eac2360b0173f58867ef289
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-18
+| 
+|     add documentation to code
+| 
+* commit b5eff271e5631f6b39eefca749b72c97acd26ba8
+| Author: hanhluukim <51424320+hanhluukim@users.noreply.github.com>
+| Date:   2022-05-18
+| 
+|     test other activation function and weight decay
+| 
+* commit 4ca818f7fc83e5014ca0a3f115b4ae47ee91bfa1
+| Author: hanhluukim <51424320+hanhluukim@users.noreply.github.com>
+| Date:   2022-05-18
+| 
+|     test different loss functions
+| 
+* commit 7bdecd1e999d8fc7cc1e69dde0c65f808570d9be
+| Author: hanhluukim <51424320+hanhluukim@users.noreply.github.com>
+| Date:   2022-05-18
+| 
+|     test different loss functions
+| 
+* commit 424f9126de36bb40c01c0c22a4f8c84385ab8917
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-18
+| 
+|     update loss function, remove K from KLD
+| 
+* commit 47f74ee97aaefe27023022c94486272271c11f62
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-18
+| 
+|     update loss function, remove K from KLD
+| 
+* commit 0265572603daa481ec0f528a7c4ddc565031419d
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-18
+| 
+|     update loss function, remove K from KLD
+| 
+* commit 2af324e2993fd5a88c963c6005428f6fe88647a6
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-18
+| 
+|     add loss-name to args, update def loss_function
+| 
+* commit 2999275c2ab966a28fda375dfe7bf11a584ed93d
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-18
+| 
+|     bitbucket dowload nyt
+| 
+* commit fadf00e354eef3e6ba767c0af99a7e19bc8f2b8e
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-18
+| 
+|     update loss function followed paper 2020
+| 
+* commit 92d0c0afe97af74a93a444464750542ebf6ba112
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-17
+| 
+|     statistic vocab update
+| 
+* commit 53fb54d2a55e6a3d736893b985725417b76dfa5d
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-17
+| 
+|     save statistics of different corpora
+| 
+* commit c6a9faa47f59547c186192c36e6216f433d2c0c5
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-17
+| 
+|     update embedding paramerters followed Mikolov paper
+| 
+* commit 030c55c2120560b90123954fe66257f8f89133f3
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-17
+| 
+|     add wordvec arg to main.py
+| 
+* commit b2f73b92499e5a9eb9e3eb8f2b8533178c5d7dd3
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-17
+| 
+|     add wordvec arg to main.py
+| 
+* commit 04e4ef7a261021d1494e7b7874f878ff78cb01e5
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-17
+| 
+|     remove some prints
+| 
+* commit 0ecabb4ff15f233274367a500982faa0ba2b1746
+| Author: EliFritsch <spanien310@yahoo.de>
+| Date:   2022-05-16
+| 
+|     etwas für test2 in perplexity
+| 
+* commit 4220ff40397e14d351f0f0bd71a4d5326b32ef3b
+| Author: EliFritsch <spanien310@yahoo.de>
+| Date:   2022-05-16
+| 
+|     variablenumbennenung perplexity
+| 
+* commit 893a21e349f3ea9df40c68136206e8db16f1afee
+| Author: EliFritsch <spanien310@yahoo.de>
+| Date:   2022-05-14
+| 
+|     kleiner Teil von Perplexity
+| 
+* commit 341074e91fe3d1f6b95080deb7147c79e523be81
+| Author: EliFritsch <spanien310@yahoo.de>
+| Date:   2022-05-14
+| 
+|     was ich wahrscheinlich brauch in perplexity function
+| 
+* commit 9d5d4f1233ff591225113d9865c0c70c26a171e3
+| Author: EliFritsch <spanien310@yahoo.de>
+| Date:   2022-05-14
+| 
+|     erster Versuch topicDiversity
+| 
+* commit 47e15fb984a16a43cbdbd456f2ccfb5f122e1502
+| Author: EliFritsch <spanien310@yahoo.de>
+| Date:   2022-05-14
+| 
+|     hizufügen evaluierungsgerüste und todo für Perplexity und Diversity
+| 
+* commit 8da8fb03e67cc20f4f0f626f22c711808b34a425
+| Author: EliFritsch <spanien310@yahoo.de>
+| Date:   2022-05-14
+| 
+|     topicCoherence2 wo pointwiseinf mit anderer marg funktion berechnet wird
+| 
+* commit 04f0f5739206a5ed9dd7717e7c55ee0396571dea
+| Author: EliFritsch <spanien310@yahoo.de>
+| Date:   2022-05-14
+| 
+|     erweiterung pointwiseInf mit anderer marg funktion
+| 
+* commit 4048a88e5ae4e1b3534b265d2da1afe94a96e177
+| Author: EliFritsch <spanien310@yahoo.de>
+| Date:   2022-05-14
+| 
+|     andere Berechnung für marg hinzugefügt
+| 
+* commit e74d7be05f3f7f0eb88158a27e3a38b61c97d705
+| Author: hanhluukim <51424320+hanhluukim@users.noreply.github.com>
+| Date:   2022-05-13
+| 
+|     Compare the results own TC and original TC of authors
+| 
+* commit a098fa6648159c7a6c32beac4e2016e5b98966c4
+| Author: hanhluukim <51424320+hanhluukim@users.noreply.github.com>
+| Date:   2022-05-13
+| 
+|     Compare the results own TC and original TC of authors
+| 
+* commit 04f07d003398ed351e5b3406377f0ce6e25c1e83
+| Author: hanhluukim <51424320+hanhluukim@users.noreply.github.com>
+| Date:   2022-05-11
+| 
+|     check coherrence of ETM
+| 
+* commit 08be922d45ceb64f0090ed9b58ed2a3d0b841d74
+| Author: hanhluukim <51424320+hanhluukim@users.noreply.github.com>
+| Date:   2022-05-11
+| 
+|     test gensim.coherencemodel
+| 
+* commit 23b291d473d1ad7563d32af6650039d5556a77d5
+| Author: hanhluukim <51424320+hanhluukim@users.noreply.github.com>
+| Date:   2022-05-08
+| 
+|     update notebook with lda, topicCoherrence
+| 
+* commit 0f6e6d491c341b1bf5d68975bc0b4fb6976f2328
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-08
+| 
+|     update visualization.py, main.py
+| 
+* commit b367d5255c3490e39df7be02f57ef5eff7e34378
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-08
+| 
+|     update save figures by min_df
+| 
+* commit 905c8a0c2fc6b890138314f6fb8c40b3928061bc
+| Author: EliFritsch <spanien310@yahoo.de>
+| Date:   2022-05-08
+| 
+|     Fall für keine Dokumente mit selben Wort hinzugefügt
+| 
+* commit c91c8fccdc8cdd88d96e93bdac92a86ce7f99a3d
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-07
+| 
+|     add visualization.py for embedding space
+| 
+* commit 39878e253d7974c1541dbee401d67797f3f25a02
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-07
+| 
+|     update main.py
+| 
+* commit 053ebc502eb30549e204d067af75b7ff4ba168a0
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-07
+| 
+|     check other loss function
+| 
+* commit 14e4669d8163a3d88b723e8a830c58244994fb37
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-07
+| 
+|     check show_topics
+| 
+* commit 4527ad2e89afdb747b10778ec685428a134f8bf3
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-07
+| 
+|     add save word2vec model
+| 
+* commit ea7925c924bde73ce1aab5211815f9896a262e65
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-07
+| 
+|     add show_topics to ETM
+| 
+* commit fe6356a12b2df7e88ba6f99b26278707ac82a86c
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-07
+| 
+|     add kld visualization
+| 
+* commit 91e6726cf6261120205456cef757b33b3bd3d5c9
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-06
+| 
+|     train epoch 500
+| 
+* commit ad7f80bda0f1a973cdc2808cc2fe70302e1dda4d
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-06
+| 
+|     update save path by min_df, update etm predictions
+| 
+* commit 80880064e6a366052181ee146824d53c9f93b078
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-06
+| 
+|     save bowmat by min_df, sorting of embedding-voca
+| 
+* commit d9bf35d15023c9444985d904f59163000e36a3eb
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-06
+| 
+|     add save checkpoints
+| 
+* commit da9b028ad5df8252d2427581f310a8f4c4556739
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-06
+| 
+|     add save checkpoints
+| 
+* commit 6f0b1b6c8e16b91310c3185370dfa5e95dc014c7
+| Author: hanhluukim <51424320+hanhluukim@users.noreply.github.com>
+| Date:   2022-05-06
+| 
+|     update notebook
+| 
+* commit 287b5dcfea914dd7d38bdc0a9c72c5f05d5703e0
+| Author: hanhluukim <51424320+hanhluukim@users.noreply.github.com>
+| Date:   2022-05-06
+| 
+|     add explanation of code
+|   
+*   commit 76bc015ee696ada1922dd0c7f2096031c2690f67
+|\  Merge: d863034 49ec8c9
+| | Author: hanhluukim <luukimbi@gmail.com>
+| | Date:   2022-05-06
+| | 
+| |     save preprocessd docs, check cuda
+| | 
+| * commit 49ec8c9ab217f57bee3ccc8b38fe4d5496406f8f
+| | Author: hanhluukim <51424320+hanhluukim@users.noreply.github.com>
+| | Date:   2022-05-06
+| | 
+| |     check KL Loss in notebook
+| | 
+* | commit d8630345f034136d3962673b22a351edf3f9fbdd
+|/  Author: hanhluukim <luukimbi@gmail.com>
+|   Date:   2022-05-06
+|   
+|       save preprocessd docs, check cuda
+| 
+* commit 38713202fb7d8297485429750b3b13149a1fe9c6
+| Author: hanhluukim <51424320+hanhluukim@users.noreply.github.com>
+| Date:   2022-05-06
+| 
+|     update julia-ETM
+| 
+* commit f0e9650f4f656cb67c9757f2d0bac2d776d7aa33
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-06
+| 
+|     julia setting
+| 
+* commit e9995d5585785afe33637a5553f328a182168e1c
+| Author: hanhluukim <51424320+hanhluukim@users.noreply.github.com>
+| Date:   2022-05-06
+| 
+|     Update README.md
+| 
+* commit 6db1ed8a13736b316e14ba01cd108911fc4d2429
+| Author: hanhluukim <51424320+hanhluukim@users.noreply.github.com>
+| Date:   2022-05-06
+| 
+|     Update README.md
+| 
+* commit 843ed4231c213beb51f4a464c6d4e93622a69be1
+| Author: hanhluukim <51424320+hanhluukim@users.noreply.github.com>
+| Date:   2022-05-06
+| 
+|     for julia read prefitted embedding, create bows
+| 
+* commit a8b35d0ac084f06bc8a633f3e634d6e68cde14a6
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-05
+| 
+|     save id2word to file
+| 
+* commit b993e3651330664bbb4ab11ea1ba3666ad88caee
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-05
+| 
+|     save id2word to file
+| 
+* commit bcfbb757591e26aebb4db3d45000e6ce83457706
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-05
+| 
+|     save id2word to file
+| 
+* commit c58ed42a6502ca38b0d45c885b3f8bb079461b5c
+| Author: hanhluukim <51424320+hanhluukim@users.noreply.github.com>
+| Date:   2022-05-06
+| 
+|     add first julia implementation
+| 
+* commit f0bfb710c47fd32dc51ade7b1bae659555bd2b0e
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-05
+| 
+|     compute runtime, check train
+|   
+*   commit fa515c6223fdb753f0eedb3bc324d3a21e34705a
+|\  Merge: 1166f20 23177ed
+| | Author: hanhluukim <luukimbi@gmail.com>
+| | Date:   2022-05-05
+| | 
+| |     check loss function
+| | 
+| * commit 23177ed0358899b1a4c89da004c23cb8e909b543
+| | Author: hanhluukim <51424320+hanhluukim@users.noreply.github.com>
+| | Date:   2022-05-05
+| | 
+| |     run TrainETM with normalize_data
+| | 
+* | commit 1166f2017966af11053e0476284e92d0fbe8292b
+| | Author: hanhluukim <luukimbi@gmail.com>
+| | Date:   2022-05-05
+| | 
+| |     check loss function
+| | 
+* | commit 6d054b81c1d2b1be99a1dc37f624bc36f89880eb
+|/  Author: hanhluukim <luukimbi@gmail.com>
+|   Date:   2022-05-05
+|   
+|       check loss function
+| 
+* commit a576041d990ee7154aae8b66c545f13ca34bc5c9
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-05
+| 
+|     add normalize_data attribute for class DocSet and training
+|   
+*   commit 2c7eec2572d46075903f85b9729cf95cf637f6bc
+|\  Merge: 3c16e56 b2eb69f
+| | Author: hanhluukim <luukimbi@gmail.com>
+| | Date:   2022-05-05
+| | 
+| |     Merge branch 'main' of https://github.com/hanhluukim/replication-topic-modelling-in-embedding-space into main
+| | 
+| * commit b2eb69f4b199e14f91a9a8d73160f3f9dd6a10a9
+| | Author: hanhluukim <51424320+hanhluukim@users.noreply.github.com>
+| | Date:   2022-05-05
+| | 
+| |     add etm architecture in notebook
+| | 
+* | commit 3c16e56a91b18191b17398c1cc183b679f405c85
+|/  Author: hanhluukim <luukimbi@gmail.com>
+|   Date:   2022-05-05
+|   
+|       add get_normalized_batch to TrainETM()
+| 
+* commit 856831ab3aabbcdfbe3439a027c440d510178f35
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-05
+| 
+|     add figure for ETM
+| 
+* commit 7b09fa6f9b45a62d198a0c4b685c422f44d1ae65
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-05
+| 
+|     prepared_data folder
+| 
+* commit 0ac4f77bbf3aeca4efcc44895d3dd9ad85fc0646
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-05
+| 
+|     update prepare_dataset after name change
+| 
+* commit 9dbf96e624408bc753fae3c5e1098f1bf11cadd3
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-05
+| 
+|     add saving preprocessed data in prepared_data
+| 
+* commit e8403947c822b03d864271e4a0d1297c389d5cc9
+| Author: hanhluukim <51424320+hanhluukim@users.noreply.github.com>
+| Date:   2022-05-05
+| 
+|     add wb_creator.cluster_words in notebook
+| 
+* commit f18bbbbc99f04ee6a02ebe97e109628bac41e816
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-05
+| 
+|     add umap n_components 2
+| 
+* commit 0585c09dce97455f15e45149367a91b512e4face
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-05
+| 
+|     update TrainETM, Umap Visualization, prepare_dataset
+| 
+* commit 5cf127b09533794704fe4c7d0d278f3e6da08dff
+| Author: EliFritsch <spanien310@yahoo.de>
+| Date:   2022-05-04
+| 
+|     fixing more syntax errors in evaluierung.py
+| 
+* commit 00d5bf442b9dcbe39fd7e5f00009b3f03c7ce09a
+| Author: EliFritsch <spanien310@yahoo.de>
+| Date:   2022-05-04
+| 
+|     fixing tab misposition in evaluierung.py
+| 
+* commit 2a73b91b02408f062a7bad17fb7f404453883de8
+| Author: EliFritsch <spanien310@yahoo.de>
+| Date:   2022-05-04
+| 
+|     fixing lda tab and word mispositions
+|   
+*   commit 36416759f32b01b727a63ba48deec76124d8da33
+|\  Merge: 7ac40c3 16cbbdc
+| | Author: EliFritsch <spanien310@yahoo.de>
+| | Date:   2022-05-04
+| | 
+| |     Merge branch 'main' of https://github.com/hanhluukim/replication-topic-modelling-in-embedding-space
+| | 
+| * commit 16cbbdc33daa5ebd53b1ea2ebf414f2387068f43
+| | Author: hanhluukim <51424320+hanhluukim@users.noreply.github.com>
+| | Date:   2022-05-04
+| | 
+| |     test ETMTrain() in notebook
+| | 
+* | commit 7ac40c393f57d6ef735f36dc02fba3e62c47afd3
+|/  Author: EliFritsch <spanien310@yahoo.de>
+|   Date:   2022-05-04
+|   
+|       ausbersserung des imports für lda und mit ids
+|   
+*   commit c5845d306f6a077af46f46e7d5d1fbb4de04ba94
+|\  Merge: 917ce4f 97d0fd1
+| | Author: EliFritsch <spanien310@yahoo.de>
+| | Date:   2022-05-04
+| | 
+| |     Merge branch 'main' of https://github.com/hanhluukim/replication-topic-modelling-in-embedding-space
+| | 
+| * commit 97d0fd141af534488b3118559f10dda19b7cfeff
+| | Author: hanhluukim <luukimbi@gmail.com>
+| | Date:   2022-05-04
+| | 
+| |     test train etm, update lossfunction, add main args
+| | 
+* | commit 917ce4fad4637d1caf862b3bd70c99b498dbce18
+|/  Author: EliFritsch <spanien310@yahoo.de>
+|   Date:   2022-05-04
+|   
+|       marginal word
+| 
+* commit 078c8917edea0437e3e9dcce02fbf4de73573d0b
+| Author: EliFritsch <spanien310@yahoo.de>
+| Date:   2022-05-04
+| 
+|     lda gensim
+| 
+* commit a62f3fc5c6585422cfa3a99f2c2280b5c5288475
+| Author: EliFritsch <spanien310@yahoo.de>
+| Date:   2022-05-04
+| 
+|     topic Cohorence
+| 
+* commit 4a9947fcebffb3f37eb2fec768495a0ceabd9b6b
+| Author: EliFritsch <spanien310@yahoo.de>
+| Date:   2022-05-04
+| 
+|     normalized pointwise Information
+| 
+* commit 3a6af959d22a0c6afa4198512edea1faf8c173ad
+| Author: EliFritsch <spanien310@yahoo.de>
+| Date:   2022-05-04
+| 
+|     Wahrscheinlichkeit wörter in einem Dokument
+| 
+* commit 502c70c0a5c78ec137afe85e5ceb83cbc786dc3d
+| Author: hanhluukim <51424320+hanhluukim@users.noreply.github.com>
+| Date:   2022-05-04
+| 
+|     test run train in notebook
+| 
+* commit 86bae3fba3366593fcdc0fa744b4c404849ee77d
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-04
+| 
+|     test training first-draft ETM
+| 
+* commit dabae6a2c551c0426a7a0c9c42bc575402c0e785
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-04
+| 
+|     make dataset split deterministic
+| 
+* commit 34733a0ddda6a8b01f53afcc5a509221f349baff
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-04
+| 
+|     change split dataset method
+| 
+* commit cd0b5dec1b45c8d5fd5261510843b17f50bd503a
+| Author: hanhluukim <51424320+hanhluukim@users.noreply.github.com>
+| Date:   2022-05-04
+| 
+|     update notebook for first-draft-ETM
+| 
+* commit d3d2f225d5e004b8af58207b3b40b1a10471457c
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-04
+| 
+|     update main, etm, train_etm
+| 
+* commit 688531b64602549339656351178ff5f05b4b8348
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-04
+| 
+|     fix bug
+| 
+* commit b6267aee492f01ff450c7ddb5b1d5a9990490212
+| Author: hanhluukim <51424320+hanhluukim@users.noreply.github.com>
+| Date:   2022-05-04
+| 
+|     fix bug
+| 
+* commit d26488d33e9e25f1ce2d620c0bce9393e2d062ae
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-04
+| 
+|     update main.py and src
+| 
+* commit cdeb9ae454e4d206c8ab4ae5201a2b9cf8a8a286
+| Author: hanhluukim <51424320+hanhluukim@users.noreply.github.com>
+| Date:   2022-05-04
+| 
+|     update notebook
+| 
+* commit 4ec650c32497c6a4a6f196ed2ff8b513746e6a4c
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-04
+| 
+|     update main, etm, train_etm
+| 
+* commit ac1deee8780715b927cf2671bc7be771fcca079d
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-04
+| 
+|     update main.py and src
+| 
+* commit fc628d1abb4b066432c1359a217e8dc8753ebf02
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-04
+| 
+|     update main.py and src
+| 
+* commit 49b81a3721730709b3d75a109a98dd3069d1e87c
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-04
+| 
+|     update main.py and src
+| 
+* commit 114938b79ce6f7b238ccc4b2844782e605bb4b60
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-04
+| 
+|     update main.py
+| 
+* commit 57bcadd13fef17bef4d781fad8b9c834485ad4ef
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-04
+| 
+|     update DocSet
+| 
+* commit 521f53b52fb3164cb326217023dab72430425ac9
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-04
+| 
+|     update DocSet
+| 
+* commit 248852922ff762b0ef1fd72218b30efcc7d0d980
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-04
+| 
+|     update DocSet
+| 
+* commit c0556a767d199726cf6f8d3c2a0724774ff809fe
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-03
+| 
+|     add first draft of etm and add DocSet for DataLoader
+| 
+* commit 33e83618773419b3383f8acda6edc3a0da0e55d8
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-03
+| 
+|     update readme
+| 
+* commit de5873bba33d82904ecc11578af4d3d8d0e6515e
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-03
+| 
+|     update readme
+| 
+* commit d7d850bb8b0024870a6a9add0839be06a8687968
+| Author: hanhluukim <51424320+hanhluukim@users.noreply.github.com>
+| Date:   2022-05-03
+| 
+|     update notebook file
+| 
+* commit 3ee5de95ff8bfb04b0bca7044baf9007d2a082c5
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-03
+| 
+|     add visualization embedding space, update requirements.txt
+| 
+* commit e6b60652c4320a93d4ab84c592fc37643890f97e
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-03
+| 
+|     add visualization embedding space, update requirements.txt
+| 
+* commit 693790667609d305c3fc68463b918e67653c8199
+| Author: hanhluukim <51424320+hanhluukim@users.noreply.github.com>
+| Date:   2022-05-03
+| 
+|     visualization words by word2vec, clustering and umap dim-reduction
+| 
+* commit f807b55f74c06ffaf14500d5c190eeee6fae9568
+| Author: hanhluukim <51424320+hanhluukim@users.noreply.github.com>
+| Date:   2022-05-03
+| 
+|     visualization words by word2vec
+| 
+* commit a11dd8751b3549810074a9be396142da0f71ff9b
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-03
+| 
+|     remove notebook 2
+| 
+* commit 7309af0ae4e746b29f92e384af2c6f67fbc87b26
+| Author: hanhluukim <51424320+hanhluukim@users.noreply.github.com>
+| Date:   2022-05-03
+| 
+|     add notebook from colab
+| 
+* commit 7938ea69572f47131e6ff8878ec7269299a9040c
+| Author: hanhluukim <51424320+hanhluukim@users.noreply.github.com>
+| Date:   2022-05-03
+| 
+|     Created using Colaboratory
+| 
+* commit 69acce0e3ec8cd989899bc03cdd3c126443551c3
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-03
+| 
+|     test train embedding and save embeddings
+| 
+* commit 5e5f5a9b8eed7126fe06d2a7ef7efd7d0aa3f4e9
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-03
+| 
+|     update embedding.py
+| 
+* commit a5f7dd6daff0a0635fc07e194e30de962afd2cc3
+| Author: EliFritsch <spanien310@yahoo.de>
+| Date:   2022-05-02
+| 
+|     evaluierung worte im selben Dokument
+| 
+* commit 842c8bad6582469b2246c5df5e77a17f6680322e
+| Author: EliFritsch <spanien310@yahoo.de>
+| Date:   2022-05-02
+| 
+|     testmain
+|   
+| * commit 0ca5bb2fa94b1b5e433970adfcfa8ab6b7088a02
+|/  Author: EliFritsch <spanien310@yahoo.de>
+|   Date:   2022-05-02
+|   
+|       test visual
+| 
+* commit e0b67deecdc920cd66926fe7fbd182df08bca742
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-05-01
+| 
+|     update embedding.py
+| 
+* commit c063feaf6f8e783527156aa8bc834c5fa131eefa
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-04-30
+| 
+|     add WordEmbeddingCreator
+| 
+* commit 1c3ce49f8533fa5426376837c34490b3360e8de5
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-04-30
+| 
+|     add WordEmbeddingCreator
+| 
+* commit a3782780476711bc9359de7cde802075bb96aa64
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-04-30
+| 
+|     add WordEmbeddingCreator
+| 
+* commit 5060f0eb4eeab34fdd48c5fb354e1888ec6377e7
+| Author: hanhluukim <51424320+hanhluukim@users.noreply.github.com>
+| Date:   2022-04-30
+| 
+|     Update README.md
+| 
+* commit 132e3bd7a69458c268b744f91dacf7fdfd5d0c68
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-04-29
+| 
+|     re-create docs in words for embedding-training
+| 
+* commit 02e3dca1e1a4aee267be760f4efc040b8d8a5acc
+| Author: hanhluukim <51424320+hanhluukim@users.noreply.github.com>
+| Date:   2022-04-30
+| 
+|     Update README.md
+| 
+* commit 3dbee59cb102cf88bd87d8a2a233facd64f20ab8
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-04-30
+| 
+|     update notebook_replication
+| 
+* commit c0250d360fea27f4edcfd3f65172053e6654ed26
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-04-29
+| 
+|     re-create docs in words for embedding-training
+| 
+* commit 348de3bb9d4f2c69cf3a197f3d1c808dc7c53a1e
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-04-29
+| 
+|     re-create docs in words for embedding-training
+| 
+* commit 5cccaf93c2068db00cfe8fe4f25169b6ae98e18e
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-04-29
+| 
+|     update transformation for lda corpus
+| 
+* commit 62fd53c0fe313c0b0eb8bbf862628241d11cfef2
+| Author: hanhluukim <51424320+hanhluukim@users.noreply.github.com>
+| Date:   2022-04-27
+| 
+|     Update README.md
+| 
+* commit 7b2fa34eeccc8b87d4b778743c5f3a95287aca59
+| Author: hanhluukim <51424320+hanhluukim@users.noreply.github.com>
+| Date:   2022-04-27
+| 
+|     Update README.md
+| 
+* commit cb9002882c3d0caa3e805666ba36819c4a87b834
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-04-25
+| 
+|     update pipeline
+| 
+* commit d94340c6b5f7a4c7395eaf8323b66c2b14b0bf2c
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-04-25
+| 
+|     update pipeline
+| 
+* commit 5aaa43b88241ca37bfacdd20b8af3528713e6bde
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-04-24
+| 
+|     finished prepare_dataset.py
+| 
+* commit f0f025269f1ef1218e0fbfccd789fa1f59db96fc
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-04-24
+| 
+|     add notebook_replication to check the outputs
+| 
+* commit c72c7f6888c50be0e38bd831cec8b4c2a86d58fa
+| Author: hanhluukim <51424320+hanhluukim@users.noreply.github.com>
+| Date:   2022-04-24
+| 
+|     Update README.md
+| 
+* commit ed1f0e076f2b0d82427bef7132c833442f567fef
+| Author: hanhluukim <51424320+hanhluukim@users.noreply.github.com>
+| Date:   2022-04-24
+| 
+|     Update README.md
+| 
+* commit f1c3ecb1dfc20eeb10d296ab7b52cee5b2364197
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-04-24
+| 
+|     add parse.arg prepare_dataset.py
+| 
+* commit 7952ea4a6d72c48731c8c159e8fe0f756d588515
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-04-23
+| 
+|     finished fixing prepare_dataset.py
+| 
+* commit fe7d97677fe1f50da17f9e165ce7eccac8234dd3
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-04-23
+| 
+|     fix create_bow prepare_dataset.py
+| 
+* commit 9fd80944121f95a6697ba0ecf2bdc1a5d0e5e1ee
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-04-23
+| 
+|     update prepare_dataset.py
+| 
+* commit bba372368147f90d600528a8ccde2d72aa9fafb9
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-04-22
+| 
+|     add main.py, check prepare_dataset.py
+| 
+* commit cd8eb9a1d751e52574fa3c5f1b57ba9aa750babb
+| Author: hanhluukim <51424320+hanhluukim@users.noreply.github.com>
+| Date:   2022-04-22
+| 
+|     Update README.md
+| 
+* commit 471d46344960f1591f761a6b51611d58d8b7d644
+| Author: hanhluukim <51424320+hanhluukim@users.noreply.github.com>
+| Date:   2022-04-22
+| 
+|     Update README.md
+| 
+* commit 8192c6e1570a059638a52ed0b801a9e168af90d4
+| Author: hanhluukim <51424320+hanhluukim@users.noreply.github.com>
+| Date:   2022-04-22
+| 
+|     Update README.md
+| 
+* commit cdb47301a5df4bbae743324c023394105237c7c6
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-04-21
+| 
+|     test git push from google colab
+| 
+* commit 0889b98316558da9272922c3edbc6369315627ef
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-04-21
+| 
+|     test git push from google colab
+| 
+* commit b70e6bce63e39f8badf7cd7440d6d61f41a99849
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-04-22
+| 
+|     update testing and preprare_dataset.py
+| 
+* commit ef00f9e33cacfc9d5255ad914243fe53e83d6cab
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-04-21
+| 
+|     update testing and preprare_dataset.py
+| 
+* commit 03cf5ee63e4d83368c783f32c7114645b8273fbf
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-04-21
+| 
+|     add update testing preprocessing
+| 
+* commit 8b1549dbadae85d006acdf9437637ee62b55c73a
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-04-20
+| 
+|     add notebooks testing preprocessing and lda
+| 
+* commit 664e441c34b2d63baadb604ffb215cf55b569d0f
+| Author: hanhluukim <luukimbi@gmail.com>
+| Date:   2022-04-19
+| 
+|     add init codes and todos
+| 
+* commit 22450ab4316a73694d89ef187e694d1e05d81d13
+  Author: hanhluukim <51424320+hanhluukim@users.noreply.github.com>
+  Date:   2022-04-07
+  
+      Initial commit
