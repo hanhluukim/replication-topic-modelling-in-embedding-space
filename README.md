@@ -25,7 +25,7 @@
 3. Durchführen in dem Projektsordner: `python src/bert_covert_format.py`. Zwei Dateein: bert_embeddings.npy und bert_vocab.txt wurden automatisch in dem Ordner: `prepared_data/` gespeichert. 
 4. Diese beiden Dateien sind notwendig für das Bert-prefitted-ETM
 
-**Befehlen zum Durchführung von Experimenten**
+**Befehlen zur Durchführung von Experimenten**
 1. LDA-Modelle: `python main_lda.py --filter-stopwords "True" --min-df 100 --epochs 20 --use-tensor True --batch-test-size 100` 
 2. ETM-Modelle: `python main.py --model "ETM" --epochs 160 --wordvec-model "skipgram" --loss-name "cross-entropy" --min-df 2 --num-topics 20 --filter-stopwords "True" --hidden-size 800 --activate-func "ReLU" --optimizer-name "adam" --lr 0.002 --wdecay 0.0000012`
 3. `--wordvec-model` kann folgende Werten haben: "cbow", "skipgram", "bert", 
