@@ -31,7 +31,7 @@
 3. `--wordvec-model` kann folgende Werten haben: "cbow", "skipgram", "bert", 
 4. `--optimizer-name` hat folgende Optionen "adam" und "sgd"
 
-**Notebooks zum Durchführung von Experimenten**
+**Notebooks zur Durchführung von Experimenten**
 1. [Notebook für LDA](https://github.com/hanhluukim/replication-topic-modelling-in-embedding-space/blob/main/notebook_topic_modelling_with_LDA.ipynb)
 2. [Notebook für ETM](https://github.com/hanhluukim/replication-topic-modelling-in-embedding-space/blob/main/notebook_replication.ipynb)
 3. [Notebook für Wordembeddings-BERT](https://github.com/hanhluukim/replication-topic-modelling-in-embedding-space/blob/main/notebook_bert_sentence_embeddings_to_word_embeddings.ipynb)
